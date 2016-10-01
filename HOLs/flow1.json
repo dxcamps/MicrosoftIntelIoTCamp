@@ -1,17 +1,3 @@
-Reset Instructions 
-==================
-
-The following commands will help you reset the so that you can repeat the lab steps.  
-
-1. In the Node-RED interface on the NUC [http://your.nuc.ip.address:1880](http://your.nuc.ip.address:1880), delete the flows you created during the lab:
-     - Flow 2 - The one where you blinked the LED
-     - Flow 3 - Where we published the sensor data to Azure IoT Hubs
-
-2. Make sure only one flow exists name "Flow 1".  Reset Flow 1 to the default Flow code:
-
-    > Note: The code for default "Flow 1" can also be found in the [flow1.json](flow1.json) file in this repo.
-
-```JSON
 [
     {
         "id":"1dc1405c.26a96",
@@ -154,22 +140,3 @@ The following commands will help you reset the so that you can repeat the lab st
         "wires":[]
     }
 ]
-```
-3. In the NUC portal, on the "Packages" page:
-
-    - Delete packagegroup-cloud-azure package
-    - Delete IoT_Cloud repository
-
-4. ssh (PuTTY, screens, ssh) into the NUC.  From the terminal run:   
-
-```bash
-rpm –e http://iotdk.intel.com/misc/iot_pub.key
-
-npm uninstall node-red-contrib-os –g 
-
-npm uninstall node-red-contrib-auzreiothubnode -g
-
-systemctl restart node-red-experience
-```
-
-
