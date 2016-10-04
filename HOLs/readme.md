@@ -189,6 +189,39 @@ In this exercise, you will use the Node-RED development environment pre-installe
 
     ![Node-RED Environment](images/04020-NodeREDEnvironment.png)
 
+1. The Node-RED Environment can be used to create IoT workflows.
+
+    ![Node-RED Environment Layout](images/04030-NodeRedEnvironmentLayout.png)
+
+1. To create a new flow, click the "**+**" button to the right of the "Flow 1" tab along the top of the Visual Editor.  A new flow, named "Flow 2" will open on a new tab.
+
+    ![Create Flow 2](images/04040-CreateFlow2.png)
+
+1. From the "**UPM_Sensors**" group in the nodes panel, drag the "Grove LED" node into the visual editor.
+
+    ![Add Grove LED node](images/04050-AddGroveLEDNode.png)
+
+1. Double-click on the "**Grove LED**" node in the visual editor.  A window will open to allow you to edit the properties of the node:  Set the properties as follows, the click "**OK**" to save the changes.
+
+    - Name: **Blinky**
+    - Platform: **Firmata**
+    - Pin - **D13**
+    - Mode - **Blink**
+    - Interval(ms) - **1000**
+
+    ![Blinky Properties](images/04060-BlinkyProperties.png)
+
+1. Click the "**Deploy**" button in the top right corner of the Node-RED environment to deploy the new flow. 
+
+    ![Deploy Blinky](images/04070-DeployBlinky.png)
+
+1. Once the flow has been deployed, the LED onboard the Arduino 101 will start blinking on and off in one second (1000ms) intervals.
+
+    > **Note**: With the Grove Base Shield attached to the Arduino, the LED will be difficult to see.  You will need to peek under the shield to see the LED on the Arduino 101 blinking on and off. 
+
+    ![Arduino 101 LED](images/04080-Arduino101LED.png)
+
+
 1. Show some screenshot:
 
     ![EULA](images/01120-Eula.png)
