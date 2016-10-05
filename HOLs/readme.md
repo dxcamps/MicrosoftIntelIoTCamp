@@ -323,20 +323,6 @@ We will create Node-red flow to get data from temperature sensor and display it 
 
     ![Flow 3 Debug Messages](images/05110-Flow3DebugMessages.png)
 
-    
-
-1. Show some screenshot:
-
-    ![EULA](images/01120-Eula.png)
-
-1. Do something else
-
-    > **Note!**: This is a sample note!
-
-    - With one
-    - or two
-    - substeps
-
 ___
 
 <a name="CreateIoTHubAndDevice"></a>
