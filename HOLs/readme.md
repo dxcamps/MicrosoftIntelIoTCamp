@@ -23,7 +23,7 @@ Tasks
 1. [Getting Started with Grove IoT Commercial Developer Kit](#GettingStartedWithGrove)
 1. [Intel NUC Developer Hub Overview](#IntelNucHubOverview)
 1. [Connecting to your Gateway using SSH](#ConnectingWithSSH)
-1. [Blinking and LED with Node-RED](#Blinky)
+1. [Blinking an LED with Node-RED](#Blinky)
 1. [Reading the Temperature Sensor](#ReadingTemperatures)
 1. [Creating an Azure IoT Hub and Device](#CreateIoTHubAndDevice)
 1. [Publishing Temperature Sensor Data to the Azure IoT Hub](#PublishToIoTHub)
@@ -170,7 +170,7 @@ In order to perform advanced configuration of the Gateway either a monitor and k
 ___
 
 <a name="Blinky"></a>
-Blinking and LED with Node-RED
+Blinking an LED with Node-RED
 ---
 
 In this exercise, you will use the Node-RED development environment pre-installed on the Intel IoT Gateway to blink the onboard LED on your Arduino 101. 
