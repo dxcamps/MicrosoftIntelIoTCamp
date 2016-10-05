@@ -282,7 +282,7 @@ We will create Node-red flow to get data from temperature sensor and display it 
         - Function - **Use the following code**
 
             ````javascript
-            var gateway = "IntelGateway";
+            var gateway = "IntelIoTGateway";
             return {
                 payload: {
                     deviceID: gateway,
@@ -320,6 +320,10 @@ We will create Node-red flow to get data from temperature sensor and display it 
     - Click the "**Deploy**" button
     - Once you have deployed "**Flow 3**" ensure that it's "**msg.payload*"" debug has it's debug messages enabled
     - Watch for the debug messages to appear on the "**debug**" tab.
+
+    > **Note**: If you can't see the entire debug message on the debug tab, you can drag the splitter bar between the "**Visual Editor**" and "**debug**" tab panels to expand the view, or you can scroll to the right on the "**debug**" tab using the horizontal scroll bar at the bottom of it.
+
+    > **Note**: You can touch the temperature sensor (or blow on it) to see the value of the "**temp**" displayed change on the "**debug**" tab.   
 
     ![Flow 3 Debug Messages](images/05110-Flow3DebugMessages.png)
 
