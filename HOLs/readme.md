@@ -6,7 +6,7 @@ Overview
 
 In this lab, we will unbox and set up an Intel IoT Gateway and the Arduino 101 board (with a Grove Starter kit) along with several services available in Microsoft Azure to monitor the temperature and alert maintenance of a high temperature. Using Node-RED, running on the Intel NUC Gateway, the application will read the temperature value from a Grove temperature sensor and publish that data to an Azure IoT Hub.  From there a collection of Azure services including Stream Analytics, Event Hubs, SQL Database, Web Applications and Power BI Embedded will be used to both display the temperature data as well as alert the user to temperature readings over a certain threshold.
 
-![Lab Architecture](images/00000-LabArchitecture.png) 
+![Lab Architecture](images/00000-LabArchitecture.jpg) 
 
 
 Prerequisites
