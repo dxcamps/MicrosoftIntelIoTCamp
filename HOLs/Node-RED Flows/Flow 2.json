@@ -1,0 +1,15 @@
+[
+    {
+        "id": "3041255f.f81bfa",
+        "type": "upm-grove-led",
+        "z": "1ce19b44.f73915",
+        "name": "Blinky",
+        "platform": "512",
+        "mode": "blink",
+        "pin": "13",
+        "interval": 1000,
+        "x": 218,
+        "y": 200,
+        "wires": []
+    }
+]
