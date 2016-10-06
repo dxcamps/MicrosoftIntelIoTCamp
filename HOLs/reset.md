@@ -157,19 +157,38 @@ The following commands will help you reset the so that you can repeat the lab st
 ```
 3. In the NUC portal, on the "Packages" page:
 
+    > **Note**: The "packagegroup-cloud-azure" package is defined here: https://github.com/intel-iot-devkit/meta-iot-cloud/blob/master/recipes-core/packagegroups/packagegroup-cloud-azure_0.9.bb
+
+    > **Note**: The URL for the IoT_Cloud repository is: http://iotdk.intel.com/repos/iot-cloud/wrlinux7/rcpl13
+
     - Delete packagegroup-cloud-azure package
     - Delete IoT_Cloud repository
 
 4. ssh (PuTTY, screens, ssh) into the NUC.  From the terminal run:   
 
-```bash
-rpm –e http://iotdk.intel.com/misc/iot_pub.key
+    ```bash
+    # This removes the public key imported from http://iotdk.intel.com/misc/iot_pub.key
+    rpm -e --allmatches gpg-pubkey-e26c791f-56b460db
 
-npm uninstall node-red-contrib-os –g 
+    # You can verify that the public key was removed with the following rpm query:
+    # This should return a response like:
+    # package gpg-pubkey-e26c791f-56b460db is not installed
+    rpm -q gpg-pubkey-e26c791f-56b460db
 
-npm uninstall node-red-contrib-auzreiothubnode -g
+    # Remove the Node-Red nodes for obtaining cpu system information.
+    npm uninstall node-red-contrib-os –g 
 
-systemctl restart node-red-experience
-```
+    # Remove the Azure IoT Hub Node-RED node implemention
+    npm uninstall node-red-contrib-auzreiothubnode -g
 
+    # Restart the Node-RED experience.  
+    # You will need to re-connect to the Node-RED environment after this command. 
+    systemctl restart node-red-experience
+    ```
+5. Finally, I had a problem when trying to re-install the packagegroup-cloud-azure package after removing it using these steps.  I had to reboot the NUC. Not sure if I was just experiencing a fluke or if this is truly necessary, but it probably wouln't hurt to reset the NUC before trying to complete the lab steps again:
+
+    ````bash
+    # Reboot the NUC
+    shutdown 0 -r
+    ````
 

@@ -318,7 +318,7 @@ We will create Node-red flow to get data from temperature sensor and display it 
     ![Delete Debug Messages](images/05100-DeleteDebugMessages.png)
 
 1. Finally, we can test the new flow.  
-    - Switch to the "**Flow 3**" tab
+    - Switch back to the "**Flow 3**" tab
     - Click the "**Deploy**" button
     - Once you have deployed "**Flow 3**" ensure that it's "**msg.payload*"" debug has it's debug messages enabled
     - Watch for the debug messages to appear on the "**debug**" tab.
