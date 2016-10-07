@@ -8,6 +8,9 @@
         "namespaces_msinevents_name": {
             "value": null
         },
+        "workspaceCollections_msincollection_name": {
+            "value": null
+        },
         "servers_msinsql_name": {
             "value": null
         },
@@ -20,6 +23,9 @@
         "sites_msinfunctions_name": {
             "value": null
         },
+        "sites_msinweb_name": {
+            "value": null
+        },
         "AuthorizationRules_RootManageSharedAccessKey_name": {
             "value": null
         },
@@ -30,6 +36,9 @@
             "value": null
         },
         "consumergroups_$Default_name": {
+            "value": null
+        },
+        "consumergroups_servicebusexplorer_name": {
             "value": null
         },
         "databases_master_name": {
