@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Microsoft / Intel IoT Camp</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content="10">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            margin-top: 60px
+        }
+        table {
+            width: 100%;
+        }
+
+        table th {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        table td {
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body ng-app="app" ng-controller="indexController" class="container">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#/">Microsoft / Intel IoT Camp</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#/" class="active">Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <button type="button" class="btn btn-lg btn-success" ng-click="send('TestBuzzer')">Test the Buzzer</button>
+    <!--<button type="button" class="btn btn-lg btn-danger" ng-click="send(0)">Turn Off</button>-->
+
+
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Current Temperature</h2> The last recorded reading on device {{ latest_reading.deviceid }} was:
+            <table>
+                <thead>
+                    <tr>
+                        <th>Temperature</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ latest_reading.temperature | number }}&deg;C</td><td>{{ latest_reading.timestamp | date : 'medium' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4" style="overflow-wrap:break-word">
+            <h2>Alerts</h2>
+
+            <!--<pre ng-repeat="alert in latest_alerts">{{ alert | json }}</pre>-->
+            <br />
+
+        </div>
+        <div class="col-md-4">
+            <h2>Temperature History</h2>
+            <div ng-show="temperatures.length > 0">
+                <h4>Most recent {{ temperatures.length }} readings </h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Temperature</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="t in temperatures">
+                        <td>{{ t.temperature | number }}&deg;C</td><td>{{ t.timestamp | date : 'medium' }}</td>
+                    </tr>
+                </tbody>
+            </table> 
+            <div ng-show="temperatures.length === 0">
+                No temperature history found
+            </div>
+        </div>
+    </div>
+    <script src="/angular/angular.min.js"></script>
+    <script>
+        (function() {
+            'use strict';
+            
+            angular.module('app', []).controller('indexController', function($scope, $http) {
+            
+                //$scope.latest_alerts = [];
+                $scope.temperatures = [];
+            
+                $scope.send = function(value) {
+                    $http.post('/api/command/', {command: value});    
+                };
+            
+                // $http.get('/api/alerts').success(function(data) {
+                //     $scope.latest_alerts = data.reverse(); 
+                // });
+            
+                $http.get('/api/temperatures').success(function(result) {
+                    
+                    if(result.length > 0) {
+                        angular.forEach(result, function(x) {
+                                // deviceid: x.deviceid._,
+                                // timestamp:  x.timestamp._,
+                                // temperature: x.temperaturereading._
+                            $scope.temperatures.push({
+                                deviceid: x[0].value,
+                                timestamp:  x[1].value,
+                                temperature: x[2].value
+                            });
+                            //$scope.temperatures.reverse();
+                        }); 
+                        
+                        $scope.latest_reading = $scope.temperatures[0];
+                    } 
+                });
+            });
+        })();
+    </script>
+</body>
+
+</html>
