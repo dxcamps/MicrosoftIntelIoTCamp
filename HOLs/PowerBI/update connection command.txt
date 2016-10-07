@@ -1,0 +1,1 @@
+powerbi update-connection --dataset "7c98eca7-1541-4eee-8b6d-a94ca5f63427" --username sqladmin --password "Pa`$`$w0rd" --connectionString "data source=msinsql.database.windows.net;initial catalog=msindb;persist security info=True;encrypt=True;trustservercertificate=False"
