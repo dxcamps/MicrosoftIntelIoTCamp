@@ -120,6 +120,7 @@ app.post('/api/command', function(req, res) {
                 var message = new Message (data);
                 console.log('Sending message: ' + data);
                 iotHubClient.send(deviceId, message, printResultFor('send'));
+                console.log('Async message sent');
             }
         });
 
