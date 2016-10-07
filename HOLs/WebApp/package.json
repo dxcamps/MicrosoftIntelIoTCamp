@@ -19,8 +19,5 @@
     "nconf": "^0.8.4",
     "tedious": "^1.14.0",
     "tedious-connection-pool": "^1.0.5"
-  },
-  "devDependencies": {
-    "gulp": "^3.9.1"
   }
 }
