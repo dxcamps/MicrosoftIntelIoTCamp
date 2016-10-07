@@ -44,30 +44,12 @@ sqlPool.on('error',function(err){
 
 var iotHubClient = ServiceClient.fromConnectionString(iotHubConnString);
 
-// // event hub alerts
-// var alerts = [];
-// var ehclient = EventHubClient.fromConnectionString(ehConnString, eventHubName)
-// ehclient.createReceiver('$Default', '0', { startAfterTime: Date.now() })
-//     .then(function(rx) {
-//         rx.on('errorReceived', function(err) { console.log(err); });
-//         rx.on('message', function(message) {
-//             alerts.push(message.body);
-//             alerts = alerts.slice(-5); // keep last 5
-//         });
-//     });
-
-// // table storage
-// var tableSvc = azure.createTableService(storageAcountName, storageAccountKey);
-// tableSvc.createTableIfNotExists(storageTable, function(err, result, response) {
-//     if (err) {
-//         console.log('error looking up table');
-//         console.log(err)
-//     }
-// });
-
 // website setup
 var app = express();
-var port = nconf.get('port');
+//Shouldn't get port from the config.json
+var localport = nconf.get('localport');
+var port = normalizePort(process.env.PORT || localport);
+app.set('port', port)
 app.use(express.static('public'));
 app.use(express.static('bower_components'));
 app.use(bodyParser.json());
@@ -84,8 +66,6 @@ app.get('/api/temperatures', function(req, res) {
             res.json({ "error": err});
             return;
         }
-
-        //////////////////////////////
 
         var sqlRequest = new Request("SELECT TOP 10 deviceid, timestamp, temperature FROM dbo.Measurement as m ORDER BY m.[timestamp] DESC;", 
             function(err) {  
@@ -114,10 +94,6 @@ app.get('/api/temperatures', function(req, res) {
         });  
 
         poolConnection.execSql(sqlRequest);  
-
-
-        //////////////////////////////
-
     });
 })
 
@@ -160,36 +136,26 @@ app.post('/api/command', function(req, res) {
 
     };
 
-    // var command = "TurnFanOff";
-    // if (req.body.command === 1) {
-    //     command = "TurnFanOn";
-    // }
-
-    // iotHubClient.open(function(err) {
-    //     if (err) {
-    //         console.error('Could not connect: ' + err.message);
-    //     } else { // {"Name":"TurnFanOn","Parameters":""}
-    //         var data = JSON.stringify({ "Name":command,"Parameters":null });
-    //         var message = new Message (data);
-    //         console.log('Sending message: ' + data);
-    //         iotHubClient.send(deviceId, message, printResultFor('send'));
-    //     }
-    // });
-
-    // // Helper function to print results in the console
-    // function printResultFor(op) {
-    //     return function printResult(err, res) {
-    //         if (err) {
-    //             console.log(op + ' error: ' + err.toString());
-    //         } else {
-    //             console.log(op + ' status: ' + res.constructor.name);
-    //         }
-    //     };
-    // }
-
     res.end();
 });
 
 app.listen(port, function() {
     console.log('app running on http://localhost:' + port);
 });
+
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}

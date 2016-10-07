@@ -1,5 +1,5 @@
 {
-    "port": "3000",
+    "localport": "3000",
     "deviceId": "IntelIoTGateway",
     "iotHubConnString": "HostName=msiniothub.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=nEDxGuR9J8nAn2EysyiFAvNpiojs+wlEW2sF6ZsH69M=",
     "sqlServer": "msinsql.database.windows.net",
