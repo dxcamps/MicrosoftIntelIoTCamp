@@ -15,4 +15,4 @@ INTO
     msinevents
 FROM
     msiniothub
-WHERE temperature > 35   
+WHERE temperature > 40  

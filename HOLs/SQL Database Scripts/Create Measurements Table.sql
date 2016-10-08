@@ -21,3 +21,7 @@ go
 -- be any rows in it
 select * from dbo.Measurement;
 go
+select top 20 * from dbo.Measurement order by [timestamp] desc;
+select count(*) from dbo.Measurement
+go
+--truncate table dbo.Measurement;

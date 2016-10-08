@@ -27,6 +27,7 @@ Tasks
 1. [Connecting to your Gateway using SSH](#ConnectingWithSSH)
 1. [Blinking an LED with Node-RED](#Blinky)
 1. [Reading the Temperature Sensor](#ReadingTemperatures)
+1. [Planning your Azure Resources](#PlanningAzure)
 1. [Creating an Azure IoT Hub and Device](#CreateIoTHubAndDevice)
 1. [Publishing Temperature Sensor Data to the Azure IoT Hub](#PublishToIoTHub)
 1. [Processing Temperature Data with Stream Analytics](#ProcessingWithStreamAnalytics)
@@ -328,6 +329,57 @@ We will create Node-red flow to get data from temperature sensor and display it 
     > **Note**: You can touch the temperature sensor (or blow on it) to see the value of the "**temp**" displayed change on the "**debug**" tab.   
 
     ![Flow 3 Debug Messages](images/05110-Flow3DebugMessages.png)
+
+___
+
+<a name="PlanningAzure"></a>
+Planning your Azure Resources
+---
+
+[Microsoft Azure](http://azure.com) provides an incredibly powerful and flexible backend for your IoT solutions.  In this lab, we will configure a robust collection of services to mimic the real world solutions you may implement your self.  With the number of services we will configure, it is helpful to first understand what those services are, and to gather the configuration details we will need for them in advance.  Having done so, the configuraiton of the services themselves will be much easier.  By being consitent on how we organize our resources as well as where we deploy them and how we name them, our job of working with them and managing them is made much simpler.
+
+The following diagram provides an overview of the architecture we will be implementing:
+
+![Lab Architecture](images/00000-LabArchitecture.jpg) 
+
+### Common Resource Group ###
+
+We will be placing all of the azure resources we provision in this lab into a single "**Resource Group**" ([link](https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/#resource-groups)).  Resource groups are a core concept in the "**Azure Resource Manager**" ([link](https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/#resource-groups)) technology used by the Azure platform.  Resource Groups allow you to keep all the resources related to a solution in a single container.  This in invaluable when securing, deploying, and removing the resources.    
+
+
+### Common Location or "Region" ###
+
+We want to make sure to deploy all of the resources in the same Azure data center, or "**Region**" ([link](https://azure.microsoft.com/en-us/regions/)). This will help to ensure that the resources have low latency connections to each other (for example, the web application can directly access the sql database in the same datacenter), as well as keep our costs low by reducing the amount of data leaving a the data center and incurrent data egress charges.  
+
+That means that when need to select a region that supports all of the services we will use in our solution.  You can review the list of [Products available by region](https://azure.microsoft.com/en-us/regions/services/) to verify that the services required by this lab are available in the region you want to use. The services used in this lab inclue:
+
+- Azure IoT Hubs
+- Azure Stream Analytics
+- Azure Event Hubs
+- Azure Storage
+- Azure SQL Database
+- Azure Web Apps
+- Azure Function Apps
+- Azure PowerBI Embedded 
+
+At the time this is being written (October 2016), the following regions have all of the required services. **THIS LIST WILL GROW OVER TIME**. You are welcome to review the [Products available by region](https://azure.microsoft.com/en-us/regions/services/) to see if any additional regions provide the resources needed.  Otherwise, simply pick the region from the list below that is closest to you, and ensure that you choose that region for each resource you deploy.   
+
+- West US 
+- North Europe 
+- West Europe 
+- Southeast Asia 
+- Australia Southeast  
+
+### Common Naming Convention ###
+
+We will be provisioning a number of resources in this lab.  Some of these resources require globally unique names.  In addition, we need to be able to refere to those resources in the lab documentation.  To facilitate that, it is ***strongly recommended*** that you juse the naming convention outlined here.  In the architecture diagram above, you will see that resources have been named with a ***`<name>`*** prefix, and them some resource specific name.  
+
+Choose a ***`<name>`*** prefix that is unique to you.  It is recommended that you use something like your initials.  For example if your name where "**Jane Q. Doe"** you might select "**jqd**" as your name prefix. To add a little more uniqueness you could add in your two digit birth month.  For example, if Jane was born in "**October**" she might use "**jqd10**".   
+
+For the purposes of this lab, I'll use the "**mic**" prefix, short for "**Microsoft Intel Camp**".  
+
+**DO NOT USE THE "mic" PREFIX FOR YOUR OWN RESOURCES**
+
 
 ___
 
