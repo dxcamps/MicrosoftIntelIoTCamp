@@ -376,10 +376,9 @@ We will be provisioning a number of resources in this lab.  Some of these resour
 
 Choose a ***`<name>`*** prefix that is unique to you.  It is recommended that you use something like your initials.  For example if your name where "**Jane Q. Doe"** you might select "**jqd**" as your name prefix. To add a little more uniqueness you could add in your two digit birth month.  For example, if Jane was born in "**October**" she might use "**jqd10**".   
 
-For the purposes of this lab, I'll use the "**mic**" prefix, short for "**Microsoft Intel Camp**".  
+For the purposes of this lab, I'll use the "**mic16**" prefix, short for "**Microsoft Intel Camp 2016**".  
 
-**DO NOT USE THE "mic" PREFIX FOR YOUR OWN RESOURCES**
-
+**DO NOT USE THE "mic" PREFIX FOR YOUR OWN RESOURCES**.  
 
 ___
 

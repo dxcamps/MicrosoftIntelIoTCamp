@@ -59,43 +59,17 @@ app.get('/api/alerts', function(req, res) {
     res.json(alerts);
 });
 
-app.get('/api/temperatures', function(req, res) {
-    sqlPool.acquire(function(err,poolConnection){
-        if(err){
-            console.log("An error occurred acquiring a pool connection:\n " + err);
-            res.json({ "error": err});
-            return;
-        }
+app.get('/api/last', function(req, res) {
+    console.log('Retrieving last measurments from sql');
+    var query="select deviceid, [timestamp], temperature from dbo.LastMeasurements;";
+    runQuery(res, query);
+});
 
-        var sqlRequest = new Request("SELECT TOP 10 deviceid, timestamp, temperature FROM dbo.Measurement as m ORDER BY m.[timestamp] DESC;", 
-            function(err) {  
-                if (err) {
-                    console.log('An error occurred when executing the sql request:\n' + err);
-                    res.json({ "error": err});
-                }
-            });  
-        var result = "";  
-        sqlRequest.on('doneInProc', function(rowCount, more, rows) {
-            res.json(rows);  
-            console.log('doneInProc: ' + rowCount + ' rows returned');
-            console.log(rows.length);  
-            rows.forEach(function(row){
-            row.forEach(function(column) {  
-                if (column.value === null) {  
-                console.log('NULL');  
-                } else {  
-                result+= column.value + " ";  
-                }  
-            });  
-            console.log(result);  
-            result ="";  
-            });
-            poolConnection.release();
-        });  
-
-        poolConnection.execSql(sqlRequest);  
-    });
-})
+app.get('/api/recent', function(req, res) {
+    console.log('Retrieving recent measurments from sql');
+    var query="select deviceid, [timestamp], temperature from dbo.RecentMeasurements;";
+    runQuery(res, query);
+});
 
 var completedCallback = function(err, res) {
     if (err) { console.log(err); }
@@ -159,4 +133,42 @@ function normalizePort(val) {
   }
 
   return false;
+}
+
+function runQuery(res, query) {
+    sqlPool.acquire(function(err,poolConnection){
+        if(err){
+            console.log("An error occurred acquiring a pool connection:\n " + err);
+            res.json({ "error": err});
+            return;
+        }
+
+        var sqlRequest = new Request(query, 
+            function(err) {  
+                if (err) {
+                    console.log('An error occurred when executing the sql request:\n' + err);
+                    res.json({ "error": err});
+                }
+            });  
+        var result = "";  
+        sqlRequest.on('doneInProc', function(rowCount, more, rows) {
+            res.json(rows);  
+            console.log('doneInProc: ' + rowCount + ' rows returned');
+            console.log(rows.length);  
+            rows.forEach(function(row){
+            row.forEach(function(column) {  
+                if (column.value === null) {  
+                console.log('NULL');  
+                } else {  
+                result+= column.value + " ";  
+                }  
+            });  
+            console.log(result);  
+            result ="";  
+            });
+            poolConnection.release();
+        });  
+
+        poolConnection.execSql(sqlRequest);  
+    });
 }
