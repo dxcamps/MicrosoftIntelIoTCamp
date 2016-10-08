@@ -1,32 +1,44 @@
 'use strict';
 
+// General express related requires...
 var express = require('express');
 var bodyParser = require('body-parser');
 var nconf = require('nconf');
 
+// Azure Iot Hub related requires
 var ServiceClient = require('azure-iothub').Client;
 var Message = require('azure-iot-common').Message;
 
+// tedious (aka TDS => "Tabular Data Stream") 
+// SQL Server client related requires
 var ConnectionPool = require('tedious-connection-pool');
 var Request = require('tedious').Request;  
 var TYPES = require('tedious').TYPES;
 
+// Read in the settings specified in the config.json file
 nconf.argv().env().file('./config.json');
-var eventHubName = nconf.get('eventHubName');
-var ehConnString = nconf.get('ehConnString');
+
+// Azure iot hub configuraiton values
+// the iotHubConnectionString value should be the iot hubs 
+// "service" SAS policy connection string, or  
+// the connection string for any other policy that has "send" 
+// permissions on the iot hub.  
 var iotHubConnString = nconf.get('iotHubConnString');
-var deviceId = nconf.get('deviceId');
+
+// SQL Server connection configuration values
 var sqlServer = nconf.get('sqlServer');
 var sqlDatabase = nconf.get('sqlDatabase');
 var sqlLogin = nconf.get('sqlLogin');
 var sqlPassword = nconf.get('sqlPassword');
 
+// Setup the tedious connection pool
 var sqlPoolConfig = {
     min: 2, 
     max: 4,
     log: true
 };
 
+// Set the tedious sql connection details
 var sqlConnectionConfig = {  
     userName: sqlLogin + '@' + sqlServer,  
     password: sqlPassword,  
@@ -35,18 +47,21 @@ var sqlConnectionConfig = {
     options: {encrypt: true, database: sqlDatabase, rowCollectionOnDone: true} 
 };
 
+// Create the tedious sql client connection pool.
 var sqlPool = new ConnectionPool(sqlPoolConfig, sqlConnectionConfig);
 
+// Configure the tedious connection pool to just log any pool level
+// errors to the console. 
 sqlPool.on('error',function(err){
         console.log("Pool Error!:\n" + err);
         return;
 });
 
+// Setup the iot hub connection 
 var iotHubClient = ServiceClient.fromConnectionString(iotHubConnString);
 
 // website setup
 var app = express();
-//Shouldn't get port from the config.json
 var localport = nconf.get('localport');
 var port = normalizePort(process.env.PORT || localport);
 app.set('port', port)
@@ -54,11 +69,8 @@ app.use(express.static('public'));
 app.use(express.static('bower_components'));
 app.use(bodyParser.json());
 
-// app api
-app.get('/api/alerts', function(req, res) {
-    res.json(alerts);
-});
-
+// Used to retrieve just the last measurement for each device 
+// in the dbo.Measurements table in the database.
 app.get('/api/last', function(req, res) {
     console.log('Retrieving last measurments from sql');
     var query="select deviceid, [timestamp], temperature from dbo.LastMeasurements;";
@@ -84,7 +96,9 @@ app.post('/api/command', function(req, res) {
 
     if(command=='TestBuzzer'){
 
-        console.log('Sending buzzer test alert');
+        var deviceid = req.body.deviceid;
+
+        console.log('Sending buzzer test alert to ' + deviceid);
 
         iotHubClient.open(function(err) {
             if (err) {
@@ -93,7 +107,7 @@ app.post('/api/command', function(req, res) {
                 var data = JSON.stringify({ "type": "temp","message": "Buzzer Test     " });
                 var message = new Message (data);
                 console.log('Sending message: ' + data);
-                iotHubClient.send(deviceId, message, printResultFor('send'));
+                iotHubClient.send(deviceid, message, printResultFor('send'));
                 console.log('Async message sent');
             }
         });
@@ -113,6 +127,46 @@ app.post('/api/command', function(req, res) {
 
     res.end();
 });
+
+app.get('/api/powerbiembedtoken',function(req,res){
+    var hmm="";
+});
+
+// Used to get a Power BI embed token that doesn't expire
+// Well, it does expire, but not until January 1, 2100.  
+// I don't think this will matter then! :-)
+app.get('/api/powerbiembedtoken/:collection/:workspace/:report',
+    function(req,res){
+        //FYI, http://calebb.net and http://jwt.io have token decoders you can use to inspect the generated token.
+        var powerbi = require('powerbi-api');
+        
+
+
+        // Set the expiration for the token to January 1st, 2100.  
+        //var expiration =  new Date(2100, 1, 1, 0, 0, 0, 0);
+
+        // Set the expiration to an hour from now:
+        var expiration =  new Date();
+        expiration.setHours(expiration.getHours() + 1);
+        
+        //
+        // var collection = req.query.collection;
+        // var workspace = req.query.workspace;
+        // var report = req.query.report;
+        var collection = req.params.collection;
+        var workspace = req.params.workspace;
+        var report = req.params.report;
+        var username = null;
+        var roles = null;
+        var accessKey = req.query.key;
+        var token = powerbi.PowerBIToken.createReportEmbedToken(collection, workspace, report, username, roles, expiration);
+        var jwt = token.generate(accessKey);
+        var result = {
+            token: jwt
+        };
+        res.json(result);
+    }
+);
 
 app.listen(port, function() {
     console.log('app running on http://localhost:' + port);

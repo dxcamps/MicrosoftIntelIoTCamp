@@ -49,7 +49,6 @@
         </div>
     </nav>
 
-    <button type="button" class="btn btn-lg btn-success" ng-click="send('TestBuzzer')">Test the Buzzer</button>
     <!--<button type="button" class="btn btn-lg btn-danger" ng-click="send(0)">Turn Off</button>-->
 
 
@@ -66,6 +65,7 @@
                         <table>
                             <thead>
                                 <tr>
+                                    <th style="text-align:center"></th>
                                     <th style="text-align:left">Device</th>
                                     <th style="text-align:right">Time</th>
                                     <th style="text-align:right">Temperature</th>
@@ -73,8 +73,10 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="m in lastMeasurements">
+                                    <td style="text-align:center"><button type="button" class="btn btn-xs btn-success" style="padding: 0px 2px;" ng-click="send('TestBuzzer',m.deviceid)"><span class="glyphicon glyphicon-flash"></span></button></td>
                                     <td style="text-align:left">{{ m.deviceid }}</td>
-                                    <td style="text-align:right">{{ m.timestamp | date : 'medium' }}</td>
+                                    <td style="text-align:left">{{ m.deviceid }}</td>
+                                    <td style="text-align:right">{{ m.timestamp | date : 'short' }}</td>
                                     <td style="text-align:right">{{ m.temperature | number }}&deg;C</td>
                                 </tr>
                             </tbody>
@@ -90,7 +92,7 @@
                         powerbi-type="report"
                         powerbi-embed-url="https://embedded.powerbi.com/appTokenReportEmbed?reportId=0707f7a5-bdf1-482f-8b4f-950a5d8de01e"
                         powerbi-options-filter-pane-enabled="false"
-                        powerbi-access-token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2ZXIiOiIwLjIuMCIsImF1ZCI6Imh0dHBzOi8vYW5hbHlzaXMud2luZG93cy5uZXQvcG93ZXJiaS9hcGkiLCJpc3MiOiJQb3dlciBCSSBOb2RlIFNESyIsIndjbiI6Im1zaW5jb2xsZWN0aW9uIiwid2lkIjoiNjQ5ZjI1M2YtYTNjZC00NTliLTg0Y2UtNWU2M2ViNzBlOWUxIiwicmlkIjoiMDcwN2Y3YTUtYmRmMS00ODJmLThiNGYtOTUwYTVkOGRlMDFlIiwibmJmIjoxNDc1OTQ3NjY0LCJleHAiOjE0NzU5NTEyNjR9.FYazHvayYBKBnbYAXNxoh8Wab6-4Ac6sVR--8kHcekI"
+                        powerbi-access-token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2ZXIiOiIwLjIuMCIsImF1ZCI6Imh0dHBzOi8vYW5hbHlzaXMud2luZG93cy5uZXQvcG93ZXJiaS9hcGkiLCJpc3MiOiJQb3dlciBCSSBOb2RlIFNESyIsIndjbiI6Im1zaW5jb2xsZWN0aW9uIiwid2lkIjoiNjQ5ZjI1M2YtYTNjZC00NTliLTg0Y2UtNWU2M2ViNzBlOWUxIiwicmlkIjoiMDcwN2Y3YTUtYmRmMS00ODJmLThiNGYtOTUwYTVkOGRlMDFlIiwibmJmIjoxNDc1OTU1NzMyLCJleHAiOjE0NzU5NTkzMzJ9.i5EzSIts7J07dww_z14HYBoxR8oZcB0SIjayI2cEvp0"
                         style="height:380px;"
                     ></div>
 
@@ -116,7 +118,7 @@
                     <tbody>
                         <tr ng-repeat="m in recentMeasurements">
                             <td style="text-align:left">{{ m.deviceid }}</td>
-                            <td style="text-align:right">{{ m.timestamp | date : 'medium' }}</td>
+                            <td style="text-align:right">{{ m.timestamp | date : 'short' }}</td>
                             <td style="text-align:right">{{ m.temperature | number }}&deg;C</td>
                         </tr>
                     </tbody>
@@ -137,8 +139,8 @@
                 $scope.recentMeasurements = [];
                 $scope.lastMeasurements = [];
             
-                $scope.send = function(value) {
-                    $http.post('/api/command/', {command: value});    
+                $scope.send = function(value,deviceid) {
+                    $http.post('/api/command/', {command: value, deviceid: deviceid});    
                 };
             
                 //Get the recent measurements from the node.js server back end
