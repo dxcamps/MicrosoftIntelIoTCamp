@@ -137,34 +137,38 @@
                 };
             
                 //Get the recent measurements from the node.js server back end
-                $http.get('/api/recent').success(function(result) {
-                    
-                    if(result.length > 0) {
-                        angular.forEach(result, function(x) {
-                            $scope.recentMeasurements.push({
-                                deviceid: x[0].value,
-                                timestamp:  x[1].value,
-                                temperature: x[2].value
-                            });
-                        }); 
-                    } 
-                });
+                $scope.getRecentMeasurements = function(){
+                    $http.get('/api/recent').success(function(result) {
+                        
+                        if(result.length > 0) {
+                            angular.forEach(result, function(x) {
+                                $scope.recentMeasurements.push({
+                                    deviceid: x[0].value,
+                                    timestamp:  x[1].value,
+                                    temperature: x[2].value
+                                });
+                            }); 
+                        } 
+                    });
+                }
 
                 //Get just the very latest measurements from the node.js server back end
-                $http.get('/api/devices').success(function(result) {
-                    
-                    if(result.length > 0) {
-                        angular.forEach(result, function(x) {
-                            $scope.devices.push({
-                                deviceid: x[0].value,
-                                timestamp:  x[1].value,
-                                temperature: x[2].value
-                            });
-                        }); 
-                    } 
-                });
+                $scope.getDevices = function(){
+                    $http.get('/api/devices').success(function(result) {
+                        
+                        if(result.length > 0) {
+                            angular.forEach(result, function(x) {
+                                $scope.devices.push({
+                                    deviceid: x[0].value,
+                                    timestamp:  x[1].value,
+                                    temperature: x[2].value
+                                });
+                            }); 
+                        } 
+                    });
+                }
 
-                function embedReport() {
+                $scope.embedReport = function () {
                     //Get just the very latest measurements from the node.js server back end
                     $http.get('/api/powerbiembedconfig').success(function(config) {
                         
@@ -181,7 +185,9 @@
                     });
                 }
 
-                embedReport();
+                $scope.getRecentMeasurements();
+                $scope.getDevices();
+                $scope.embedReport();
             });
         })();
     </script>
