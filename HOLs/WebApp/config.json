@@ -4,5 +4,9 @@
     "sqlServer": "msinsql.database.windows.net",
     "sqlDatabase" : "msindb",
     "sqlLogin" : "sqladmin",
-    "sqlPassword" : "Pa$$w0rd"
+    "sqlPassword" : "Pa$$w0rd",
+    "powerbiCollectionName": "msincollection",
+    "powerbiWorkspaceId": "649f253f-a3cd-459b-84ce-5e63eb70e9e1",
+    "powerbiReportId": "0707f7a5-bdf1-482f-8b4f-950a5d8de01e",
+    "powerbiAccessKey": "Ssh0wXU61rnqhx+z8YLFZVPDTCooxgRK/d7KwEpb3KaMGGtHLT0ta5nVhktlWsYBrjvsmRygbZNyuU5II1gHmA=="
 } 

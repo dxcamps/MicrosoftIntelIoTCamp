@@ -88,13 +88,7 @@
                 <div class="col-md-12" style="overflow-wrap:break-word">
                     <h2>Chart</h2>
 
-                    <div
-                        powerbi-type="report"
-                        powerbi-embed-url="https://embedded.powerbi.com/appTokenReportEmbed?reportId=0707f7a5-bdf1-482f-8b4f-950a5d8de01e"
-                        powerbi-options-filter-pane-enabled="false"
-                        powerbi-access-token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2ZXIiOiIwLjIuMCIsImF1ZCI6Imh0dHBzOi8vYW5hbHlzaXMud2luZG93cy5uZXQvcG93ZXJiaS9hcGkiLCJpc3MiOiJQb3dlciBCSSBOb2RlIFNESyIsIndjbiI6Im1zaW5jb2xsZWN0aW9uIiwid2lkIjoiNjQ5ZjI1M2YtYTNjZC00NTliLTg0Y2UtNWU2M2ViNzBlOWUxIiwicmlkIjoiMDcwN2Y3YTUtYmRmMS00ODJmLThiNGYtOTUwYTVkOGRlMDFlIiwibmJmIjoxNDc1OTU1NzMyLCJleHAiOjE0NzU5NTkzMzJ9.i5EzSIts7J07dww_z14HYBoxR8oZcB0SIjayI2cEvp0"
-                        style="height:380px;"
-                    ></div>
+                    <div id="powerbiReport" powerbi-type="report" style="height:380px;"></div>
 
                 </div>
 
@@ -170,11 +164,26 @@
                         }); 
                     } 
                 });
+
+                function embedReport() {
+                    //Get just the very latest measurements from the node.js server back end
+                    $http.get('/api/powerbiembedconfig').success(function(config) {
+                        
+                        if(config) {
+                            var powerbiReport = angular.element( document.querySelector( '#powerbiReport' ) )[0];
+                            // var embedConfig = {
+                            //     type: 'report',
+                            //     accessToken: powerbiEmbedToken,
+                            //     id: powerbiReportId,
+                            //     embedUrl: 'https://embedded.powerbi.com/appTokenReportEmbed'
+                            // };
+                            powerbi.embed(powerbiReport,config);
+                        } 
+                    });
+                }
+
+                embedReport();
             });
-
-            //Embed the report in the reportContainer div.  
-            powerbi.enableAutoEmbed();
-
         })();
     </script>
 </body>

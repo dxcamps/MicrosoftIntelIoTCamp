@@ -1,22 +1,18 @@
 'use strict';
 
-// General express related requires...
-var express = require('express');
-var bodyParser = require('body-parser');
+// ============== Use nconf to read config.json ===============
+
+// nconf require
 var nconf = require('nconf');
+
+// Read in the settings specified in the config.json file
+nconf.argv().env().file('./config.json');
+
+// ==================== Azure IoT HuB Prep ====================
 
 // Azure Iot Hub related requires
 var ServiceClient = require('azure-iothub').Client;
 var Message = require('azure-iot-common').Message;
-
-// tedious (aka TDS => "Tabular Data Stream") 
-// SQL Server client related requires
-var ConnectionPool = require('tedious-connection-pool');
-var Request = require('tedious').Request;  
-var TYPES = require('tedious').TYPES;
-
-// Read in the settings specified in the config.json file
-nconf.argv().env().file('./config.json');
 
 // Azure iot hub configuraiton values
 // the iotHubConnectionString value should be the iot hubs 
@@ -24,6 +20,17 @@ nconf.argv().env().file('./config.json');
 // the connection string for any other policy that has "send" 
 // permissions on the iot hub.  
 var iotHubConnString = nconf.get('iotHubConnString');
+
+// Setup the iot hub connection 
+var iotHubClient = ServiceClient.fromConnectionString(iotHubConnString);
+
+// ==================== SQL Server Client Prep ====================
+
+// tedious (aka TDS => "Tabular Data Stream") 
+// SQL Server client related requires
+var ConnectionPool = require('tedious-connection-pool');
+var Request = require('tedious').Request;  
+var TYPES = require('tedious').TYPES;
 
 // SQL Server connection configuration values
 var sqlServer = nconf.get('sqlServer');
@@ -57,8 +64,61 @@ sqlPool.on('error',function(err){
         return;
 });
 
-// Setup the iot hub connection 
-var iotHubClient = ServiceClient.fromConnectionString(iotHubConnString);
+
+function runQuery(res, query) {
+    sqlPool.acquire(function(err,poolConnection){
+        if(err){
+            console.log("An error occurred acquiring a pool connection:\n " + err);
+            res.json({ "error": err});
+            return;
+        }
+
+        var sqlRequest = new Request(query, 
+            function(err) {  
+                if (err) {
+                    console.log('An error occurred when executing the sql request:\n' + err);
+                    res.json({ "error": err});
+                }
+            });  
+        var result = "";  
+        sqlRequest.on('doneInProc', function(rowCount, more, rows) {
+            res.json(rows);  
+            console.log('doneInProc: ' + rowCount + ' rows returned');
+            console.log(rows.length);  
+            rows.forEach(function(row){
+            row.forEach(function(column) {  
+                if (column.value === null) {  
+                console.log('NULL');  
+                } else {  
+                result+= column.value + " ";  
+                }  
+            });  
+            console.log(result);  
+            result ="";  
+            });
+            poolConnection.release();
+        });  
+
+        poolConnection.execSql(sqlRequest);  
+    });
+}
+
+// ==================== Power BI API Prep ====================
+
+// power bi requires
+var powerbi = require('powerbi-api');
+
+// Read the power bi configuration values
+var powerbiCollectionName = nconf.get('powerbiCollectionName');
+var powerbiWorkspaceId = nconf.get('powerbiWorkspaceId');
+var powerbiReportId = nconf.get('powerbiReportId');
+var powerbiAccessKey = nconf.get('powerbiAccessKey');
+
+// =================== Express Web App Prep ===================
+
+// General express related requires...
+var express = require('express');
+var bodyParser = require('body-parser');
 
 // website setup
 var app = express();
@@ -82,11 +142,6 @@ app.get('/api/recent', function(req, res) {
     var query="select deviceid, [timestamp], temperature from dbo.RecentMeasurements;";
     runQuery(res, query);
 });
-
-var completedCallback = function(err, res) {
-    if (err) { console.log(err); }
-    else { console.log(res); }
-};
 
 app.post('/api/command', function(req, res) {
 
@@ -128,43 +183,41 @@ app.post('/api/command', function(req, res) {
     res.end();
 });
 
-app.get('/api/powerbiembedtoken',function(req,res){
-    var hmm="";
-});
-
-// Used to get a Power BI embed token that doesn't expire
-// Well, it does expire, but not until January 1, 2100.  
-// I don't think this will matter then! :-)
-app.get('/api/powerbiembedtoken/:collection/:workspace/:report',
+app.get('/api/powerbiembedconfig',
     function(req,res){
         //FYI, http://calebb.net and http://jwt.io have token decoders you can use to inspect the generated token.
-        var powerbi = require('powerbi-api');
-        
 
-
-        // Set the expiration for the token to January 1st, 2100.  
-        //var expiration =  new Date(2100, 1, 1, 0, 0, 0, 0);
-
-        // Set the expiration to an hour from now:
+        // Set the expiration to 24 hours from now:
+        var username = null;  //Not creating a user specific token
+        var roles = null;     //Not creating a role specific token
         var expiration =  new Date();
-        expiration.setHours(expiration.getHours() + 1);
-        
-        //
-        // var collection = req.query.collection;
-        // var workspace = req.query.workspace;
-        // var report = req.query.report;
-        var collection = req.params.collection;
-        var workspace = req.params.workspace;
-        var report = req.params.report;
-        var username = null;
-        var roles = null;
-        var accessKey = req.query.key;
-        var token = powerbi.PowerBIToken.createReportEmbedToken(collection, workspace, report, username, roles, expiration);
-        var jwt = token.generate(accessKey);
-        var result = {
-            token: jwt
+        expiration.setHours(expiration.getHours() + 24);
+
+        // Get the other parameters from the variables we initialized
+        // previously with values from the config.json file.
+        // Then generate a valid Power BI Report Embed token with the values.  
+        var token = powerbi.PowerBIToken.createReportEmbedToken(
+            powerbiCollectionName, 
+            powerbiWorkspaceId, 
+            powerbiReportId, 
+            username, 
+            roles, 
+            expiration);
+        // And sign it with the provided Power Bi Access key
+        // Again, this value comes from the config.json file 
+        var jwt = token.generate(powerbiAccessKey);
+
+        // Create the required embed configuration for the 
+        // web client front end to use
+        var embedConfig = {
+            type: 'report',
+            accessToken: jwt,
+            id: powerbiReportId,
+            embedUrl: 'https://embedded.powerbi.com/appTokenReportEmbed'
         };
-        res.json(result);
+
+        // And pass that config back to the user as the response.
+        res.json(embedConfig);
     }
 );
 
@@ -189,40 +242,10 @@ function normalizePort(val) {
   return false;
 }
 
-function runQuery(res, query) {
-    sqlPool.acquire(function(err,poolConnection){
-        if(err){
-            console.log("An error occurred acquiring a pool connection:\n " + err);
-            res.json({ "error": err});
-            return;
-        }
 
-        var sqlRequest = new Request(query, 
-            function(err) {  
-                if (err) {
-                    console.log('An error occurred when executing the sql request:\n' + err);
-                    res.json({ "error": err});
-                }
-            });  
-        var result = "";  
-        sqlRequest.on('doneInProc', function(rowCount, more, rows) {
-            res.json(rows);  
-            console.log('doneInProc: ' + rowCount + ' rows returned');
-            console.log(rows.length);  
-            rows.forEach(function(row){
-            row.forEach(function(column) {  
-                if (column.value === null) {  
-                console.log('NULL');  
-                } else {  
-                result+= column.value + " ";  
-                }  
-            });  
-            console.log(result);  
-            result ="";  
-            });
-            poolConnection.release();
-        });  
+// var completedCallback = function(err, res) {
+//     if (err) { console.log(err); }
+//     else { console.log(res); }
+// };
 
-        poolConnection.execSql(sqlRequest);  
-    });
-}
+    
