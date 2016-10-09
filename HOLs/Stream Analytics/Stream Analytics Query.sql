@@ -3,16 +3,16 @@ SELECT
     [timestamp] as [timestamp],
     temperature
 INTO
-    msindb
+    sqldb
 FROM
-    msiniothub
+    iothub
 
 SELECT
     deviceID,
     [timestamp] as [timestamp],
     temperature
 INTO
-    msinevents
+    alerts
 FROM
-    msiniothub
+    iothub
 WHERE temperature > 40  

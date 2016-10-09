@@ -378,7 +378,25 @@ Choose a ***`<name>`*** prefix that is unique to you.  It is recommended that yo
 
 For the purposes of this lab, I'll use the "**mic16**" prefix, short for "**Microsoft Intel Camp 2016**".  
 
-**DO NOT USE THE "mic" PREFIX FOR YOUR OWN RESOURCES**.  
+**DO NOT USE THE _"mic16"_ PREFIX FOR YOUR OWN RESOURCES**.  
+
+| Service | Name | Description | 
+| ------- | ---- | ----------- |
+| The Device | Intel NUC, Arduino 101 & Grove Sensors  | The Intel NUC is our "Device".  It get's sensor values from the Arduino 101 and Grove sensors that are attached.  We use an easy graphical development environment called "Node-RED" on the NUC to help the NUC send messages with sensor data to the cloud, as well as to receive messags from the cloud and act on them.  |  
+|  IoT Hub | ***&lt;name&gt;iot*** | Provides a way for devices (like the Intel NUC with Arduino 101 in our lab) to send and receive messages in the cloud.  Backend services can read those messages sent by our devices, act on them, and send messages back to the device as needed.
+|  Stream Analytics Job | ***&lt;name&gt;job*** | The Azure Stream Analytics Job provides a way to watch messages coming into the Azure IoT Hub from our devices and act on them.  In our case it will forward all messages off to a SQL Database so we can report on them, but it will also watch the temperature sensor values in those messages, and forward them to an Event Hub if they exceed a pre-defined threshold temperature. |
+| SQL Server |  ***&lt;name&gt;sql*** | The Azure SQL Server instance that will host our Azure SQL Database. Other than creating it to host our database.  This is also where the administrative login for our SQL Server is defined.  It is recommended that you use these login credentials:<br/><br/>login:***sqladmin***<br/>password: ***P@ssw0rd***  |
+| SQL Database |  ***&lt;name&gt;db*** | This will store the **dbo.Measurements** table.  The Stream Analytics Job above will forward all temperature messages sent to the IoT Hub into this table so we can report on the temperature data. |
+| Event Hub Namespace |  ***&lt;name&gt;ns*** | This is the Service Bus Namespace that hosts our Event Hub.  We really won't do much with this directly, we just need one to host our Event Hub for us.   |
+| Event Hub | ***&lt;name&gt;alerts*** | The Event Hub is an internal messaging queue that we will use to pass along temperature alert messages.  The Stream Analytics Job will watch for temperature messages with sensor values that exceed a predefined temperature threshold and forward them off to this event hub.  We'll then create an Azure Function to read the messages out of this event hub and send alerts back to the device.  |
+| Storage Account |  ***&lt;name&gt;storage*** | A few of the services require a storage account for their own purposes.  This account exists purely as a resource for those services.  We won't use it directly for our own purposes. |
+| App Service Plan |  ***&lt;name&gt;plan*** | The App Service plan provides the execution environment (servers) for our Web App and Function App.  We can scale our App Service Plan up or down as needed to get give those services the performance they require.  |
+| Web App |  ***&lt;name&gt;web*** | The Azure Web App is where we will deploy our Node.js application that provides the web site for our solution.  We can then go to this site to view temperatures from our devices |
+| Function App |  ***&lt;name&gt;functions*** | The Azure Function App contains the ***TempAlert*** function. |
+| Function |  ***TempAlert*** | The ***TempAlert*** function will be triggered automatically whenever a new message is sent to our ***&lt;name&gt;alerts*** event hub. It will then read those messages, retrieve the id of the device it was sent from, and then send a message through the IoT Hub back to that device to let it know that it's temperature has exceeded acceptible levels.  The device can then sound an alarm by turning on it's buzzer. |
+| Power BI Embedded Workspace Collection |  ***&lt;name&gt;collection*** | Power BI Embedded Collections are what you configure in Azure to host one or more Power BI Embedded Workspaces. | 
+| Power BI Embedded Workspace |  ***system generated guid*** | The Power BI Embedded Workspace is where we can upload one or more reports. |
+| Power BI Embedded Report |  ***TemperatureChart*** | The ***TemperatureChart*** report is a pre-built report that displays device and temperature data from the ***&lt;name&gt;db*** Azure SQL Database.  It is provided as the ***TemperatureChart.pbix*** Power BI Desktop file in the lab files.  We'll upload this report into our Power BI Embedded Workspace and then embed it in the UI of our Web Application.  Users viewing the web application in their browser can then see that report. |
 
 ___
 
