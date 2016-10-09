@@ -56,12 +56,12 @@
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-12">
-                    <h2>Current Temperature</h2> 
-                    <div ng-show="lastMeasurements.length === 0">
-                        No measurements found for any device
+                    <h2>Devices</h2> 
+                    <div ng-show="devices.length === 0">
+                        No devices retrieved
                     </div>
-                    <div ng-show="lastMeasurements.length > 0">
-                        <h4>Last readings measurements for {{ lastMeasurements.length }} devices </h4>
+                    <div ng-show="devices.length > 0">
+                        <h4>Showing {{ devices.length }} devices and their latest values </h4>
                         <table>
                             <thead>
                                 <tr>
@@ -72,7 +72,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="m in lastMeasurements">
+                                <tr ng-repeat="m in devices">
                                     <td style="text-align:center"><button type="button" class="btn btn-xs btn-success" style="padding: 0px 2px;" ng-click="testBuzzer(m.deviceid)"><span class="glyphicon glyphicon-flash"></span></button></td>
                                     <td style="text-align:left">{{ m.deviceid }}</td>
                                     <td style="text-align:left">{{ m.deviceid }}</td>
@@ -131,7 +131,7 @@
             angular.module('app', []).controller('indexController', function($scope, $http) {
             
                 $scope.recentMeasurements = [];
-                $scope.lastMeasurements = [];
+                $scope.devices = [];
             
                 $scope.testBuzzer = function(deviceid) {
                     $http.post('/api/testBuzzer/', {deviceid: deviceid});    
@@ -152,11 +152,11 @@
                 });
 
                 //Get just the very latest measurements from the node.js server back end
-                $http.get('/api/last').success(function(result) {
+                $http.get('/api/devices').success(function(result) {
                     
                     if(result.length > 0) {
                         angular.forEach(result, function(x) {
-                            $scope.lastMeasurements.push({
+                            $scope.devices.push({
                                 deviceid: x[0].value,
                                 timestamp:  x[1].value,
                                 temperature: x[2].value

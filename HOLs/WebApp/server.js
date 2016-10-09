@@ -131,9 +131,9 @@ app.use(bodyParser.json());
 
 // Used to retrieve just the last measurement for each device 
 // in the dbo.Measurements table in the database.
-app.get('/api/last', function(req, res) {
-    console.log('Retrieving last measurments from sql');
-    var query="select deviceid, [timestamp], temperature from dbo.LastMeasurements;";
+app.get('/api/devices', function(req, res) {
+    console.log('Retrieving devices with their last measurement');
+    var query="select deviceid, [timestamp], temperature from dbo.Devices;";
     runQuery(res, query);
 });
 

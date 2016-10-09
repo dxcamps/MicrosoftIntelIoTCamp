@@ -38,13 +38,13 @@ go
 -- Query the view to make sure it works
 select * from dbo.RecentMeasurements;
 go
--- Drop the dbo.LastMeasurements view if it exists 
-if exists(select object_id from sys.objects where type='V' and name = 'LastMeasurements')
-  drop view dbo.LastMeasurements;
+-- Drop the dbo.Devices view if it exists 
+if exists(select object_id from sys.objects where type='V' and name = 'Devices')
+  drop view dbo.Devices;
 go
--- Create the dbo.LastMeasurements view
+-- Create the dbo.Devices view
 -- this return just the last measurement for each device
-create view dbo.LastMeasurements as
+create view dbo.Devices as
 select
   latest.deviceid,
   latest.[timestamp],
@@ -55,7 +55,7 @@ on latest.deviceid = allrows.deviceid and latest.measurementid < allrows.measure
 where allrows.measurementid is null;
 go
 -- Query the view to make sure it works
-select * from dbo.LastMeasurements;
+select * from dbo.Devices;
 go
 
 select top 20 * from dbo.Measurement order by [timestamp] desc;
