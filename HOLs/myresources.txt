@@ -1,0 +1,41 @@
+Use this file to keep track of the resources, ids, connection strings, access tokens, etc. for the various resources you are create throughout this lab.
+
+========================================
+Naming Convention and Region 
+========================================
+
+Naming convention prefix:                   
+<name> 
+
+Region (data center):                       
+<paste your region string here>
+
+Resource Group Name:                        
+<name>group
+
+========================================
+Azure IoT Hub Resources 
+========================================
+
+IoT Hub Name:
+<name>iot
+
+IoT Hub "iothubowner" SAS Policy Primary Connection String:
+<paste your iothubowner connection string here>
+
+IoT Hub "services" SAS Policy Primary Connection String:
+<paste your service connection string here>
+
+IoT Hub Device Name:
+<name>IntelIoTGateway
+
+IoT Hub Device Connection String:
+<paste your device's connection string here>
+
+
+
+
+
+
+ 
+

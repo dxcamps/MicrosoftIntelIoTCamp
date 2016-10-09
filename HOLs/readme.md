@@ -17,7 +17,9 @@ In order to successfully complete this lab you will ned:
 - Intel Grove Commercial IoT Developer Kit [link](https://www.seeedstudio.com/Grove-IoT-Commercial-Developer-Kit-p-2665.html)
 - Arduino 101 [link](https://www.arduino.cc/en/Main/ArduinoBoard101)
 - A computer.  Windows, Mac OSx or Linux
-- An active Microsoft Azure Subscription [free trial](https://azure.microsoft.com/en-us/free/)
+- An active Microsoft Azure Subscription.  If you do not have a current subscription, you can create one using the [free trial](https://azure.microsoft.com/en-us/free/)
+- Node.js 4.x or later.  You can install Node.js from **[https://nodejs.org/en/](https://nodejs.org/en/)**
+- Visual Studio Code. Visual Studio Code is a free, open source, cross platform development environment.  You can install it from **[http://code.visualstudio.com](http://code.visualstudio.com)**
 
 Tasks
 ---
@@ -28,7 +30,8 @@ Tasks
 1. [Blinking an LED with Node-RED](#Blinky)
 1. [Reading the Temperature Sensor](#ReadingTemperatures)
 1. [Planning your Azure Resources](#PlanningAzure)
-1. [Creating an Azure IoT Hub and Device](#CreateIoTHubAndDevice)
+1. [Creating an Azure IoT Hub](#CreateIoTHub)
+1. [Creating an Azure IoT Hub Device Identity](#CreateIoTHubDeviceIdentity)
 1. [Publishing Temperature Sensor Data to the Azure IoT Hub](#PublishToIoTHub)
 1. [Processing Temperature Data with Stream Analytics](#ProcessingWithStreamAnalytics)
 1. [Displaying Temperature Data with Azure Web Apps](#AzureWebApp)
@@ -362,6 +365,7 @@ That means that when need to select a region that supports all of the services w
 - Azure Function Apps
 - Azure PowerBI Embedded 
 
+<a name="locations"></a>
 At the time this is being written (October 2016), the following regions have all of the required services. **THIS LIST WILL GROW OVER TIME**. You are welcome to review the [Products available by region](https://azure.microsoft.com/en-us/regions/services/) to see if any additional regions provide the resources needed.  Otherwise, simply pick the region from the list below that is closest to you, and ensure that you choose that region for each resource you deploy.   
 
 - West US 
@@ -380,10 +384,14 @@ For the purposes of this lab, I'll use the "**mic16**" prefix, short for "**Micr
 
 **DO NOT USE THE _"mic16"_ PREFIX FOR YOUR OWN RESOURCES**.  
 
+### Service Descriptions ###
+
 | Service | Name | Description | 
 | ------- | ---- | ----------- |
-| The Device | Intel NUC, Arduino 101 & Grove Sensors  | The Intel NUC is our "Device".  It get's sensor values from the Arduino 101 and Grove sensors that are attached.  We use an easy graphical development environment called "Node-RED" on the NUC to help the NUC send messages with sensor data to the cloud, as well as to receive messags from the cloud and act on them.  |  
-|  IoT Hub | ***&lt;name&gt;iot*** | Provides a way for devices (like the Intel NUC with Arduino 101 in our lab) to send and receive messages in the cloud.  Backend services can read those messages sent by our devices, act on them, and send messages back to the device as needed.
+| The Device | Intel NUC, Arduino 101 & Grove Sensors  | The Intel NUC is our "Device".  It get's sensor values from the Arduino 101 and Grove sensors that are attached.  We use an easy graphical development environment called "Node-RED" on the NUC to help the NUC send messages with sensor data to the cloud, as well as to receive messags from the cloud and act on them.  |
+| Resource Group | ***&lt;name&gt;group*** | Azure Resource Groups provide a convenient way to organize all of the Azure resources for a solution into a single container.  The Resource Group can then be a unit of deployment, a securable collection, and an easy way to delete all of the resources in the group in a single operation.  We want to make sure that all of the resources we create in this lab are placed in the ***&lt;name&gt;group*** resource group.|   
+|  IoT Hub | ***&lt;name&gt;iot*** | Provides a way for devices (like the Intel NUC with Arduino 101 in our lab) to send and receive messages in the cloud.  Backend services can read those messages sent by our devices, act on them, and send messages back to the device as needed. |
+| IoT Hub Device Identity | ***&lt;name&gt;IntelIoTGateway*** | This is the id we will use for our device's identity in the Azure IoT Hub Device Identiy Registry.   |
 |  Stream Analytics Job | ***&lt;name&gt;job*** | The Azure Stream Analytics Job provides a way to watch messages coming into the Azure IoT Hub from our devices and act on them.  In our case it will forward all messages off to a SQL Database so we can report on them, but it will also watch the temperature sensor values in those messages, and forward them to an Event Hub if they exceed a pre-defined threshold temperature. |
 | SQL Server |  ***&lt;name&gt;sql*** | The Azure SQL Server instance that will host our Azure SQL Database. Other than creating it to host our database.  This is also where the administrative login for our SQL Server is defined.  It is recommended that you use these login credentials:<br/><br/>login:***sqladmin***<br/>password: ***P@ssw0rd***  |
 | SQL Database |  ***&lt;name&gt;db*** | This will store the **dbo.Measurements** table.  The Stream Analytics Job above will forward all temperature messages sent to the IoT Hub into this table so we can report on the temperature data. |
@@ -398,30 +406,219 @@ For the purposes of this lab, I'll use the "**mic16**" prefix, short for "**Micr
 | Power BI Embedded Workspace |  ***system generated guid*** | The Power BI Embedded Workspace is where we can upload one or more reports. |
 | Power BI Embedded Report |  ***TemperatureChart*** | The ***TemperatureChart*** report is a pre-built report that displays device and temperature data from the ***&lt;name&gt;db*** Azure SQL Database.  It is provided as the ***TemperatureChart.pbix*** Power BI Desktop file in the lab files.  We'll upload this report into our Power BI Embedded Workspace and then embed it in the UI of our Web Application.  Users viewing the web application in their browser can then see that report. |
 
+### Documenting Your Choices ###
+
+In the same folder as this readme file where you extract the lab files for this lab there is a "**[myresources.txt](myresources.txt)**" text file.  You can open that file in the text editor of your choice, and record the choices you make here for your ***&lt;name&gt;*** name prefix and for the region you wish to use.
+
+![Documenting Your Choices](images/06010-DocumentingYourChoices.png)
+
 ___
 
-<a name="CreateIoTHubAndDevice"></a>
-Creating an Azure IoT Hub and Device
+<a name="CreateIoTHub"></a>
+Creating an Azure IoT Hub
 ---
 
-1. Do this
+In this task, we'll create the ***&lt;name&gt;*** iot Azure IoT Hub and since it's our first Azure resource, we'll create the ***&lt;name&gt;group*** resource group to put it in.  Make sure that you understand the information in the [Planning your Azure Resources](#PlanningAzure) section before continuing.
 
-    ````javascript
-     var sample = 'with some code';
-     console.log(sample);
-    ````
+1. Open the [Azure Portal](https://portal.azure.com) ([https://portal.azure.com](https://portal.azure.com)) and login to your subscription.  If you don't have a current Azure Subscription you can create a [free trial](https://azure.microsoft.com/en-us/free/).
 
-1. Show some screenshot:
+1. Click the "**+ New**" button, then select "**Internet of Things**", and select "**Iot Hub**"
 
-    ![EULA](images/01120-Eula.png)
+    ![New IoT Hub](images/07010-NewIoTHub.png)
 
-1. Do something else
+1. Complete the properties for the new IoT Hub as shown below, the click the "**Create**" button to provision the new IoT Hub in the new Resource Group:
+    - Name: ***&lt;name&gt;iot*** - Use the naming prefix you selected in the [Planning your Azure Resources](#PlanningAzure) section.
+    - Pricing and scale tier: **S1 - Standard**  (There is a free tier, but we will be removing these resources at the end of the lab, and the S1 pricing teir should not impact your subscription significantly)
+    - IoT Hub units: **1**
+    - Device-to-cloud partitions: **4**
+    - Subscription: **choose the subscription you wish to use if you have multiple available**
+    - Resource Group: **Create new** resource group using the ***&lt;name&gt;group*** naming convention
+    - Enable Device Management - PREVIEW: **Leave Unchecked**
+    - Location: **Choose the location [listed above](#locations) that is closest to you, and then make sure to use that location for all other resources in the lab**
+    - Pin to dashboard: **Checked** (this will place a tile for the IoT Hub on your portal dashboard.)  
 
-    > **Note!**: This is a sample note!
+    ![New IoT Hub Properites](images/07020-NewIoTHubProperites.png)
 
-    - With one
-    - or two
-    - substeps
+1. The IoT Hub could take five minutes or longer to deploy.  While it is deploying, a tile will be shown on your portal dashboard that looks like this:
+
+    ![IoT Hub Deploying Tile](images/07030-IoTHubDeployingTile.png)
+
+1. Once the deployment is complete, the "**blade**" for your IoT Hub should open in the portal.
+
+    ![IoT Hub Blad](images/07040-IoTHubProperties.png)
+
+1. In order to connect to your IoT Hub from client applications, you need to know the name and key for a "Shared Access Policy" (SAS Policy) that provides your client application the necessary privileges.  Your IoT Hub comes pre-provisioned with a number of  SAS policies that you can use. Or you can create additonal policies as needed.  In this lab we will use two of the default SAS policies.
+
+    - "**iothubowner**" - This policy allows applications that connect with it full access to the IoT Hub.  They can manage devices registered with the hub, as well as send and receive messages.  We will use this SAS policy when we want to manage our IoT Hub.  
+    - "**service**" - This policy is intended for back-end services or client applications that need to interact with devices via the IoT Hub.  These applications need to be able to receive messages coming into the hub from devices in the field, as well as send messages back to those devices.  This policy is granted the "service connect" permission which allows it to do just that.   
+
+1. In the portal, with your IoT Hub blade open, click on the "Shared access policies" along the left edge to see the hub's SAS policies:
+
+    ![SAS Policies Link](images/07050-SASPoliciesLink.png)
+
+1. Click on the "**iothubowner**" policy name to see it's details, then click on the ![Copy Icon](images/00000-CopyIcon.png) icon to the right of the "**Connect string - primary key**" to copy the connection string to your clipboard. 
+
+    ![iothubowner SAS Policy](images/07060-IoTHubOwnerPolicy.png)
+
+1. Then paste it into the "**[myresources.txt](myresources.txt)**" file so you can retrieve it easily later.  Go ahead and document your Azure IoT Hub name while you're there.  
+
+    ![Document iothubowner Connection String](images/07070-DocumentIoTHubOwnerConnectionString.png)
+
+1. Repeate the last to steps to copy and document the "**service**" SAS policy primary connection string:
+
+    > **Note**: Make sure to save the changes to the **[myresources.txt](myresources.txt)**" file each time.  
+
+    ![service SAS policy](images/07080-ServiceSASPolicy.png)
+
+    ![Document service SAS policy connection string](images/07090-DocumentServicePolicyConnectionString.png)
+
+___
+
+<a name="CreateIoTHubDeviceIdentity"></a>
+Creating an Azure IoT Hub Device Identity
+---
+
+Now that we have our Azure IoT Hub created, we want to create an entry in the hub's device identity registry.  As "device identity" in the IoT Hub's device identity registry is basically a unique id, and access key that can be used by the actual device in the field (The Intel NUC and with Arduino 101 in our case) to connect to the IoT Hub.  The connection string for the device entry in the registry will be used by the actual device to securely connect to the IoT Hub and send and receive messages as that device.  You can learn more about Azure IoT Hub devices in the "**[Manage device identities in IoT Hub](https://azure.microsoft.com/en-us/documentation/articles/iot-hub-devguide-identity-registry/)**" article online.  
+
+At the time this is being written, the Azure Portal does not allow you to provision device identities in the registry, although you can view existing ones.  In order to create our device identity, we will use a node.js command line interface for working with your Azure IoT Hubs called "**[iothub-explorer](https://www.npmjs.com/package/iothub-explorer)**"
+
+There is a graphical tool for Windows called "**Device Explorer**".  We won't document it's use here in this lab, but if you are on Windows and wish to try it can you can download it from here [https://github.com/Azure/azure-iot-sdks/releases/latest](https://github.com/Azure/azure-iot-sdks/releases/latest) (look for the first "**SetupDeviceExplorer.msi**" link) and learn more about it here: [How to use Device Explorer for IoT Hub devices](https://github.com/Azure/azure-iot-sdks/blob/master/tools/DeviceExplorer/doc/how_to_use_device_explorer.md)
+
+1. This task requires that you have Node.js 4.x or later installed.  If you don't have it installed already, you can install it from **[https://nodejs.org/en/](https://nodejs.org/en/)**.  Make sure that Node is added to the path so you can access it from anywhere on the command line.  
+
+1. Open a command prompt, or terminal window, and install the "iothub-explorer" npm package globally as follows:
+
+    > **Note**: **MAKE SURE TO USE THE -g OPTION TO INSTALL THE PACKAGE GLOBALLY**
+
+    ```bash
+    npm install -g iothub-explorer
+    ``` 
+
+1. You should see output similar to the following:
+
+    ```bash
+    C:\Users\iotde\AppData\Roaming\npm\iothub-explorer -> C:\Users\iotde\AppData\Roaming\npm\node_modules\iothub-explorer\iothub-explorer.js
+    iothub-explorer@1.0.14 C:\Users\iotde\AppData\Roaming\npm\node_modules\iothub-explorer
+    ├── uuid@2.0.3
+    ├── nopt@3.0.6 (abbrev@1.0.9)
+    ├── colors-tmpl@1.0.0 (colors@1.0.3)
+    ├── prettyjson@1.1.3 (minimist@1.2.0, colors@1.1.2)
+    ├── bluebird@3.4.6
+    ├── azure-iot-common@1.0.15 (crypto@0.0.3)
+    ├── azure-event-hubs@0.0.3 (amqp10@3.2.2)
+    ├── azure-iothub@1.0.17 (azure-iot-http-base@1.0.16, azure-iot-amqp-base@1.0.16)
+    └── azure-iot-device@1.0.15 (azure-iot-http-base@1.0.16, debug@2.2.0, azure-storage@1.3.1)
+    ```    
+
+1. Now that we have iothub-explorer installed, we can use it to interact with our Azure IoT Hub.  At your command window or terminal prompt, enter:
+
+    ```
+    iothub-explorer
+    ``` 
+    It will display it's usage details:
+
+    ```
+    Usage
+    iothub-explorer login <connection-string> [--duration=<num-seconds>]
+        Creates a session lasting <num-seconds>; commands during the session can omit <connection-string>
+        Default duration is 3600 (one hour).
+    iothub-explorer logout
+        Cancels any session started by 'login'
+    iothub-explorer [<connection-string>] list [--display="<property>,..."] [--connection-string]
+        Returns a list of (at most 1000) devices
+        Can optionally display only selected properties and/or connection strings.
+    iothub-explorer [<connection-string>] get <device-id> [--display="<property>,..."] [--connection-string]
+        Returns information about the given device
+        Can optionally display just the selected properties and/or the connection string.
+    iothub-explorer [<connection-string>] create <device-id|device-json> [--display="<property>,..."] [--connection-string]
+        Adds the given device to the IoT Hub and displays information about it
+        Can optionally display just the selected properties and/or the connection string.
+    iothub-explorer [<connection-string>] delete <device-id>
+        Deletes the given device from the IoT Hub.
+    iothub-explorer <connection-string> monitor-events <device-id>
+        Monitors and displays the events received from a specific device.
+    iothub-explorer [<connection-string>] send <device-id> <msg> [--ack="none|positive|negative|full"]
+        Sends a cloud-to-device message to the given device, optionally with acknowledgment of receipt
+    iothub-explorer [<connection-string>] receive [--messages=n]
+        Receives feedback about the delivery of cloud-to-device messages; optionally exits after receiving n messages.
+    iothub-explorer [<connection-string>] sas-token <device-id> [--duration=<num-seconds>]
+        Generates a SAS Token for the given device with an expiry time <num-seconds> from now
+        Default duration is 3600 (one hour).
+    iothub-explorer help
+        Displays this help message.
+
+    Use the --display option to show only the given properties from the azure-iothub.Device object.
+    Use the --connection-string option to generate a connection string for the device(s).
+    Add the --raw option to any command (except help) to minimize output and format results as JSON.    
+    ```
+1. Note the `iothub-explorer login` option.  This allows you to etner your IoT Hub connection string once, and not have to re-supply the connection string for every command during the "session".  The "session" lasts for one hour by default. To login, we'll need the "iothubowner" SAS policy connection string we copied int the "**[myresources.txt](myresources.txt)**" file previously.  Retrieve that string from the file, and use it to login to your Azure IoT Hub with iothub-explorer as follows:
+
+    ```bash
+    iothub-explorer login "<<past your iothub owner connection string here>>"
+    ```
+    For example:
+
+    ```bash
+    iothub-explorer login "HostName=mic16iot.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=MuIeI2Bpp4lm6knbNiXX4J1V+UivTov/ebfIfykWD+g="
+    ```
+
+    You should see details about your login session returned.  Something similar to this:
+
+    ```
+    Session started, expires Sun Oct 09 2016 16:52:57 GMT-0700 (Pacific Daylight Time)
+    ```
+
+1. Next, we need to determine the id we will use for the device identity.  We will use the same naming convention for the other resources to create a device identity with the following id:
+
+    ***&lt;name&gt;IntelIoTGateway***
+
+    > **Note**: In a real-world production scenario this id would more likely be a guid, or some kind of value that supported uniqueness across a large number of devices.  But to help the id be understandable in the lab, we are using a more human readable string for the id.
+
+1. Create the new device identity using the "**iothub-explorer create**" command.  The "**--connection-string**" option at the end asks to utility to return the primary connection string for the device to use to connect to the Azure IoT Hub:
+
+    ```bash
+    iothub-explorer create <name>IntelIoTGateway --connection-string
+    ```
+    For example:
+
+    ```bash
+    iothub-explorer create mic16IntelIoTGateway --connection-string
+    ```
+    With this result:
+
+    ```
+    Created device mic16IntelIoTGateway
+
+    -
+    deviceId:                   mic16IntelIoTGateway
+    generationId:               636116504595463314
+    etag:                       MA==
+    connectionState:            Disconnected
+    status:                     enabled
+    statusReason:               null
+    connectionStateUpdatedTime: 0001-01-01T00:00:00
+    statusUpdatedTime:          0001-01-01T00:00:00
+    lastActivityTime:           0001-01-01T00:00:00
+    cloudToDeviceMessageCount:  0
+    authentication:
+        SymmetricKey:
+        secondaryKey: qb3RG2SjfQ+tz8jZOK/xBPqP9F0K+riha0i5KJNcWdg=
+        primaryKey:   q9D0X2vXNsQ5LET3TlXx+FpHZ1SP6pQ9+69+hudCIZk=
+        x509Thumbprint:
+        primaryThumbprint:   null
+        secondaryThumbprint: null
+    -
+    connectionString: HostName=mic16iot.azure-devices.net;DeviceId=mic16IntelIoTGateway;SharedAccessKey=q9D0X2vXNsQ5LET3TlXx+FpHZ1SP6pQ9+69+hudCIZk=    
+    ```
+1. Copy the connection string for the new device from the command output, and past it along with your device id into the "**[myresources.txt](myresources.txt)**" file:
+
+    ![Document Device Identity](images/08030-DocumentDeviceIdentity.png)
+
+1. If needed, you can use the iothub-explorer to list the existing device identities along with their connection strings as follows:
+
+    ```bash
+    iothub-explorer list --connection-string
+    ```
 
 ___
 
