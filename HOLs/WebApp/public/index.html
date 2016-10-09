@@ -65,7 +65,7 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th style="text-align:center"></th>
+                                    <th style="text-align:center">&nbsp;</th>
                                     <th style="text-align:left">Device</th>
                                     <th style="text-align:right">Time</th>
                                     <th style="text-align:right">Temperature</th>
@@ -74,7 +74,6 @@
                             <tbody>
                                 <tr ng-repeat="m in devices">
                                     <td style="text-align:center"><button type="button" class="btn btn-xs btn-success" style="padding: 0px 2px;" ng-click="testBuzzer(m.deviceid)"><span class="glyphicon glyphicon-flash"></span></button></td>
-                                    <td style="text-align:left">{{ m.deviceid }}</td>
                                     <td style="text-align:left">{{ m.deviceid }}</td>
                                     <td style="text-align:right">{{ m.timestamp | date : 'short' }}</td>
                                     <td style="text-align:right">{{ m.temperature | number }}&deg;C</td>
