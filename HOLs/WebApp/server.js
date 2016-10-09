@@ -143,42 +143,35 @@ app.get('/api/recent', function(req, res) {
     runQuery(res, query);
 });
 
-app.post('/api/command', function(req, res) {
+app.post('/api/testBuzzer', function(req, res) {
 
-    var command = req.body.command;
+    var deviceid = req.body.deviceid;
 
-    console.log('command received: ' + command);
+    console.log('Sending buzzer test alert to ' + deviceid);
 
-    if(command=='TestBuzzer'){
-
-        var deviceid = req.body.deviceid;
-
-        console.log('Sending buzzer test alert to ' + deviceid);
-
-        iotHubClient.open(function(err) {
-            if (err) {
-                console.error('Could not connect: ' + err.message);
-            } else { 
-                var data = JSON.stringify({ "type": "temp","message": "Buzzer Test     " });
-                var message = new Message (data);
-                console.log('Sending message: ' + data);
-                iotHubClient.send(deviceid, message, printResultFor('send'));
-                console.log('Async message sent');
-            }
-        });
-
-        // Helper function to print results in the console
-        function printResultFor(op) {
-            return function printResult(err, res) {
-                if (err) {
-                    console.log(op + ' error: ' + err.toString());
-                } else {
-                    console.log(op + ' status: ' + res.constructor.name);
-                }
-            };
+    iotHubClient.open(function(err) {
+        if (err) {
+            console.error('Could not connect: ' + err.message);
+        } else { 
+            var data = JSON.stringify({ "type": "temp","message": "Buzzer Test     " });
+            var message = new Message (data);
+            console.log('Sending message: ' + data);
+            iotHubClient.send(deviceid, message, printResultFor('send'));
+            console.log('Async message sent');
         }
+    });
 
-    };
+    // Helper function to print results in the console
+    function printResultFor(op) {
+        return function printResult(err, res) {
+            if (err) {
+                console.log(op + ' error: ' + err.toString());
+            } else {
+                console.log(op + ' status: ' + res.constructor.name);
+            }
+        };
+    }
+
 
     res.end();
 });
@@ -243,9 +236,5 @@ function normalizePort(val) {
 }
 
 
-// var completedCallback = function(err, res) {
-//     if (err) { console.log(err); }
-//     else { console.log(res); }
-// };
 
     

@@ -73,7 +73,7 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="m in lastMeasurements">
-                                    <td style="text-align:center"><button type="button" class="btn btn-xs btn-success" style="padding: 0px 2px;" ng-click="send('TestBuzzer',m.deviceid)"><span class="glyphicon glyphicon-flash"></span></button></td>
+                                    <td style="text-align:center"><button type="button" class="btn btn-xs btn-success" style="padding: 0px 2px;" ng-click="testBuzzer(m.deviceid)"><span class="glyphicon glyphicon-flash"></span></button></td>
                                     <td style="text-align:left">{{ m.deviceid }}</td>
                                     <td style="text-align:left">{{ m.deviceid }}</td>
                                     <td style="text-align:right">{{ m.timestamp | date : 'short' }}</td>
@@ -133,8 +133,8 @@
                 $scope.recentMeasurements = [];
                 $scope.lastMeasurements = [];
             
-                $scope.send = function(value,deviceid) {
-                    $http.post('/api/command/', {command: value, deviceid: deviceid});    
+                $scope.testBuzzer = function(deviceid) {
+                    $http.post('/api/testBuzzer/', {deviceid: deviceid});    
                 };
             
                 //Get the recent measurements from the node.js server back end
