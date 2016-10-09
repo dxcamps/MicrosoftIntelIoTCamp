@@ -472,6 +472,18 @@ In this task, we'll create the ***&lt;name&gt;*** iot Azure IoT Hub and since it
 
     ![Document service SAS policy connection string](images/07090-DocumentServicePolicyConnectionString.png)
 
+1. The last thing we need to do to configure our IoT Hub is to add a "**Consumer Group**" for the ***&lt;name&gt;job*** Stream Analytics Job to use as it reads messages from the IoT Hub.
+
+    > **Note**: Consumer groups enable multiple consuming applications to each have a separate view of the event stream, and to read the stream independently at their own pace and with their own offsets. In a stream processing architecture, each downstream application equates to a consumer group.  By creating a consumer group specifically for the Stream Analytics Job, it allows us to use other tools (like iothub-explorer) to monitor messages using the **$Default** consumer group, and not conflict with the Stream Analytics job. Basically each consumer group allows you to run a different application (or pool of consumers) on the hub and allow each application to receive their own copy of the messages. 
+
+    - Click on the "**Messaging**" link along the left, then at the bottom of the messaging blade, enter the following name into the empty box below the **$Default** consumer group:
+
+        `streamanalytics`
+
+    - Click the "**Save**" button at the top of the messaging blade to save the new consumer group.  
+
+    ![Create streamanalytics Consumer Group](images/07100-StreamAnalyticsConsumerGroup.png)
+
 ___
 
 <a name="CreateIoTHubDeviceIdentity"></a>

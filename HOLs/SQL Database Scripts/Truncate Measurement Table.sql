@@ -1,1 +1,1 @@
-truncate table dbo.Measurement;
+--truncate table dbo.Measurement;
