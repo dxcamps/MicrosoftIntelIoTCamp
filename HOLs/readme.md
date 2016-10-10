@@ -465,7 +465,7 @@ For the purposes of this lab, I'll use the "**mic16**" prefix, short for "**Micr
 
 ### Documenting Your Choices ###
 
-In the same folder as this readme file where you extract the lab files for this lab there is a "**[myresources.txt](myresources.txt)**" text file.  You can open that file in the text editor of your choice, and record the choices you make here for your ***&lt;name&gt;*** name prefix and for the region you wish to use.
+In the same folder as this readme file where you extract the lab files for this lab there is a "**[myresources.txt](./myresources.txt)**" text file.  You can open that file in the text editor of your choice, and record the choices you make here for your ***&lt;name&gt;*** name prefix and for the region you wish to use.
 
 ![Documenting Your Choices](images/06010-DocumentingYourChoices.png)
 
@@ -517,13 +517,13 @@ In this task, we'll create the ***&lt;name&gt;*** iot Azure IoT Hub and since it
 
     ![iothubowner SAS Policy](images/07060-IoTHubOwnerPolicy.png)
 
-1. Then paste it into the "**[myresources.txt](myresources.txt)**" file so you can retrieve it easily later.  Go ahead and document your Azure IoT Hub name while you're there.  
+1. Then paste it into the "**[myresources.txt](./myresources.txt)**" file so you can retrieve it easily later.  Go ahead and document your Azure IoT Hub name while you're there.  
 
     ![Document iothubowner Connection String](images/07070-DocumentIoTHubOwnerConnectionString.png)
 
 1. Repeate the last to steps to copy and document the "**service**" SAS policy primary connection string:
 
-    > **Note**: Make sure to save the changes to the **[myresources.txt](myresources.txt)**" file each time.  
+    > **Note**: Make sure to save the changes to the **[myresources.txt](./myresources.txt)**" file each time.  
 
     ![service SAS policy](images/07080-ServiceSASPolicy.png)
 
@@ -620,7 +620,7 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
     Use the --connection-string option to generate a connection string for the device(s).
     Add the --raw option to any command (except help) to minimize output and format results as JSON.    
     ```
-1. Note the `iothub-explorer login` option.  This allows you to etner your IoT Hub connection string once, and not have to re-supply the connection string for every command during the "session".  The "session" lasts for one hour by default. To login, we'll need the "iothubowner" SAS policy connection string we copied int the "**[myresources.txt](myresources.txt)**" file previously.  Retrieve that string from the file, and use it to login to your Azure IoT Hub with iothub-explorer as follows:
+1. Note the `iothub-explorer login` option.  This allows you to etner your IoT Hub connection string once, and not have to re-supply the connection string for every command during the "session".  The "session" lasts for one hour by default. To login, we'll need the "iothubowner" SAS policy connection string we copied int the "**[myresources.txt](./myresources.txt)**" file previously.  Retrieve that string from the file, and use it to login to your Azure IoT Hub with iothub-explorer as follows:
 
     ```bash
     iothub-explorer login "<<past your iothub owner connection string here>>"
@@ -679,7 +679,7 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
     -
     connectionString: HostName=mic16iot.azure-devices.net;DeviceId=mic16IntelIoTGateway;SharedAccessKey=q9D0X2vXNsQ5LET3TlXx+FpHZ1SP6pQ9+69+hudCIZk=    
     ```
-1. Copy the connection string for the new device from the command output, and past it along with your device id into the "**[myresources.txt](myresources.txt)**" file:
+1. Copy the connection string for the new device from the command output, and past it along with your device id into the "**[myresources.txt](./myresources.txt)**" file:
 
     ![Document Device Identity](images/08030-DocumentDeviceIdentity.png)
 
@@ -765,7 +765,7 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
     ![New azureiothubnode](images/09080-AzureIoTHubNode.png)
 
-1. Open the "**[myresources.txt](myresources.txt)**" file, and copy the "**IoT Hub Device Connection String**" you pasted in after creating the Azure IoT Hub Device Identity.
+1. Open the "**[myresources.txt](./myresources.txt)**" file, and copy the "**IoT Hub Device Connection String**" you pasted in after creating the Azure IoT Hub Device Identity.
 
     ![Copy IoT Hub Device Connection String](images/09100-CopyDeviceConnectionString.png)
 
@@ -773,7 +773,7 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
     - Name - "**Azure IoT Hub**"
     - Protocol - "**amqp**"
-    - Connection String - **Paste in the "IoT Hub Device Connection String" you just copied from [myresources.txt](myresources.txt)**
+    - Connection String - **Paste in the "IoT Hub Device Connection String" you just copied from [myresources.txt](./myresources.txt)**
 
     ![Add azureiothub Node to the Flow](images/09090-AddAzureIoTHubNode.png)
 
@@ -789,7 +789,7 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
 1. Back in the command prompt or terminal window on your system, run the following command to monitor the messages being sent into your Azure IoT Hub by your device:
 
-    - You will need to copy the "**IoT Hub "iothubowner" SAS Policy Primary Connection String**" from the [myresources.txt](myresources.txt) file.
+    - You will need to copy the "**IoT Hub "iothubowner" SAS Policy Primary Connection String**" from the [myresources.txt](./myresources.txt) file.
 
     - Use the device id you generated in place of the ***&lt;name&gt;IntelIoTGateway*** device id
 
@@ -833,7 +833,7 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
 1. If you are feeling adventurous, trade iothubowner connection strings and device IDs with a neighbor in the lab and verify that you can monitor each other's devices.  
 
-1. One last comment, we are using the "iothubowner" connection string to monitor the events.  You could actually use a less privileged policy, like the "service" sas policy we copied the connection string for earlier.  Go ahead and try monitoring events with the "service" policy connection string you pasted into the [myresources.txt](myresources.txt) file.
+1. One last comment, we are using the "iothubowner" connection string to monitor the events.  You could actually use a less privileged policy, like the "service" sas policy we copied the connection string for earlier.  Go ahead and try monitoring events with the "service" policy connection string you pasted into the [myresources.txt](./myresources.txt) file.
 ___
 
 <a name="ProcessingWithStreamAnalytics"></a>
@@ -903,7 +903,7 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     ![Everyone Firewall Rule](images/10080-EveryoneFirewallRule.png)
 
-1. Go ahead and take a minute to document all of your SQL Database and SQL Server related information in the **[myresources.txt](myresources.txt)** file.
+1. Go ahead and take a minute to document all of your SQL Database and SQL Server related information in the **[myresources.txt](./myresources.txt)** file.
 
     ![Document SQL](images/10085-DocumentSQL.png)
 
@@ -1202,7 +1202,7 @@ We'll start by creating the Azure App Service Plan and Web App in the portal.
 
     ![Git Clone URL](images/11090-GitCloneUrl.png)
 
-1. Finally, document all the settings for your web app in the **[myresources.txt](myresources.txt)** file. 
+1. Finally, document all the settings for your web app in the **[myresources.txt](./myresources.txt)** file. 
 
     ![Document Web App](images/11100-WebAppDocumentation.png)
 
@@ -1212,7 +1212,7 @@ We'll start by creating the Azure App Service Plan and Web App in the portal.
 
     ![config.json](images/11110-ConfigJson.png)
 
-1. Use the values you've saved to the **[myresources.txt](myresources.txt)** file to paste the required values into the config.json file. You can close the config.json when you are done.  **IGNORE THE POWERBI... SETTINGS. WE'LL GET TO THOSE LATER**
+1. Use the values you've saved to the **[myresources.txt](./myresources.txt)** file to paste the required values into the config.json file. You can close the config.json when you are done.  **IGNORE THE POWERBI... SETTINGS. WE'LL GET TO THOSE LATER**
 
     > **Note**: The "**iotHubConnString** should be the one for your "**service**" SAS policy.  
 
@@ -1268,7 +1268,7 @@ The last step is to get this web application running in Azure, not locally.  Ear
 
     ![Initial Commit](images/11210-InitialCommit.png)
 
-1. Refer to the Azure Web App Resources information you recently save in the **[myresources.txt](myresources.txt)** file. Copy the "**Git Clone URL** value to your clipboard.  Next, open a command prompt or terminal window,  navigate to the "**HOLs\WebApp**" directory. and issue the following command at the prompt:
+1. Refer to the Azure Web App Resources information you recently save in the **[myresources.txt](./myresources.txt)** file. Copy the "**Git Clone URL** value to your clipboard.  Next, open a command prompt or terminal window,  navigate to the "**HOLs\WebApp**" directory. and issue the following command at the prompt:
 
     ```bash
     git remote add origin <<your git clone url>>
@@ -1286,7 +1286,7 @@ The last step is to get this web application running in Azure, not locally.  Ear
 
     ![Confirm Publish](images/11230-ConfirmPublish.png)
 
-1. When prompted, enter the deployment credentials you configured previously (these should also be copied down in your **[myresources](myresources.txt)** file) and click "**OK**" to authenticate:
+1. When prompted, enter the deployment credentials you configured previously (these should also be copied down in your **[myresources](./myresources.txt)** file) and click "**OK**" to authenticate:
 
     ![Deployment Credentials](images/11240-DeploymentCredentials.png)
 
@@ -1296,7 +1296,7 @@ The last step is to get this web application running in Azure, not locally.  Ear
 
 1. And finally, you should be able to open your site in Azure to verify it is working.
 
-    > **Note**: The URL to your site in azure should be ***http://&lt;name&gt;web.azurewebsites.net*** . For example **http://mic16web.azurewebsites.net** . You should have also documented this in your **[myresources.txt](myresources.txt)** file.
+    > **Note**: The URL to your site in azure should be ***http://&lt;name&gt;web.azurewebsites.net*** . For example **http://mic16web.azurewebsites.net** . You should have also documented this in your **[myresources.txt](./myresources.txt)** file.
 
     ![Site Running in Azure](images/11260-SiteRunningInAzure.png)
 
@@ -1399,7 +1399,7 @@ In this task, we'll create the **TempAlert** function and have it receive those 
 1. On the "**Service Bus connection**" blade, click "**Add a connection string**" the configure the properties on the "**Add Service Bus connection**" blade as follows and click "**OK**":
 
     - Connection name - ***&lt;name&gt;ns***
-    - Connection string - Copy the value for the "**Root Manage Shared Access Key SAS Policy Primary Connection String:**" from the "**[myresources.txt](myresources.txt)**" file and paste it in here.
+    - Connection string - Copy the value for the "**Root Manage Shared Access Key SAS Policy Primary Connection String:**" from the "**[myresources.txt](./myresources.txt)**" file and paste it in here.
 
     ![Event Hub Connection String](images/12100-EventHubConnection.png)
 
@@ -1440,7 +1440,7 @@ In this task, we'll create the **TempAlert** function and have it receive those 
     ```c#
     static string connectionString = "<your iot hub 'service' shared access policy connection string goes here>";
     ```
-    and replace `<your iot hub 'service' shared access policy connection string goes here>` with the "**IoT Hub "service" SAS Policy Primary Connection String**" value from the **[myresources.txt](myresources.txt)** file.  For example:
+    and replace `<your iot hub 'service' shared access policy connection string goes here>` with the "**IoT Hub "service" SAS Policy Primary Connection String**" value from the **[myresources.txt](./myresources.txt)** file.  For example:
 
     ```c#
     static string connectionString = "HostName=mic16iot.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=wQF6dryjMwQ1mMEwDFfcgkSaSscFthHVVJeIfq6iVWQ=";
@@ -1519,7 +1519,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     ![Key 1](images/13050-AccessKey1.png)
 
-1. And document your collection name and key in the **[myresources.txt](myresources.txt)** file.
+1. And document your collection name and key in the **[myresources.txt](./myresources.txt)** file.
 
     ![Document Collection](images/13060-DocumentCollectionNameAndKey.png)
 
@@ -1528,7 +1528,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     ```bash
     npm install -g powerbi-cli
     ```
-1. Once it is installed, in the command prompt or terminal window, change into the "**HOLs\PowerBI**" folder, and run the following command and use the collection name and key you just pasted into the "**[myresources.txt](myresources.txt)**" file to tell the powerbi how to connect to our workspace collection:
+1. Once it is installed, in the command prompt or terminal window, change into the "**HOLs\PowerBI**" folder, and run the following command and use the collection name and key you just pasted into the "**[myresources.txt](./myresources.txt)**" file to tell the powerbi how to connect to our workspace collection:
 
     > **Note**: The `powerbi config` command creates a `.powerbirc` file in the directory where the command was executed.  It contains sensitive connection information about how to connect to to your Power BI Embedded Workspace Collection so be careful who you expose that file to.  
 
@@ -1579,7 +1579,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     [ powerbi ] workspace: 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
     ```
 
-    Finally, copy the new Workspace ID returned from the statement above and past it into the "**[myresources.txt](myresources.txt)**" file.
+    Finally, copy the new Workspace ID returned from the statement above and past it into the "**[myresources.txt](./myresources.txt)**" file.
 
     ![Workspace ID Documented](images/13070-WorkspaceIdDocumented.png)
 
@@ -1638,7 +1638,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     ID: ed212c12-0335-414d-b0f1-d4e1be1268da | Name: TemperatureChart
     ```
 
-    Copy the report and Data set IDs returned from the last two statements and past them into the "**[myresources.txt](myresources.txt)**" file.
+    Copy the report and Data set IDs returned from the last two statements and past them into the "**[myresources.txt](./myresources.txt)**" file.
 
 1. The last step on the report side is to update the connection information for the Dataset in the report to point to our Azure SQL Database, on our Azure SQL Server with our login credentials.
 
@@ -1654,7 +1654,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     "data source=mic16sql.database.windows.net;initial catalog=mic16db;persist security info=True;encrypt=True;trustservercertificate=False"
     ```
 
-    Copy the connection string and paste it into the "**[myresources.txt](myresources.txt)**" file:
+    Copy the connection string and paste it into the "**[myresources.txt](./myresources.txt)**" file:
 
     Then use the values for our Dataset ID, SQL Login Name and Password, and the Connection String from above to complete the following statement:
 
@@ -1691,7 +1691,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     [ powerbi ] Gateway ID:  8b37fcc6-be5a-47e3-a48d-9d9390b29338
     ```
 
-1.  Ok, last step is to actually embed the report into our web app.  Most of the code has already been written for us, we just need to make a few quick changes. To get started, open the "**HOLs\WebApp"** folder in "**Visual Studio Code**".  Use the values you've saved in the "**[myresources.txt](myresources.txt)**" file to complete the "powerbi*" config settings in the config.json file:
+1.  Ok, last step is to actually embed the report into our web app.  Most of the code has already been written for us, we just need to make a few quick changes. To get started, open the "**HOLs\WebApp"** folder in "**Visual Studio Code**".  Use the values you've saved in the "**[myresources.txt](./myresources.txt)**" file to complete the "powerbi*" config settings in the config.json file:
 
     ![Power BI Config Settings](images/13080-PowerBIConfigValues.png)
 
