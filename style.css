@@ -8,6 +8,7 @@
 body {
 	background-color: rgb(82, 82, 82);
 	font-family: "Segoe UI Light","Segoe WP Light","Segoe UI","Segoe WP",Tahoma,Arial,sans-serif;
+	font-size: 18pt;
 }
 .container {
 	margin: auto auto;
