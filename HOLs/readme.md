@@ -37,6 +37,7 @@ Tasks
 1. [Displaying Temperature Data with Azure Web Apps](#AzureWebApp)
 1. [Sending Messages from the Azure IoT Hub to the Intel Gateway](#CloudToDeviceMessages)
 1. [TIME PERMITTING - Display Temperature Data with Power BI Embedded](#PowerBIEmbedded)
+1. [Cleaning Up](#CleaningUp)
 
 ___
 
@@ -1813,4 +1814,30 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     ![Embedded Report Visible](images/13150-EmbeddedReportVisibleInAzure.png)
 
 1. The page is set to refresh automatically every 30 seconds.  You should see that the report updates the data it displayes as well!  
+
+___
+
+<a name="CleaningUp"></a>
+Cleaning Up
+---
+
+Once you are done with the lab, unless you want to continue with these resources in Azure you can delete them.
+
+1.  In the browser, go to the [Azure Portal](https://portal.azure.com), and click on the "**Resource Groups**", select the "***&&&lt;name&gt;group*** and on the "**Overview**" page, review it's contents.  When you are ready, click the "**Delete**" button along the top.   
+
+    > **Note**: There are a number of interesting things to check out on your resource group before you delete it.  Take a minute and check out the "**Resouce Costs**", "**Automation Script**" and "**Monitoring**" options. 
+
+    ![Delete Resource Group](images/14010-ResourceGroupInformation.png)
+
+1. On the "**Are you sure...**" page, enter your resource group name into the "**TYPE THE RESOURCE GROUP NAME**" box, and click the "**Delete** button along the bottom. Depending on how many resources are in the group, it may take a while for the deletion to complete.
+
+    ***BE AWARE! WHEN YOU DELETE THE RESOURCE GROUP ALL OF THE RESOURCES IN IT WILL BE DELETED AS WELL.  MAKE SURE YOU ARE DELETING THE CORRRECT RESOURCE GROUP AND THAT YOU INTEND TO DELETE ALL THE RESOURCES IN THE GROUP BEFORE PROCEEDING.***
+
+    ![Delete the group](images/14020-DeleteResourceGroup.png)
+
+1. It's possible that some tiles will be left on your dashboard event after deleting the resources they represent.  You can remove them yourself just by hovering over them with your mouse, clicking on the ellipsis ("**...**") and choosing "**Unpin from dashboard**".
+
+    ![Unpin Tiles](images/14030-UnpinTiles.png)
+
+1. After deleting the resource group and all the resources that were provisioned in this lab, you won't have recurring charges or resource utilitization related to the work you did here.
 

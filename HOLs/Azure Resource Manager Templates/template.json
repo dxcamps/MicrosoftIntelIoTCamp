@@ -2,94 +2,87 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "IotHubs_msiniothub_name": {
-            "defaultValue": "msiniothub",
+        "IotHubs_mic16iot_name": {
+            "defaultValue": "mic16iot",
             "type": "String"
         },
-        "namespaces_msinevents_name": {
-            "defaultValue": "msinevents",
+        "namespaces_mic16ns_name": {
+            "defaultValue": "mic16ns",
             "type": "String"
         },
-        "workspaceCollections_msincollection_name": {
-            "defaultValue": "msincollection",
+        "workspaceCollections_mic16collection_name": {
+            "defaultValue": "mic16collection",
             "type": "String"
         },
-        "servers_msinsql_name": {
-            "defaultValue": "msinsql",
+        "servers_mic16sql_name": {
+            "defaultValue": "mic16sql",
             "type": "String"
         },
-        "storageAccounts_msinstorage_name": {
-            "defaultValue": "msinstorage",
+        "storageAccounts_mic16storage_name": {
+            "defaultValue": "mic16storage",
             "type": "String"
         },
-        "serverfarms_msinplan_name": {
-            "defaultValue": "msinplan",
+        "serverfarms_mic16plan_name": {
+            "defaultValue": "mic16plan",
             "type": "String"
         },
-        "sites_msinfunctions_name": {
-            "defaultValue": "msinfunctions",
+        "sites_mic16web_name": {
+            "defaultValue": "mic16web",
             "type": "String"
         },
-        "sites_msinweb_name": {
-            "defaultValue": "msinweb",
+        "sites_mic16functions_name": {
+            "defaultValue": "mic16functions",
             "type": "String"
         },
         "AuthorizationRules_RootManageSharedAccessKey_name": {
-            "defaultValue": "msinevents/RootManageSharedAccessKey",
+            "defaultValue": "mic16ns/RootManageSharedAccessKey",
             "type": "String"
         },
-        "eventhubs_msinevents_name": {
-            "defaultValue": "msinevents/msinevents",
-            "type": "String"
-        },
-        "authorizationRules_readwrite_name": {
-            "defaultValue": "msinevents/msinevents/readwrite",
+        "eventhubs_mic16alerts_name": {
+            "defaultValue": "mic16ns/mic16alerts",
             "type": "String"
         },
         "consumergroups_$Default_name": {
-            "defaultValue": "msinevents/msinevents/$Default",
+            "defaultValue": "mic16ns/mic16alerts/$Default",
             "type": "String"
         },
-        "consumergroups_servicebusexplorer_name": {
-            "defaultValue": "msinevents/msinevents/servicebusexplorer",
+        "consumergroups_sbe_name": {
+            "defaultValue": "mic16ns/mic16alerts/sbe",
+            "type": "String"
+        },
+        "databases_mic16db_name": {
+            "defaultValue": "mic16sql/mic16db",
             "type": "String"
         },
         "databases_master_name": {
-            "defaultValue": "msinsql/master",
-            "type": "String"
-        },
-        "databases_msindb_name": {
-            "defaultValue": "msinsql/msindb",
+            "defaultValue": "mic16sql/master",
             "type": "String"
         },
         "firewallRules_AllowAllWindowsAzureIps_name": {
-            "defaultValue": "msinsql/AllowAllWindowsAzureIps",
-            "type": "String"
-        },
-        "firewallRules_ClientIPAddress_2016_9_3_19_26_10_name": {
-            "defaultValue": "msinsql/ClientIPAddress_2016-9-3_19-26-10",
+            "defaultValue": "mic16sql/AllowAllWindowsAzureIps",
             "type": "String"
         },
         "firewallRules_Everyone_name": {
-            "defaultValue": "msinsql/Everyone",
+            "defaultValue": "mic16sql/Everyone",
             "type": "String"
         }
     },
     "variables": {},
     "resources": [
         {
-            "comments": "Generalized from resource: '/subscriptions/ed2f73c5-c021-4b86-9afb-aa7998d16085/resourceGroups/msingroup/providers/Microsoft.Devices/IotHubs/msiniothub'.",
+            "comments": "Generalized from resource: '/subscriptions/ed3428a6-ba3e-444c-a02b-67522abcae04/resourceGroups/mic16group/providers/Microsoft.Devices/IotHubs/mic16iot'.",
             "type": "Microsoft.Devices/IotHubs",
             "sku": {
                 "name": "S1",
                 "tier": "Standard",
                 "capacity": 1
             },
-            "name": "[parameters('IotHubs_msiniothub_name')]",
+            "name": "[parameters('IotHubs_mic16iot_name')]",
             "apiVersion": "2016-02-03",
             "location": "westus",
             "tags": {},
             "properties": {
+                "ipFilterRules": [],
                 "eventHubEndpoints": {
                     "events": {
                         "retentionTimeInDays": 1,
@@ -100,8 +93,8 @@
                             "2",
                             "3"
                         ],
-                        "path": "[parameters('IotHubs_msiniothub_name')]",
-                        "endpoint": "[concat('sb://iothub-ns-', parameters('IotHubs_msiniothub_name'),'-73337-1fdbf765ea.servicebus.windows.net/')]"
+                        "path": "[parameters('IotHubs_mic16iot_name')]",
+                        "endpoint": "[concat('sb://iothub-ns-', parameters('IotHubs_mic16iot_name'),'-74337-836f3c3230.servicebus.windows.net/')]"
                     },
                     "operationsMonitoringEvents": {
                         "retentionTimeInDays": 1,
@@ -112,8 +105,8 @@
                             "2",
                             "3"
                         ],
-                        "path": "[concat(parameters('IotHubs_msiniothub_name'),'-operationmonitoring')]",
-                        "endpoint": "[concat('sb://iothub-ns-', parameters('IotHubs_msiniothub_name'),'-73337-1fdbf765ea.servicebus.windows.net/')]"
+                        "path": "[concat(parameters('IotHubs_mic16iot_name'),'-operationmonitoring')]",
+                        "endpoint": "[concat('sb://iothub-ns-', parameters('IotHubs_mic16iot_name'),'-74337-836f3c3230.servicebus.windows.net/')]"
                     }
                 },
                 "storageEndpoints": {
@@ -125,7 +118,7 @@
                 },
                 "enableFileUploadNotifications": false,
                 "cloudToDevice": {
-                    "maxDeliveryCount": 1,
+                    "maxDeliveryCount": 10,
                     "defaultTtlAsIso8601": "PT1H",
                     "feedback": {
                         "lockDurationAsIso8601": "PT1M",
@@ -149,52 +142,52 @@
             "dependsOn": []
         },
         {
-            "comments": "Generalized from resource: '/subscriptions/ed2f73c5-c021-4b86-9afb-aa7998d16085/resourcegroups/msingroup/providers/Microsoft.EventHub/namespaces/msinevents'.",
+            "comments": "Generalized from resource: '/subscriptions/ed3428a6-ba3e-444c-a02b-67522abcae04/resourcegroups/mic16group/providers/Microsoft.EventHub/namespaces/mic16ns'.",
             "type": "Microsoft.EventHub/namespaces",
             "sku": {
-                "name": "Basic",
-                "tier": "Basic"
+                "name": "Standard",
+                "tier": "Standard"
             },
             "kind": "EventHub",
-            "name": "[parameters('namespaces_msinevents_name')]",
+            "name": "[parameters('namespaces_mic16ns_name')]",
             "apiVersion": "2015-08-01",
             "location": "West US",
             "tags": {},
             "properties": {
                 "provisioningState": "Succeeded",
                 "status": "Active",
-                "createdAt": "2016-10-06T01:20:31.15Z",
-                "serviceBusEndpoint": "[concat('https://', parameters('namespaces_msinevents_name'),'.servicebus.windows.net:443/')]",
+                "createdAt": "2016-10-10T05:59:43.76Z",
+                "serviceBusEndpoint": "[concat('https://', parameters('namespaces_mic16ns_name'),'.servicebus.windows.net:443/')]",
                 "enabled": true,
-                "updatedAt": "2016-10-06T01:20:55.22Z"
+                "updatedAt": "2016-10-10T06:00:05.167Z"
             },
             "resources": [],
             "dependsOn": []
         },
         {
-            "comments": "Generalized from resource: '/subscriptions/ed2f73c5-c021-4b86-9afb-aa7998d16085/resourceGroups/msingroup/providers/Microsoft.PowerBI/workspaceCollections/msincollection'.",
+            "comments": "Generalized from resource: '/subscriptions/ed3428a6-ba3e-444c-a02b-67522abcae04/resourceGroups/mic16group/providers/Microsoft.PowerBI/workspaceCollections/mic16collection'.",
             "type": "Microsoft.PowerBI/workspaceCollections",
             "sku": {
                 "name": "S1",
                 "tier": "Standard"
             },
-            "name": "[parameters('workspaceCollections_msincollection_name')]",
+            "name": "[parameters('workspaceCollections_mic16collection_name')]",
             "apiVersion": "2016-01-29",
             "location": "West US",
             "tags": {},
             "properties": {
                 "provisioningState": "Succeeded",
-                "createdDate": "2016-10-07T02:27:57.537",
+                "createdDate": "2016-10-10T19:46:11.943",
                 "status": "Active"
             },
             "resources": [],
             "dependsOn": []
         },
         {
-            "comments": "Generalized from resource: '/subscriptions/ed2f73c5-c021-4b86-9afb-aa7998d16085/resourceGroups/msingroup/providers/Microsoft.Sql/servers/msinsql'.",
+            "comments": "Generalized from resource: '/subscriptions/ed3428a6-ba3e-444c-a02b-67522abcae04/resourceGroups/mic16group/providers/Microsoft.Sql/servers/mic16sql'.",
             "type": "Microsoft.Sql/servers",
             "kind": "v12.0",
-            "name": "[parameters('servers_msinsql_name')]",
+            "name": "[parameters('servers_mic16sql_name')]",
             "apiVersion": "2014-04-01-preview",
             "location": "West US",
             "properties": {
@@ -206,14 +199,14 @@
             "dependsOn": []
         },
         {
-            "comments": "Generalized from resource: '/subscriptions/ed2f73c5-c021-4b86-9afb-aa7998d16085/resourceGroups/msingroup/providers/Microsoft.Storage/storageAccounts/msinstorage'.",
+            "comments": "Generalized from resource: '/subscriptions/ed3428a6-ba3e-444c-a02b-67522abcae04/resourceGroups/mic16group/providers/Microsoft.Storage/storageAccounts/mic16storage'.",
             "type": "Microsoft.Storage/storageAccounts",
             "sku": {
                 "name": "Standard_LRS",
                 "tier": "Standard"
             },
             "kind": "Storage",
-            "name": "[parameters('storageAccounts_msinstorage_name')]",
+            "name": "[parameters('storageAccounts_mic16storage_name')]",
             "apiVersion": "2016-01-01",
             "location": "westus",
             "tags": {},
@@ -222,7 +215,7 @@
             "dependsOn": []
         },
         {
-            "comments": "Generalized from resource: '/subscriptions/ed2f73c5-c021-4b86-9afb-aa7998d16085/resourceGroups/msingroup/providers/Microsoft.Web/serverfarms/msinplan'.",
+            "comments": "Generalized from resource: '/subscriptions/ed3428a6-ba3e-444c-a02b-67522abcae04/resourceGroups/mic16group/providers/Microsoft.Web/serverfarms/mic16plan'.",
             "type": "Microsoft.Web/serverfarms",
             "sku": {
                 "name": "B1",
@@ -231,97 +224,97 @@
                 "family": "B",
                 "capacity": 1
             },
-            "name": "[parameters('serverfarms_msinplan_name')]",
+            "name": "[parameters('serverfarms_mic16plan_name')]",
             "apiVersion": "2015-08-01",
             "location": "West US",
             "properties": {
-                "name": "[parameters('serverfarms_msinplan_name')]",
+                "name": "[parameters('serverfarms_mic16plan_name')]",
                 "numberOfWorkers": 1
             },
             "resources": [],
             "dependsOn": []
         },
         {
-            "comments": "Generalized from resource: '/subscriptions/ed2f73c5-c021-4b86-9afb-aa7998d16085/resourceGroups/msingroup/providers/Microsoft.Web/sites/msinfunctions'.",
+            "comments": "Generalized from resource: '/subscriptions/ed3428a6-ba3e-444c-a02b-67522abcae04/resourceGroups/mic16group/providers/Microsoft.Web/sites/mic16web'.",
+            "type": "Microsoft.Web/sites",
+            "name": "[parameters('sites_mic16web_name')]",
+            "apiVersion": "2015-08-01",
+            "location": "West US",
+            "tags": {
+                "hidden-related:/subscriptions/ed3428a6-ba3e-444c-a02b-67522abcae04/resourcegroups/mic16group/providers/Microsoft.Web/serverfarms/mic16plan": "empty"
+            },
+            "properties": {
+                "name": "[parameters('sites_mic16web_name')]",
+                "hostNames": [
+                    "mic16web.azurewebsites.net"
+                ],
+                "enabledHostNames": [
+                    "mic16web.azurewebsites.net",
+                    "mic16web.scm.azurewebsites.net"
+                ],
+                "hostNameSslStates": [
+                    {
+                        "name": "[concat(parameters('sites_mic16web_name'),'.azurewebsites.net')]",
+                        "sslState": 0,
+                        "thumbprint": null,
+                        "ipBasedSslState": 0
+                    },
+                    {
+                        "name": "[concat(parameters('sites_mic16web_name'),'.scm.azurewebsites.net')]",
+                        "sslState": 0,
+                        "thumbprint": null,
+                        "ipBasedSslState": 0
+                    }
+                ],
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_mic16plan_name'))]"
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_mic16plan_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/ed3428a6-ba3e-444c-a02b-67522abcae04/resourceGroups/mic16group/providers/Microsoft.Web/sites/mic16functions'.",
             "type": "Microsoft.Web/sites",
             "kind": "functionapp",
-            "name": "[parameters('sites_msinfunctions_name')]",
+            "name": "[parameters('sites_mic16functions_name')]",
             "apiVersion": "2015-08-01",
             "location": "West US",
             "tags": {
-                "hidden-related:/subscriptions/ed2f73c5-c021-4b86-9afb-aa7998d16085/resourcegroups/msingroup/providers/Microsoft.Web/serverfarms/msinplan": "empty"
+                "hidden-related:/subscriptions/ed3428a6-ba3e-444c-a02b-67522abcae04/resourcegroups/mic16group/providers/Microsoft.Web/serverfarms/mic16plan": "empty"
             },
             "properties": {
-                "name": "[parameters('sites_msinfunctions_name')]",
+                "name": "[parameters('sites_mic16functions_name')]",
                 "hostNames": [
-                    "msinfunctions.azurewebsites.net"
+                    "mic16functions.azurewebsites.net"
                 ],
                 "enabledHostNames": [
-                    "msinfunctions.azurewebsites.net",
-                    "msinfunctions.scm.azurewebsites.net"
+                    "mic16functions.azurewebsites.net",
+                    "mic16functions.scm.azurewebsites.net"
                 ],
                 "hostNameSslStates": [
                     {
-                        "name": "[concat(parameters('sites_msinfunctions_name'),'.azurewebsites.net')]",
+                        "name": "[concat(parameters('sites_mic16functions_name'),'.azurewebsites.net')]",
                         "sslState": 0,
                         "thumbprint": null,
                         "ipBasedSslState": 0
                     },
                     {
-                        "name": "[concat(parameters('sites_msinfunctions_name'),'.scm.azurewebsites.net')]",
+                        "name": "[concat(parameters('sites_mic16functions_name'),'.scm.azurewebsites.net')]",
                         "sslState": 0,
                         "thumbprint": null,
                         "ipBasedSslState": 0
                     }
                 ],
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_msinplan_name'))]"
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_mic16plan_name'))]"
             },
             "resources": [],
             "dependsOn": [
-                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_msinplan_name'))]"
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_mic16plan_name'))]"
             ]
         },
         {
-            "comments": "Generalized from resource: '/subscriptions/ed2f73c5-c021-4b86-9afb-aa7998d16085/resourceGroups/msingroup/providers/Microsoft.Web/sites/msinweb'.",
-            "type": "Microsoft.Web/sites",
-            "name": "[parameters('sites_msinweb_name')]",
-            "apiVersion": "2015-08-01",
-            "location": "West US",
-            "tags": {
-                "hidden-related:/subscriptions/ed2f73c5-c021-4b86-9afb-aa7998d16085/resourcegroups/msingroup/providers/Microsoft.Web/serverfarms/msinplan": "empty"
-            },
-            "properties": {
-                "name": "[parameters('sites_msinweb_name')]",
-                "hostNames": [
-                    "msinweb.azurewebsites.net"
-                ],
-                "enabledHostNames": [
-                    "msinweb.azurewebsites.net",
-                    "msinweb.scm.azurewebsites.net"
-                ],
-                "hostNameSslStates": [
-                    {
-                        "name": "[concat(parameters('sites_msinweb_name'),'.azurewebsites.net')]",
-                        "sslState": 0,
-                        "thumbprint": null,
-                        "ipBasedSslState": 0
-                    },
-                    {
-                        "name": "[concat(parameters('sites_msinweb_name'),'.scm.azurewebsites.net')]",
-                        "sslState": 0,
-                        "thumbprint": null,
-                        "ipBasedSslState": 0
-                    }
-                ],
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_msinplan_name'))]"
-            },
-            "resources": [],
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_msinplan_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/ed2f73c5-c021-4b86-9afb-aa7998d16085/resourcegroups/msingroup/providers/Microsoft.EventHub/namespaces/msinevents/AuthorizationRules/RootManageSharedAccessKey'.",
+            "comments": "Generalized from resource: '/subscriptions/ed3428a6-ba3e-444c-a02b-67522abcae04/resourcegroups/mic16group/providers/Microsoft.EventHub/namespaces/mic16ns/AuthorizationRules/RootManageSharedAccessKey'.",
             "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
             "name": "[parameters('AuthorizationRules_RootManageSharedAccessKey_name')]",
             "apiVersion": "2015-08-01",
@@ -334,20 +327,20 @@
             },
             "resources": [],
             "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_msinevents_name'))]"
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_mic16ns_name'))]"
             ]
         },
         {
-            "comments": "Generalized from resource: '/subscriptions/ed2f73c5-c021-4b86-9afb-aa7998d16085/resourcegroups/msingroup/providers/Microsoft.EventHub/namespaces/msinevents/eventhubs/msinevents'.",
+            "comments": "Generalized from resource: '/subscriptions/ed3428a6-ba3e-444c-a02b-67522abcae04/resourcegroups/mic16group/providers/Microsoft.EventHub/namespaces/mic16ns/eventhubs/mic16alerts'.",
             "type": "Microsoft.EventHub/namespaces/eventhubs",
-            "name": "[parameters('eventhubs_msinevents_name')]",
+            "name": "[parameters('eventhubs_mic16alerts_name')]",
             "apiVersion": "2015-08-01",
             "location": "West US",
             "properties": {
                 "messageRetentionInDays": 1,
                 "status": "Active",
-                "createdAt": "2016-10-06T17:23:31.06",
-                "updatedAt": "2016-10-06T17:25:12.673",
+                "createdAt": "2016-10-10T06:05:53.953",
+                "updatedAt": "2016-10-10T06:05:57.017",
                 "partitionCount": 2,
                 "partitionIds": [
                     "0",
@@ -356,74 +349,84 @@
             },
             "resources": [],
             "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_msinevents_name'))]"
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_mic16ns_name'))]"
             ]
         },
         {
-            "comments": "Generalized from resource: '/subscriptions/ed2f73c5-c021-4b86-9afb-aa7998d16085/resourcegroups/msingroup/providers/Microsoft.EventHub/namespaces/msinevents/eventhubs/msinevents/authorizationRules/readwrite'.",
-            "type": "Microsoft.EventHub/namespaces/eventhubs/authorizationRules",
-            "name": "[parameters('authorizationRules_readwrite_name')]",
-            "apiVersion": "2015-08-01",
-            "location": "West US",
-            "properties": {
-                "rights": [
-                    "Send",
-                    "Listen"
-                ]
-            },
-            "resources": [],
-            "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_msinevents_name'))]",
-                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('eventhubs_msinevents_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/ed2f73c5-c021-4b86-9afb-aa7998d16085/resourcegroups/msingroup/providers/Microsoft.EventHub/namespaces/msinevents/eventhubs/msinevents/consumergroups/$Default'.",
+            "comments": "Generalized from resource: '/subscriptions/ed3428a6-ba3e-444c-a02b-67522abcae04/resourcegroups/mic16group/providers/Microsoft.EventHub/namespaces/mic16ns/eventhubs/mic16alerts/consumergroups/$Default'.",
             "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
             "name": "[parameters('consumergroups_$Default_name')]",
             "apiVersion": "2015-08-01",
             "location": "West US",
             "properties": {
-                "createdAt": "2016-10-06T17:23:31.2016693",
-                "updatedAt": "2016-10-06T17:23:31.2016693"
+                "createdAt": "2016-10-10T06:05:54.7439948",
+                "updatedAt": "2016-10-10T06:05:54.7439948"
             },
             "resources": [],
             "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_msinevents_name'))]",
-                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('eventhubs_msinevents_name'))]"
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_mic16ns_name'))]",
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('eventhubs_mic16alerts_name'))]"
             ]
         },
         {
-            "comments": "Generalized from resource: '/subscriptions/ed2f73c5-c021-4b86-9afb-aa7998d16085/resourcegroups/msingroup/providers/Microsoft.EventHub/namespaces/msinevents/eventhubs/msinevents/consumergroups/servicebusexplorer'.",
+            "comments": "Generalized from resource: '/subscriptions/ed3428a6-ba3e-444c-a02b-67522abcae04/resourcegroups/mic16group/providers/Microsoft.EventHub/namespaces/mic16ns/eventhubs/mic16alerts/consumergroups/sbe'.",
             "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
-            "name": "[parameters('consumergroups_servicebusexplorer_name')]",
+            "name": "[parameters('consumergroups_sbe_name')]",
             "apiVersion": "2015-08-01",
             "location": "West US",
             "properties": {
-                "createdAt": "2016-10-06T23:41:30.3933973",
-                "updatedAt": "2016-10-06T23:41:30.3933973"
+                "createdAt": "2016-10-10T07:13:09.8701443",
+                "updatedAt": "2016-10-10T07:13:09.8701443"
             },
             "resources": [],
             "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_msinevents_name'))]",
-                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('eventhubs_msinevents_name'))]"
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_mic16ns_name'))]",
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('eventhubs_mic16alerts_name'))]"
             ]
         },
         {
-            "comments": "Generalized from resource: '/subscriptions/ed2f73c5-c021-4b86-9afb-aa7998d16085/resourceGroups/msingroup/providers/Microsoft.Sql/servers/msinsql/databases/master'.",
+            "comments": "Generalized from resource: '/subscriptions/ed3428a6-ba3e-444c-a02b-67522abcae04/resourceGroups/mic16group/providers/Microsoft.Sql/servers/mic16sql/databases/mic16db'.",
+            "type": "Microsoft.Sql/servers/databases",
+            "kind": "v12.0,user",
+            "name": "[parameters('databases_mic16db_name')]",
+            "apiVersion": "2014-04-01-preview",
+            "location": "West US",
+            "properties": {
+                "databaseId": "af44ca7a-d2eb-46fd-8839-91759b83fcae",
+                "edition": "Basic",
+                "status": "Online",
+                "serviceLevelObjective": "Basic",
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "maxSizeBytes": "2147483648",
+                "creationDate": "2016-10-10T04:40:19.63Z",
+                "currentServiceObjectiveId": "dd6d99bb-f193-4ec1-86f2-43d3bccbc49c",
+                "requestedServiceObjectiveId": "dd6d99bb-f193-4ec1-86f2-43d3bccbc49c",
+                "requestedServiceObjectiveName": "Basic",
+                "defaultSecondaryLocation": "East US",
+                "earliestRestoreDate": "2016-10-10T04:50:59.287Z",
+                "elasticPoolName": null,
+                "containmentState": 2
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mic16sql_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/ed3428a6-ba3e-444c-a02b-67522abcae04/resourceGroups/mic16group/providers/Microsoft.Sql/servers/mic16sql/databases/master'.",
             "type": "Microsoft.Sql/servers/databases",
             "kind": "v12.0,system",
             "name": "[parameters('databases_master_name')]",
             "apiVersion": "2014-04-01-preview",
             "location": "West US",
             "properties": {
-                "databaseId": "cb34b38f-763f-477f-b061-e8cccdbbd120",
+                "databaseId": "12dbcf20-fe75-4ce5-b556-d50ee69d6faf",
                 "edition": "System",
                 "status": "Online",
                 "serviceLevelObjective": "System0",
                 "collation": "SQL_Latin1_General_CP1_CI_AS",
                 "maxSizeBytes": "32212254720",
-                "creationDate": "2016-10-06T01:19:31.823Z",
+                "creationDate": "2016-10-10T04:39:54.907Z",
                 "currentServiceObjectiveId": "29dd7459-4a7c-4e56-be22-f0adda49440d",
                 "requestedServiceObjectiveId": "29dd7459-4a7c-4e56-be22-f0adda49440d",
                 "requestedServiceObjectiveName": "System0",
@@ -434,39 +437,11 @@
             },
             "resources": [],
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_msinsql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mic16sql_name'))]"
             ]
         },
         {
-            "comments": "Generalized from resource: '/subscriptions/ed2f73c5-c021-4b86-9afb-aa7998d16085/resourceGroups/msingroup/providers/Microsoft.Sql/servers/msinsql/databases/msindb'.",
-            "type": "Microsoft.Sql/servers/databases",
-            "kind": "v12.0,user",
-            "name": "[parameters('databases_msindb_name')]",
-            "apiVersion": "2014-04-01-preview",
-            "location": "West US",
-            "properties": {
-                "databaseId": "702fcd76-54b0-4e93-b638-d432a0ccd21d",
-                "edition": "Basic",
-                "status": "Online",
-                "serviceLevelObjective": "Basic",
-                "collation": "SQL_Latin1_General_CP1_CI_AS",
-                "maxSizeBytes": "2147483648",
-                "creationDate": "2016-10-06T01:20:06.247Z",
-                "currentServiceObjectiveId": "dd6d99bb-f193-4ec1-86f2-43d3bccbc49c",
-                "requestedServiceObjectiveId": "dd6d99bb-f193-4ec1-86f2-43d3bccbc49c",
-                "requestedServiceObjectiveName": "Basic",
-                "defaultSecondaryLocation": "East US",
-                "earliestRestoreDate": "2016-10-06T01:30:32.553Z",
-                "elasticPoolName": null,
-                "containmentState": 2
-            },
-            "resources": [],
-            "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_msinsql_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/ed2f73c5-c021-4b86-9afb-aa7998d16085/resourceGroups/msingroup/providers/Microsoft.Sql/servers/msinsql/firewallRules/AllowAllWindowsAzureIps'.",
+            "comments": "Generalized from resource: '/subscriptions/ed3428a6-ba3e-444c-a02b-67522abcae04/resourceGroups/mic16group/providers/Microsoft.Sql/servers/mic16sql/firewallRules/AllowAllWindowsAzureIps'.",
             "type": "Microsoft.Sql/servers/firewallRules",
             "kind": "v12.0",
             "name": "[parameters('firewallRules_AllowAllWindowsAzureIps_name')]",
@@ -478,27 +453,11 @@
             },
             "resources": [],
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_msinsql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mic16sql_name'))]"
             ]
         },
         {
-            "comments": "Generalized from resource: '/subscriptions/ed2f73c5-c021-4b86-9afb-aa7998d16085/resourceGroups/msingroup/providers/Microsoft.Sql/servers/msinsql/firewallRules/ClientIPAddress_2016-9-3_19-26-10'.",
-            "type": "Microsoft.Sql/servers/firewallRules",
-            "kind": "v12.0",
-            "name": "[parameters('firewallRules_ClientIPAddress_2016_9_3_19_26_10_name')]",
-            "apiVersion": "2014-04-01-preview",
-            "location": "West US",
-            "properties": {
-                "startIpAddress": "174.65.96.192",
-                "endIpAddress": "174.65.96.192"
-            },
-            "resources": [],
-            "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_msinsql_name'))]"
-            ]
-        },
-        {
-            "comments": "Generalized from resource: '/subscriptions/ed2f73c5-c021-4b86-9afb-aa7998d16085/resourceGroups/msingroup/providers/Microsoft.Sql/servers/msinsql/firewallRules/Everyone'.",
+            "comments": "Generalized from resource: '/subscriptions/ed3428a6-ba3e-444c-a02b-67522abcae04/resourceGroups/mic16group/providers/Microsoft.Sql/servers/mic16sql/firewallRules/Everyone'.",
             "type": "Microsoft.Sql/servers/firewallRules",
             "kind": "v12.0",
             "name": "[parameters('firewallRules_Everyone_name')]",
@@ -510,7 +469,7 @@
             },
             "resources": [],
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_msinsql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mic16sql_name'))]"
             ]
         }
     ]

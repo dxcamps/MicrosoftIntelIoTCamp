@@ -2,55 +2,49 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "IotHubs_msiniothub_name": {
+        "IotHubs_mic16iot_name": {
             "value": null
         },
-        "namespaces_msinevents_name": {
+        "namespaces_mic16ns_name": {
             "value": null
         },
-        "workspaceCollections_msincollection_name": {
+        "workspaceCollections_mic16collection_name": {
             "value": null
         },
-        "servers_msinsql_name": {
+        "servers_mic16sql_name": {
             "value": null
         },
-        "storageAccounts_msinstorage_name": {
+        "storageAccounts_mic16storage_name": {
             "value": null
         },
-        "serverfarms_msinplan_name": {
+        "serverfarms_mic16plan_name": {
             "value": null
         },
-        "sites_msinfunctions_name": {
+        "sites_mic16web_name": {
             "value": null
         },
-        "sites_msinweb_name": {
+        "sites_mic16functions_name": {
             "value": null
         },
         "AuthorizationRules_RootManageSharedAccessKey_name": {
             "value": null
         },
-        "eventhubs_msinevents_name": {
-            "value": null
-        },
-        "authorizationRules_readwrite_name": {
+        "eventhubs_mic16alerts_name": {
             "value": null
         },
         "consumergroups_$Default_name": {
             "value": null
         },
-        "consumergroups_servicebusexplorer_name": {
+        "consumergroups_sbe_name": {
+            "value": null
+        },
+        "databases_mic16db_name": {
             "value": null
         },
         "databases_master_name": {
             "value": null
         },
-        "databases_msindb_name": {
-            "value": null
-        },
         "firewallRules_AllowAllWindowsAzureIps_name": {
-            "value": null
-        },
-        "firewallRules_ClientIPAddress_2016_9_3_19_26_10_name": {
             "value": null
         },
         "firewallRules_Everyone_name": {
