@@ -45,14 +45,22 @@ go
 -- Create the dbo.Devices view
 -- this return just the last measurement for each device
 create view dbo.Devices as
-select
-  latest.deviceid,
-  latest.[timestamp],
-  latest.temperature
-from measurement as latest
-left join measurement as allrows
-on latest.deviceid = allrows.deviceid and latest.measurementid < allrows.measurementid
-where allrows.measurementid is null;
+with devices as
+(
+     select *,
+         ROW_NUMBER() OVER
+         (
+             partition by deviceid
+             order by [timestamp] desc
+         ) as recency
+     from dbo.Measurement
+)
+select 
+    deviceID,
+    [timestamp],
+    temperature
+from devices
+where Recency = 1
 go
 -- Query the view to make sure it works
 select * from dbo.Devices;
