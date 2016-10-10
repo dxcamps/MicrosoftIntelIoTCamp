@@ -231,6 +231,9 @@ In this exercise, you will use the Node-RED development environment pre-installe
 
     ![Blink Node Statuts](images/04090-BlinkyNodeStatus.png)
 
+ > **Note**: When connecting the Intel Iot Gateway to an Arduino 101, the gateway uses a subplatform called Firmata to communicate GPIO requests to the Arduino 101.
+Firmata is a generic protocol for communicating with microcontrollers from software on a host computer. It is intended to work with any host computer software package.Basically, this firmware establishes a protocol for talking to the Arduino from the host software. 
+
 ___
 
 <a name="ReadingTemperatures"></a>
