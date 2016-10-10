@@ -899,6 +899,10 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     ![Everyone Firewall Rule](images/10080-EveryoneFirewallRule.png)
 
+1. Go ahead and take a minute to document all of your SQL Database and SQL Server related information in the **[myresources.txt](myresources.txt)** file.
+
+    ![Document SQL](images/10085-DocumentSQL.png)
+
 1. Now that we have the database created, we need to create the database objects inside it.  To do that, we'll use Visual Studio Code, and the "vscode-mssql" extension.  Open Visual Studio Code (if you don't have it installed you can download it for free from [code.visualstudio.com](http://code.visualstudio.com)) .  When Visual Studio Code is open, from the menu bar select "**File**" | "**Open Folder...**" menu item, and select the "**HOLs**" folder wherevery you extract the lab files to. 
 
     ![HOLs Folder Open in VS Code](images/10090-HOLsFolderInCode.png)
@@ -993,6 +997,10 @@ Next up is the ***&lt;name&gt;alerts*** Event Hub that the ***&lt;name&gt;job***
 
     ![Event Hub Created](images/10260-EventHubCreated.png)
 
+1. Take a minute to document your Event Nub Namespace and Event Hub names:
+
+    ![Document Event Hub](images/10265-DocumentEventHub.png)
+
 1. Close all the open blades.  
 
 ### Create the Stream Analytics Job ###
@@ -1084,10 +1092,10 @@ Great, now we have all the pieces that the ***&lt;name&gt;job*** Stream Analytic
 
 1. Back in the browser, replace the default syntax in the query with the code you just copied, then click the "**Save**" button along the top.  
 
-    > **Note**: There are actually two queries here.  The first one queries all of the messages from the "**iothub**" intput and dumps them into the "*sqldb**" output.  
+    > **Note**: There are actually two queries here.  The first one queries all of the messages from the "**iothub**" intput and dumps them into the "**sqldb**" output.
     <br/>
     <br/>
-    The second query looks for messages coming in from the "**iothub**" input only where the "**temperature**" value is greater than **40** and then sends those messages into the "**alerts**" output. 
+    The second query looks for messages coming in from the "**iothub**" input only where the "**temperature**" value is greater than **40** and then sends those messages into the "**alerts**" output.
     <br/>
     <br/>
     You may decide to change the **40** threshold value to something more appropriate for the temperatures your sensor is reporting.  You want something that is higher than the average value, but low enough that you can reach it by forcefully heating up your temp sensor.  
