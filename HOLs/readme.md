@@ -14,8 +14,8 @@ Prerequisites
 
 In order to successfully complete this lab you will ned:
 
-- Intel Grove Commercial IoT Developer Kit [link](https://www.seeedstudio.com/Grove-IoT-Commercial-Developer-Kit-p-2665.html)
-- Arduino 101 [link](https://www.arduino.cc/en/Main/ArduinoBoard101)
+- Intel Grove Commercial IoT Developer Kit <a href="https://www.seeedstudio.com/Grove-IoT-Commercial-Developer-Kit-p-2665.html">link</a>
+- Arduino 101 <a href="https://www.arduino.cc/en/Main/ArduinoBoard101">link</a>
 - A computer.  Windows, Mac OSx or Linux
 - An active Microsoft Azure Subscription.  If you do not have a current subscription, you can create one using the [free trial](https://azure.microsoft.com/en-us/free/)
 - Node.js 4.x or later.  You can install Node.js from **[https://nodejs.org/en/](https://nodejs.org/en/)**
