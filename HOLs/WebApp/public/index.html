@@ -49,9 +49,6 @@
         </div>
     </nav>
 
-    <!--<button type="button" class="btn btn-lg btn-danger" ng-click="send(0)">Turn Off</button>-->
-
-
     <div class="row">
         <div class="col-md-6">
             <div class="row">
@@ -87,6 +84,9 @@
                 <div class="col-md-12" style="overflow-wrap:break-word">
                     <h2>Chart</h2>
 
+                    <!--
+                    <img src="images/chartplaceholder.png" style="width:455px;height:380px;border:none;" />
+                    -->
                     <div id="powerbiReport" powerbi-type="report" style="height:380px;"></div>
 
                 </div>
@@ -174,12 +174,6 @@
                         
                         if(config) {
                             var powerbiReport = angular.element( document.querySelector( '#powerbiReport' ) )[0];
-                            // var embedConfig = {
-                            //     type: 'report',
-                            //     accessToken: powerbiEmbedToken,
-                            //     id: powerbiReportId,
-                            //     embedUrl: 'https://embedded.powerbi.com/appTokenReportEmbed'
-                            // };
                             powerbi.embed(powerbiReport,config);
                         } 
                     });
@@ -187,7 +181,9 @@
 
                 $scope.getRecentMeasurements();
                 $scope.getDevices();
-                $scope.embedReport();
+
+                //Uncomment the following line of code to embed the Power BI report.
+                //$scope.embedReport();
             });
         })();
     </script>

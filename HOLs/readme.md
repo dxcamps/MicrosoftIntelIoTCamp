@@ -1131,30 +1131,162 @@ Great, now we have all the pieces that the ***&lt;name&gt;job*** Stream Analytic
 1. Pretty cool!  Our device message data is now getting pushed into our Azure SQL Database. Of course, we also have the "**alerts**" output which can push high temperature messages off to our ***&lt;name&gt;alerts*** event hub, but we'll come back to those in another task.  For now, pat yourself on the back, this task had a lot of steps. 
 ___
 
-Now that we have our device message data being stored in our Azure SQL Database, let's use a web application to display that data!
-
 <a name="AzureWebApp"></a>
 Displaying Temperature Data with Azure Web Apps
 ---
 
-1. Do this
+Now that we have our device message data being stored in our Azure SQL Database, let's use a web application to display that data!
 
-    ````javascript
-     var sample = 'with some code';
-     console.log(sample);
-    ````
+We'll start by creating the Azure App Service Plan and Web App in the portal.
 
-1. Show some screenshot:
+### Setup the Web App in Azure ###
 
-    ![EULA](images/01120-Eula.png)
+1. Open the [Azure Portal](https://portal.azure.com) in the browser.  and close any open blades from previous steps. Then click "**+ New**" | "**Web + mobile**" | "**Web App**"
 
-1. Do something else
+    ![New Web App](images/11010-NewWebApp.png)
 
-    > **Note!**: This is a sample note!
+1. In the "**Web App**" blade fill the properties out as follows, ***but don't click Create yet! We need to configure the App Service Plan First***
 
-    - With one
-    - or two
-    - substeps
+    - App name - ***&lt;name&gt;web***
+    - Subscription - **Chose the same subscription used for the previous resources**
+    - Resource group - Choose "**Use existing**" and select the ***&lt;name&gt;group*** resource group created previously
+    - App Insights - **Off**
+    
+    ![New Web App Properties](images/11020-WebAppProperties.png)
+
+1. Click on the "**App Service plan/location"** then click "**Create New**"
+
+    ![Create New Plan](images/11030-CreateNewPlan.png)
+
+1. Then in the "**App Service plan**" blade complete the properties as follows, then click "**OK**" 
+
+    - App service plan - ***&lt;name&gt;plan***
+    - Location - **Use the same location as the previous resources**
+    - Pricing tier - Select "**B1 Basic**"
+
+    ![App Service Plan Properties](images/11040-AppServicePlanProperties.png)
+
+1. Finally, ensure that the "**Pin to dashboard**" checkbox is **checked** and click the "**Create**" button:
+
+    ![Create Web App](images/11050-CreateWebApp.png)
+
+1. Once the Web App is deployed, it's blade will open in the portal.  When it does, click the "**Deployment options**" button along the left, then click "**Choose Source**" and then select **"Local Git Repository**"
+
+    ![Setup git repo](images/11060-SetupGitRepo.png)
+
+1. If you haven't setup your deployment credentials for your account subscription yet, you'll need to.  Click "**Setup connection**" and enter the credentials to use, and click "**OK**":
+
+    - Deployment user name - ***&lt;name&gt;user***
+    - Password - **P@ssw0rd**
+    - Confirm Password - **P@ssw0rd**
+
+    ![Deployment Credentials](images/11070-DeploymentCredentials.png)
+
+1. Then back on the "**Deployment source**" blade click "**OK**" to confirm the settings:
+
+    ![Deployment Source Confirmation](images/11080-DeploymentSourceOk.png)
+
+1. Click the "**Overview**" link along the left, hover of the "**Git clone url**, the click the "copy" icon that appears to copy it to your clipboard. 
+
+    ![Git Clone URL](images/11090-GitCloneUrl.png)
+
+1. Finally, document all the settings for your web app in the **[myresources.txt](myresources.txt)** file. 
+
+    ![Document Web App](images/11100-WebAppDocumentation.png)
+
+### Debug the Node.js Web Application Locally ###
+
+1. Open Visual Studio Code, and from the menu bar select "**File**" | "**Open Folder...**" and find the "**HOLs\WebApp** folder under where you extracted the lab files.  Then inside that folder in VS Code, select the "**config.json**" file. 
+
+    ![config.json](images/11110-ConfigJson.png)
+
+1. Use the values you've saved to the **[myresources.txt](myresources.txt)** file to paste the required values into the config.json file. You can close the config.json when you are done.  **IGNORE THE POWERBI... SETTINGS. WE'LL GET TO THOSE LATER**
+
+    > **Note**: The "**iotHubConnString** should be the one for your "**service**" SAS policy.  
+
+    ![Update config.json](images/11120-UpdateWebAppConfigJson.png)
+
+1. Next, click on the "**Debug**" icon along the left, then click the "**gear**" icon along the top to configure the debugger, and select "**Node.js**" as the environment
+
+    ![Node.js debug environment](images/11140-NodeJsEnvironment.png)
+
+1. In the "**launch.json**" file that appears, modify the "**program** path to point to the "**server.js**" file.  Then save and close the "**launch.json**" file.  
+
+    ![Start with server.js](images/11150-StartWithServerjs.png)
+
+1. In Open a command prompt or terminal window, and change into the "**HOLs\WebApp** path.  From there, run the following commands:
+
+    ```bash
+    npm install -g bower
+    npm install
+    bower install
+    ```
+1. Back in VS Code, on the Debug panel, click the green "**play**" button along the top to start debugging the web app. 
+
+    ![Debug](images/11160-Debug.png)
+
+1. In the Debug Console (if your's isn't visible press **Ctrl+Shift+Y**), you should see that the app is running on [http://localhost:3000](http://localhost:3000) 
+
+    ![Listening on Port 3000](images/11170-ListeningOnPort3000.png)
+
+1. In your browser, navigate to [http://localhost:3000](http://localhost:3000).  There are three main sections on the web page
+
+    - The "**Temperature History**" shows the 20 most recent readings.  That data is coming directly from the Azure SQL Database's "**dbo.RecentMeasurements**" view
+
+    - The "**Devices**" area displays a row for each device along with their latest sensor values.  That data comes from the Azure SQL Databases' "**dbo.Devices** view.  
+
+    - The "**Chart**" section currently has a placeholder image promising that a chart is coming soon.  If you complete the [TIME PERMITTING - Display Temperature Data with Power BI Embedded](#PowerBIEmbedded) portion of the lab, you will make good on that promise. 
+
+    ![Web App Running Locally](images/11180-WebAppRunningLocally.png)
+
+1. You can stop the debug session by pressing the red "**square**" or "**stop**" button the debug toolbar in Visual Studio Code:
+
+    ![Stop Debugging](images/11190-StopDebugging.png)
+
+
+### Deploying the Web App to Azure ###
+
+The last step is to get this web application running in Azure, not locally.  Earlier, when we configured the Web Application we set it up to deploy from a git repository.  To deploy we can simply push our web app code via git up to the Web App's repo.  Visual Studio Code makes that simple to do!.  
+
+1. In Visual Studio Code, click the "**git**" icon to open the "**git**" panel, and then click the "**Initialize git repository**" button.  
+
+    ![Initialize git repository](images/11200-InitLocalGitRepo.png)
+
+1. Type in a message (like "**Initial commit**) in the box at the top, and click the "**checkmark**" commit icon to commit the changes to the new repo. 
+
+    ![Initial Commit](images/11210-InitialCommit.png)
+
+1. Refer to the Azure Web App Resources information you recently save in the **[myresources.txt](myresources.txt)** file. Copy the "**Git Clone URL** value to your clipboard.  Next, open a command prompt or terminal window,  navigate to the "**HOLs\WebApp**" directory. and issue the following command at the prompt:
+
+    ```bash
+    git remote add origin <<your git clone url>>
+    ```
+
+    for example:
+
+    ```bash
+    git remote add origin https://mic16user@mic16web.scm.azurewebsites.net:443/mic16web.git
+    ```
+
+1. Then, back in Visual Studio Code,  on the "**git**" panel, click the "**...**" ellipsis menu at the top, then select "**Publish**", and confirm the publish when prompted. 
+
+    ![Publish](images/11220-Publish.png)
+
+    ![Confirm Publish](images/11230-ConfirmPublish.png)
+
+1. When prompted, enter the deployment credentials you configured previously (these should also be copied down in your **[myresources](myresources.txt)** file) and click "**OK**" to authenticate:
+
+    ![Deployment Credentials](images/11240-DeploymentCredentials.png)
+
+1. In the [Azure Portal](https://portal.azure.com), on the "**Deployment optons**" page for your ***&lt;name&gt;web*** web app, you should see the deployment kick off.  What it tell it displays the green checkmark, and "Active".
+
+    ![Deployment in Portal](images/11250-DeploymentInPortal.png)
+
+1. And finally, you should be able to open your site in Azure to verify it is working.
+
+    > **Note**: The URL to your site in azure should be ***http://&lt;name&gt;web.azurewebsites.net*** . For example **http://mic16web.azurewebsites.net** . You should have also documented this in your **[myresources.txt](myresources.txt)** file.
+
+    ![Site Running in Azure](images/11260-SiteRunningInAzure.png)
 
 ___
 
@@ -1162,49 +1294,9 @@ ___
 Sending Messages from the Azure IoT Hub to the Intel Gateway
 ---
 
-1. Do this
-
-    ````javascript
-     var sample = 'with some code';
-     console.log(sample);
-    ````
-
-1. Show some screenshot:
-
-    ![EULA](images/01120-Eula.png)
-
-1. Do something else
-
-    > **Note!**: This is a sample note!
-
-    - With one
-    - or two
-    - substeps
-
 ___
 
 <a name="PowerBIEmbedded"></a>
 TIME PERMITTING - Display Temperature Data with Power BI Embedded
 ---
-
-1. Do this
-
-    ````javascript
-     var sample = 'with some code';
-     console.log(sample);
-    ````
-
-1. Show some screenshot:
-
-    ![EULA](images/01120-Eula.png)
-
-1. Do something else
-
-    > **Note!**: This is a sample note!
-
-    - With one
-    - or two
-    - substeps
-
-
 
