@@ -4,13 +4,8 @@
       "type": "eventHubTrigger",
       "name": "myEventHubMessage",
       "direction": "in",
-      "path": "msinevents",
-      "connection": "msinevents"
-    },
-    {
-      "type": "http",
-      "name": "res",
-      "direction": "out"
+      "path": "<name>alerts",
+      "connection": "<name>ns"
     }
   ],
   "disabled": false

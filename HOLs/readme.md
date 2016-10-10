@@ -1395,16 +1395,85 @@ In this task, we'll create the **TempAlert** function and have it receive those 
 
     ![New Function Properties](images/12090-NewFunctionProperties.png)
     
-1. On the "**Service Bus connection**" blade, click "**Add a connection string**" the configure the properties on the **"Add Service Bus connection**" blade as follows and click "**OK**":
+1. On the "**Service Bus connection**" blade, click "**Add a connection string**" the configure the properties on the "**Add Service Bus connection**" blade as follows and click "**OK**":
 
     - Connection name - ***&lt;name&gt;ns***
-    - Connection string - Copy the value for the "**Root Manage Shared Access Key SAS Policy Primary Connection String:** from the **[myresources.txt](myresources.txt)" file and paste it in here:
+    - Connection string - Copy the value for the "**Root Manage Shared Access Key SAS Policy Primary Connection String:**" from the "**[myresources.txt](myresources.txt)**" file and paste it in here.
 
     ![Event Hub Connection String](images/12100-EventHubConnection.png)
 
 1. Finally, click the "**Create**" button to create the function:
 
     ![Create the Function](images/12100-CreateTheFunction.png)
+
+1. Once the "**TempAlert**" function is created, click on the "**Integrate**" link to configure it's triggers, inputs and outputs.  Our function comes pre-provisioned with an "**Azure Event Hub Trigger**" that will invoke this function whenever a message is available on the ***&lt;name&gt;alerts*** event hub.  When the function is invoked the Event Hub message that caused the function to be triggered will be passed in as the **myEventHubMessage** parameter.  The functions code can then inspect that parameter's value and act on it.
+
+    ![Function Integration](images/12110-FunctionIntegration.png)
+
+1. Switch back to the "**Develop**" page for the function.  The code for our C# function is stored in the "**run.csx*"" file.  The default code simply logs the contents of the "myEventHubMessage" parameter value to the console.  We are going to upload some files into our function that provides a little more functionality.  To do that, click the "**View files**" link:
+
+    ![Default Code](images/12120-DefaultCode.png)
+
+1. Click the button below the list of files to upload new files:
+
+    ![Upload Files Button](images/12130-UploadFilesButton.png)
+
+1. In the "**Open**" dialog, navigate to the **HOLs/FunctionApp/TempAlert** folder under where you extracted the lab files, select the the following files, and click the "**Open**" button to upload them:
+
+    - "**project.json**" - This is a regular C# project.json file that defines the various nuget packages that are needed by the code in our function.  Because our function will be sending message to Azure IoT Hub devices, it needs to have the Azure IoT Hub SDKs available.  The project.json file defines those dependencies allows the Azure Function App platform to load them.  
+    - "**run.csx**" - This is a more robust block of function code that parses the "**myEventHubMessage**" sent in by the Event Hub Trigger, generates and Alert message, and then uses the Azure IoT Hub SDKs to send the message to the appropriate device based on the "deviceID" property of the incomnig message. 
+    - "**function.json**" - **DO NOT UPLOAD THE FUNCTION.JSON FILE**.  This file stores the trigger, input and output integrations, and we have already configured the integration for our function.  
+
+    ![Upload Files](images/12140-UploadFiles.png)
+
+1. Once the upload is complete, click on each file ("**function.json**","**project.json**", and "**run.csx**") to review their contents.
+
+    ![Review function.json](images/12150-ReviewFunctionJson.png)
+
+    ![Review project.json](images/12160-ReviewProjectJson.png)
+
+    ![Review run.csx](images/12170-RevewRunCsx.png)
+
+1. In the "**run.csx**" file, locate the line of code that reads:
+
+    ```c#
+    static string connectionString = "<your iot hub 'service' shared access policy connection string goes here>";
+    ```
+    and replace `<your iot hub 'service' shared access policy connection string goes here>` with the "**IoT Hub "service" SAS Policy Primary Connection String**" value from the **[myresources.txt](myresources.txt)** file.  For example:
+
+    ```c#
+    static string connectionString = "HostName=mic16iot.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=wQF6dryjMwQ1mMEwDFfcgkSaSscFthHVVJeIfq6iVWQ=";
+    ``` 
+    Then click the "**Save**" button to save the changes.
+
+    ![Paste 'service' policy connection string](images/12160-PasteServiceConnectionString.png)
+
+1. In the "**Logs**" section, verify that the function compiled successfully.
+
+    ![Successful Compilation](images/12180-CompilationSucceeded.png)
+
+1. At this point, your function should be working properly.  For it to kick off, we need:
+
+    - Our device to publish a message with a temperature sensor value that is higher than the threshold value in our ***&lt;name&gt;job*** Stream Analytics Job query (**40** by default)
+    - That will cause an event to be sent to the ***&lt;name&gt;alerts*** event hub
+    - That will trigger our function, and allow the function to send a cloud-to-device message back to the Intel NUC via the Azure IoT Hub.
+
+1. To try it out:
+
+    - Warm your hands up by rubbing them vigoursly together, then pinch the Temperature sensor on both sides with your warm fingers and try to get the NUC to generate a reading of the threshold value (again, **40** by default)
+
+        ![Pinc Sensor](images/12190-PinchSensorWithWarmFingers.png)
+
+    - Watch the "**Logs**" section of the Azure function.  You should see the incoming event hub message get logged as well as details of the message being sent to the device:
+
+        ![Function Log](images/12200-FunctionLoggingMessage.png)
+
+    - And on the LCD panel, you should see the "**Temp Alert**" message displayed along with a brief flash of red:
+
+        ![Temp Alert on LCD](images/12210-TempAlertOnLcd.png)
+
+    - And lastly, if you have the Buzzer plugged in, you should hear it buzz for one second each time an alert comes in! 
+
 ___
 
 <a name="PowerBIEmbedded"></a>
