@@ -997,6 +997,14 @@ Next up is the ***&lt;name&gt;alerts*** Event Hub that the ***&lt;name&gt;job***
 
     ![Event Hub Created](images/10260-EventHubCreated.png)
 
+1. Click the "**Shared access policies**" link along the left hand side, and then click on the "**RootManageSharedAccessKey**"
+
+    ![SAS Policies](images/10262-SASPolicies.png)
+
+1. Then on the "**Policy: RootManageSharedAccessKey**" page, click the button to copy the primary connection string to the clipboard:
+
+    ![Copy the RootManageSharedAccess Key](images/10263-RootManagedSharedAccessKey.png)
+
 1. Take a minute to document your Event Nub Namespace and Event Hub names:
 
     ![Document Event Hub](images/10265-DocumentEventHub.png)
@@ -1294,6 +1302,106 @@ ___
 Sending Messages from the Azure IoT Hub to the Intel Gateway
 ---
 
+All of the message flow so far has been from the device to the cloud (device-to-cloud messages). In this section, we'll see how to send messages from the cloud back down to the device (cloud-to-device messages). 
+
+We'll configure our Intel NUC to turn on it's buzzer for one second if it receives a message from the Azure IoT Hub with the following format:
+
+```json
+{
+    "type"    : "temp",
+    "message" : "some message"
+}
+```
+### Add the Buzzer Device and Code to the Intel NUC ###
+
+1. Attach the "**Buzzer**" to "**D3**" on the "**Grove Base Shield"** as shown below:
+
+    ![Buzzer Attached](images/12010-BuzzerAttached.png)
+
+1. Copy the contents out of "**HOLs\Node-RED Flows\Flow - Add Buzzer Support.json**" file into the clipboard. 
+
+1. Open the Intel NUCs Node-RED development environment in your browser (http://xxx.xxx.xxx.xxx:1880 where xxx.xxx.xxx.xxx is your NUC's IP Address),  from the "**Hamburger**" menu in the top right corner select "**Import**" | "**Clipboard**"
+
+    ![Import From Clipboard](images/12020-ImportFromClipboard.png)
+
+1. Paste the code copied from the "**HOLs\Node-RED Flows\Flow - Add Buzzer Support.json**" file into the "**Import nodes**" box, and click "**OK**".
+
+    ![Import Nodes](images/12030-ImportNodes.png)
+
+1. Then move your mouse to place the imported nodes where you want (if you hold the shift key while you move your mouse the nodes will snap to the grid), and then connect the output of the "**azureiothub**" node to the input of the "**To String**" node as shown below.  Click the "**Deploy**" button when you are done to deploy the changes..  
+
+     The nodes being added do the following:
+
+    - The **To String** function converts the byte data returned by the "**azureiothub**" node into a string value. 
+    - The **json** node then deserializes that string into an object.  
+    - The "**msg.payload**" debug node displays the object to the **debug** panel. 
+    - The "**If Temp Alert** node checks the "type" property on the object to see if it is literally "temp" if it is, the subsequent tasks are allowed to run. 
+    - The "**Turn on Buzzer**" task does nothing more than create a payload with a value of 1 to cause the buzzer to turn on. 
+    - The "**Grove Buzzer**" then looks at the payload coming in, and if it is a 1, id sounds the buzzer for a hard coded one second (1000000 microseconds).
+    - The "**Get the Message**" node extracts just the "message" property from the object and passes it to the "**Show the Message**" node. 
+    - The "**Show the Message**" node displays the message text on the second row of the LCD panel and flashes the background of the panel red (rgb 255,0,0).
+
+    ![Imported Nodes](images/12040-ImportedNodes.png)
+
+1. The Azure Web App we deployed in the previous task has a handy way to test the buzzer.  Open up the ***http://&lt;name&gt;web.azurewebsites.net*** web application in browser.  
+
+1. Just to the left of each device under the "**Devices**" heading there is a small green button with a lightning bolt on it (![Test Buzzer Button](images/00000-TestBuzzerButton.png)).  Click that button next to the device where you have deployed the updated Node-RED code, and you should:
+
+    > **Note**: If the test doesn't function try restarting the Azure Web App (you can open the web app in the portal, and click the "**Restart**" or "**Stop**" and "**Start**" buttons along the top), as well as ssh'ing into your Intel NUC and issuing a shutdown / reboot command:
+    <br/>
+    <br/>
+    ```bash
+    shutdown 0 -raw
+    ```
+    <br/>
+    <br/>
+
+    - Hear the buzzer sound
+    - See the test message "***Buzzer Test***" displayed briefly on the LCD
+    - See the LCD background change to red briefly.  
+
+    ![Test Buzzer Button on Web Site](images/12050-TestBuzzerOnWebsite.png)
+
+    ![Buzzer Test Message](images/12060-BuzzerTestMessageOnLcd.png)
+
+### Create an Azure Function to Process the Event Hub Messages and Alert the Device ###
+
+Previously, we setup our ***&lt;name&gt;job*** Stream Analytics Job to forward messages coming in from the IoT Hub that had a temperature value over some threshold off to the ***&lt;name&gt;alerts*** event hub.  But we never did anyhing with those Event Hub alert messages.  Now we will. 
+
+In this task, we'll create the **TempAlert** function and have it receive those alert messages from the event hub, and send a temp alert message back down to the device.    
+
+1. Open the [Azure Port](https://portal.azure.com) in the browser, and close any blades open from previous steps.  Then click "**+ New**" | "**Compute**" | "**Function App**".  Complete the properties as follows then click the "**Create**" button:
+
+    - App name - ***&lt;name&gt;functions***
+    - Subscription - **Chose the same subscription used for the previous resources**
+    - Resource group - Choose "**Use existing**" and select the ***&lt;name&gt;group*** resource group created previously
+    - App Service Plan - Choose the ***&lt;name&gt;plan*** plan we created previously.
+    - Storage Account - Select "**Create New**" and name it ***&lt;name&gt;storage***
+    - Pin to dashboard - **Checked**
+
+    ![New Function App](images/12070-NewFunctionApp.png)
+
+1.  When the new Function App is deployed, and it's blade open's in the portal, click the "**+New Function**" button, and select "**EventHubTrigger - C#**"
+
+    ![Event Hub Trigger C# Function](images/12080-NewCSharpEventHubTriggerFunction.png)
+
+1. **SCROLL DOWN** to continue configuring the new function.  
+    - Name - **TempAlert**
+    - Event Hub Name - ***&lt;name&gt;alerts***
+    - Event Hub connection - Click the "**new**" link
+
+    ![New Function Properties](images/12090-NewFunctionProperties.png)
+    
+1. On the "**Service Bus connection**" blade, click "**Add a connection string**" the configure the properties on the **"Add Service Bus connection**" blade as follows and click "**OK**":
+
+    - Connection name - ***&lt;name&gt;ns***
+    - Connection string - Copy the value for the "**Root Manage Shared Access Key SAS Policy Primary Connection String:** from the **[myresources.txt](myresources.txt)" file and paste it in here:
+
+    ![Event Hub Connection String](images/12100-EventHubConnection.png)
+
+1. Finally, click the "**Create**" button to create the function:
+
+    ![Create the Function](images/12100-CreateTheFunction.png)
 ___
 
 <a name="PowerBIEmbedded"></a>
