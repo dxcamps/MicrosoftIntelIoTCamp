@@ -9,7 +9,7 @@ create table dbo.Measurement
     MeasurementID int IDENTITY(1,1) not null
       constraint PK_Measurement_MeasurementID 
       primary key CLUSTERED,
-    deviceID nvarchar(15) not null
+    deviceID nvarchar(50) not null
       constraint DF_Measurement_deviceID
       default '',
     [timestamp] datetime  null,
@@ -57,25 +57,3 @@ go
 -- Query the view to make sure it works
 select * from dbo.Devices;
 go
-
-select top 20 * from dbo.Measurement order by [timestamp] desc;
-select count(*) from dbo.Measurement
-select deviceid, timestamp, temperature from dbo.Measurement group by deviceid desc;
-
-
---select 
---  getdate() as Now,
---  dateadd(hh,1,getdate()) as InAnHour;
-
---insert into dbo.measurement
---select
---  'Basement' as deviceid,
---  dateadd(hh,-1,[timestamp]) as [timestamp],
---  temperature - 1 as temperature
---from dbo.Measurement
-  
-
-
-
-go
---truncate table dbo.Measurement;

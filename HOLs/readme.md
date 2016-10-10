@@ -447,7 +447,7 @@ For the purposes of this lab, I'll use the "**mic16**" prefix, short for "**Micr
 | IoT Hub Device Identity | ***&lt;name&gt;IntelIoTGateway*** | This is the id we will use for our device's identity in the Azure IoT Hub Device Identiy Registry.   |
 |  Stream Analytics Job | ***&lt;name&gt;job*** | The Azure Stream Analytics Job provides a way to watch messages coming into the Azure IoT Hub from our devices and act on them.  In our case it will forward all messages off to a SQL Database so we can report on them, but it will also watch the temperature sensor values in those messages, and forward them to an Event Hub if they exceed a pre-defined threshold temperature. |
 | SQL Server |  ***&lt;name&gt;sql*** | The Azure SQL Server instance that will host our Azure SQL Database. Other than creating it to host our database.  This is also where the administrative login for our SQL Server is defined.  It is recommended that you use these login credentials:<br/><br/>login:***sqladmin***<br/>password: ***P@ssw0rd***  |
-| SQL Database |  ***&lt;name&gt;db*** | This will store the **dbo.Measurements** table.  The Stream Analytics Job above will forward all temperature messages sent to the IoT Hub into this table so we can report on the temperature data. |
+| SQL Database |  ***&lt;name&gt;db*** | This will store the **dbo.Measurement** table.  The Stream Analytics Job above will forward all temperature messages sent to the IoT Hub into this table so we can report on the temperature data. |
 | Event Hub Namespace |  ***&lt;name&gt;ns*** | This is the Service Bus Namespace that hosts our Event Hub.  We really won't do much with this directly, we just need one to host our Event Hub for us.   |
 | Event Hub | ***&lt;name&gt;alerts*** | The Event Hub is an internal messaging queue that we will use to pass along temperature alert messages.  The Stream Analytics Job will watch for temperature messages with sensor values that exceed a predefined temperature threshold and forward them off to this event hub.  We'll then create an Azure Function to read the messages out of this event hub and send alerts back to the device.  |
 | Storage Account |  ***&lt;name&gt;storage*** | A few of the services require a storage account for their own purposes.  This account exists purely as a resource for those services.  We won't use it directly for our own purposes. |
@@ -836,26 +836,294 @@ ___
 Processing Temperature Data with Stream Analytics
 ---
 
-1. Do this
+Now that we have messages makeing it into our Azure IoT Hub from our device, we can start to process those messages in the cloud. 
 
-    ````javascript
-     var sample = 'with some code';
-     console.log(sample);
-    ````
+In the [Planning your Azure Resources](#PlanningAzure) section, we discussed the ***&lt;name&gt;job*** Stream Analytics Job and it's two outputs, the ***&lt;name&gt;db*** SQL Database and the ***&lt;name&gt;alerts*** Event Hub.  It's much easier to configure the Stream Analytics job if it's outputs already exist.  So we'll start by creating those resources first.  
 
-1. Show some screenshot:
+### Creating the Azure SQL Database ###
 
-    ![EULA](images/01120-Eula.png)
+We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***&lt;name&gt;db*** database on it.  The ***&lt;name&gt;job*** Stream Analytics job will forward ALL of the messages that come into the Azure IoT Hub from our device off to the "**dbo.Measurement**" table inside the database. We can then query that table for reporting purposes, or whatever!  
 
-1. Do something else
+1. In your web browser, login to the [Azure Portal](https://portal.azure.com) ([https://portal.azure.com](https://portal.azure.com))
 
-    > **Note!**: This is a sample note!
+1. If you have any blades open from before, you can close them by clicking the "X" icon in their top right corner.  
 
-    - With one
-    - or two
-    - substeps
+1. Click "**+ New**" | "**Databases**" | "**SQL Database**"
 
+    ![New SQL Database](images/10010-NewSQLDatabase.png)
+
+1. In the properties blade for the new SQL Database, complete the following fields, ***but don't click create yet***, we still need to configure our new Azure SQL Server and select a pricing tier:
+
+    - Database name - ***&lt;name&gt;db*** 
+    - Subscription - **Chose the subscription you used for your Azure IoT Hub**
+    - Resource group - Choose "**Use existing**" and select the ***&lt;name&gt;group*** we created when provising the Azure IoT Hub.
+    - Collation - Leave it at the default "**SQL_Latin1_General_CP1_CI_AS**"
+
+    ![New SQL Database Properties](images/10020-NewSqlDbProperties.png)
+
+1. Next, click  the "**Server | Configure require settings**", the "**Create a new server**" and complete the "**New server**" properties as follows, the click the "**Select**" button to select the new server:  
+
+    - Server name - ***&lt;name&gt;sql***
+    - Server admin login - **sqladmin**
+    - Password - **P@ssw0rd**
+    - Confirm Password - **P@ssw0rd**
+    - Location - **Select the same region you provisioned the Azure IoT Hub into**
+    - Create V12 server - **Yes**
+    - Allow azure services to access server: **Checked**
+
+    ![New SQL Server Properties](images/10030-NewSQLServerProperites.png)
+
+1. Click "**Pricing tier**", then find and select the "**B Basic**" pricing tier, and click the "**Select**" button to select it. 
+
+    ![Basic Pricing Tier](images/10040-SQLDBPricingTier.png)
+
+1. Finally, we can create the new Azure SQL Database and Server.  Ensure that the "**Pin to dashboard**" checkbox is **checked**, and click the "**Create**" button to create them.
+
+    ![Create Database and Server](images/10050-CreateDatabaseAndServer.png)
+
+1. It'll take a few minutes to provision your new Azure SQL Server and Database, but when they deployment is done, the blade for the Database will open. When it does, click on the link to the server at the top of the blade:
+
+    ![Click Server Link](images/10060-ClickOnServerLink.png)
+
+1. Then on the blade for the SQL Server, click the "**Show firewall settings**" link:
+
+    ![Show Firewall Settings](images/10070-ShowFirewallSettings.png)
+
+1. On the "**Firewall settings**" blade, create a new firewall rule with the following settings, then click the "**Save**" button.
+
+    > **Note**: This firewall rule allows traffic from anybody on the internet to access your SQL Server.  Normally, you would not do this.  We are doing it here in the lab environment to ensure network issues aren't a problem for us.  **DO NOT DO THIS ON YOUR PRODUCTION SERVER INSTANCES!**
+
+    - Rule Name - **Everyone**
+    - Start IP - **0.0.0.0**
+    - End IP - **255.255.255.255**
+
+    ![Everyone Firewall Rule](images/10080-EveryoneFirewallRule.png)
+
+1. Now that we have the database created, we need to create the database objects inside it.  To do that, we'll use Visual Studio Code, and the "vscode-mssql" extension.  Open Visual Studio Code (if you don't have it installed you can download it for free from [code.visualstudio.com](http://code.visualstudio.com)) .  When Visual Studio Code is open, from the menu bar select "**File**" | "**Open Folder...**" menu item, and select the "**HOLs**" folder wherevery you extract the lab files to. 
+
+    ![HOLs Folder Open in VS Code](images/10090-HOLsFolderInCode.png)
+
+1. Then click the icon to open the "**Extensions**" panel, and in the search box at the top type **vscode-mssql**, and in the search results, click the "**Install**" button for the "**vscode-mssql** extension
+
+    ![Install the vscode-mssql Extension](images/10100-InstallVsCodeMssql.png)
+
+1. Once installed, click the "**Enable**" button to enable the extension, and when prompted click "**OK**" to allow VS Code to restart:
+
+    ![Enable Extension](images/10110-EnableExtension.png)
+
+    ![Confirm Restart](images/10120-ConfirmVSCodeRestart.png)
+
+1. Next, we need to tell **vscode-mssql** how to connect to our Azure SQL Server and Database.  To do so, from the menu bar, select "**File**" | "**Preferences**" | "**Workspace Settings**"
+
+    ![Open Workspace Settings](images/10130-OpenWorkspaceSettings.png)
+
+1. Two files will open: **Default Settings** and **settings.json**.  The "**Default Settings**" are just there to show you what the defaults, we can ignore them. Edit the contents of the "**settings.json**" file with the appropriate details for the Azure SQL Server and Azure SQL Database you just created  Save your changes and close the "**Default Settings" and "settings.json**" files when you are done. 
+
+    ![Connection Properties](images/10140-SQLConnectionProperties.png)    
+
+1. Click on the icon for the "**Explorer**" panel, select select the "**SQL Database Scripts\Create SQL Database Objects.sql**" file.  This script creates the following objects:
+
+    - The "**dbo.Measurement**" table.  This table is structured to match the data being sent by the Node-RED flow Intel NUC.  It has the following columns:
+        - "**MeasurementID**" is a dynamically generated ID for each row in the database. 
+        - "**deviceID**" is a nvarchar field that will store the device id sent by the device. 
+        - "**timestamp**" is a datetime field that will store the "**timestamp** generated on the Intel NUC when the message was created.
+        - "**temperature**" is a float column that will store the temperature sensor values.
+    - The "**dbo.RecentMeasurements**" view is used by the web application to display the 20 most recent messages.
+    - The "**dbo.Devices**" view is used by the web application to display a row for each device, along with their latest reading. 
+
+    ![Open SQL Script](images/10150-OpenCreateScript.png)
+
+1. Make sure the "**Create SQL Database Objects.sql**" file is the currently active file in VS Code, then press the "**F1**" key (or **Ctrl+Shift+P**) to open the "**Command Palette**", and in the box, type "**&gt;MSSQL: Connect to a database**" (don't forget the **&gt;**) and press "**Enter**" (Note you could also have used the **Ctrl-Shift-C** keyboard shortcut while the SQL script file was active).
+
+    ![Select Connection](images/10160-SelectConnection.png)
+
+1. If you receive a connection error, verify the entries in the settings.json file, and also ensure that you created the firewall rule on the server to allow all connections.
+
+1. Once you have connected successfully, the server name will show up in the VS Code status bar:
+
+    ![Successful Connection](images/10180-SuccessfulConnection.png)
+
+1. Finally, again ensure that the "**Create SQL Database Objects.sql**" file is the active file in VS Code.  Press "**F1**" or "**Ctrl+Shift+P**" to open the "**Command Palette**" and enter "**>MSSQL: Run T-SQL query**" to execute the code in the current file (You can also just press "**Ctrl-Shift-E**" to execute the code in the currently active SQL script). 
+
+    ![Run the SQL Script](images/10190-RunSQLScript.png)
+
+1. The "**MSSQL Output**" window will open, and on it's "**Messages**" tab you should see that no errors occurred.  The "**(0 Row(s) affected)** messages are from the test queries on the objects we just created.  Since there is no data in them, no rows are returned.  
+
+    ![MSSQL Output](images/10200-SQLMessages.png)
+
+1. You can use the "**Results**" tab to view the results from the three "**select**" statements in the script.  However, since there is no data in the "**dbo.Measurement**" table yet, there aren't any rows retrieved.  
+
+### Create the Event Hub ###
+
+Next up is the ***&lt;name&gt;alerts*** Event Hub that the ***&lt;name&gt;job*** Stream Analytics Job will forward messages with high temperature readings off to.  
+
+1.  With your browser open to the [Azure Portal](https://portal.azure.com), close any blades that may be left open from previous steps.  
+
+1. Click "**+ New**" | "**Internet of Things**" | "**Event Hubs**"
+
+    > **Note**: the name is a bit misleading.  Before we can create an Event Hub, we need to create the "**Service bus namespace**" that will host it.  We are actually choosing to create an Event Hubs compatible Service Bus Namespace.  
+
+    ![New Event Hub](images/10220-NewEventHub.png)
+
+1. In the "**Create namespace**" blade that opens, complete the properties as follows, then click the "**Create**" button to create the Service Bus Namespace that will hold our Event Hub.
+
+    - Name - ***&lt;name&gt;ns***
+    - Pricing tier - Select the "**Standard**" tier
+    - Subscription - **Chose the same subscription used for the previous resources**
+    - Resource group - Choose "**Use existing**" and select the ***&lt;name&gt;group*** resource group created previously
+    - Location - **Use the same location as the previous resources**
+    - Pin to dashboard - **Checked**
+
+    ![Create Namespace](images/10230-CreateNamespace.png)
+
+1.  With a few minutes, the namespace should be provisioned, and it's property blades opened in the portal.  Click the "**+Event Hub**" button along the top to create the actual event hub:
+
+    ![Create Event Hub](images/10240-CreateEventHub.png)
+
+1. In the "**Create Event Hub**" blade complete the properties as follows, then click the "**Create**" button to create the event hub.
+
+    - Name - ***&lt;name&gt;alerts***
+    - Partition Count - **2**
+    - Message Retention - **1**
+    - Archive - **Off**  
+
+    ![Create New Event Hub](images/10250-NewEventHubProperties.png)
+
+1. Wait until the new event hub is created successfully before continuing:
+
+    ![Event Hub Created](images/10260-EventHubCreated.png)
+
+1. Close all the open blades.  
+
+### Create the Stream Analytics Job ###
+
+Great, now we have all the pieces that the ***&lt;name&gt;job*** Stream Analytics job needs.  We have the ***&lt;name&gt;iot*** Azure IoT Hub as the **input**, and the ***&lt;name&gt;db*** SQL Database and ***&lt;name&gt;alerts*** Event Hub as the outputs.  Now we just need to create our Stream Analtyics Job and wire it up!  
+
+1. In the [Azure Portal](https://portal.azure.com), click "**+ New**" | "**Internet of Things**" | "**Stream Analytics**"
+
+    ![Create Stream Analytics Job](images/10270-CreateStreamAnalyticsJob.png)
+
+1. In the "**New Stream Analytics Job**" blade, complete the properties as follows, then click the "**Create**" button. 
+
+    - Name - ***&lt;name&gt;job***
+    - Subscription - **Chose the same subscription used for the previous resources**
+    - Resource group - Choose "**Use existing**" and select the ***&lt;name&gt;group*** resource group created previously
+    - Location - **Use the same location as the previous resources**
+    - Pin to dashboard - **Checked**
+
+    ![New ASA Job Properties](images/10280-NewASAJobProperties.png)
+
+1. Once the new Stream Analytics Job has been deployed, it's blade will open in the portal.  Click the "**Inputs**" tile on the blade to open the inputs for the job.  
+
+    ![Inputs](images/10290-Inputs.png)
+
+1. Then at the top of the "**Inputs**" blade, click the "**+ Add**" button, and in the "**New Input**" blade configure the properties for the iothub input as follows, the click "**Create**":
+
+    - Input alias - **iothub** (keep this name so you don't have to edit the query.  If you use a different name here, you'll have to edit the query to match it).
+    - Source Type - **Data stream**
+    - Source - **Iot hub**
+    - Subscription - **Use IoT hub from current subscription**
+    - IoT hub - ***&lt;name&gt;iot***
+    - Endpoint - **Messaging**
+    - Shared access policy name - **service**
+    - Consumer group - **streamanalytics** (We made this back when we provisioned the IoT HUb)
+    - Event serialization format - **JSON**
+    - Encoding - **UTF-8**
+
+    ![iothub Input Properties](images/10300-IoTHubInput.png)
+
+1. Close the "**Inputs**" blade, then back on the job blade, click "**Outputs**"
+
+    ![Outputs](images/10310-Outputs.png)
+
+1. Then on the "**Outputs**" blade, click the "**+ Add**" button and in the "**New output**" blade complete the properties as follows then click the "**Create**" button:
+
+    - Name - **sqldb** (As with the input above, it is recommended that you don't change this name.  The query assumes the name.  If you change the name here, you'll have to update the query to match.)
+    - Sink - **SQL database**
+    - Subscription - **Use SQL database from current subscription**
+    - Database - ***&lt;name&gt;db***
+    - Server name - **_&lt;name&gt;sql_.database.windows.net** (although you can't change it here, more just FYI)
+    - Username - ***sqladmin@&lt;name&gt;sql***
+    - Password - **P@ssw0rd**
+    - Table - **dbo.Measurement**
+
+    ![SQL DB Output Properties](images/10320-SQLDBOutputProperties.png)
+
+1. Watch for the notification under the "**Notifications**" icon (bell) to verify that the connection test to the "**sqldb**" output was successful.  If it wasn't go back and fix what failed.  
+
+    ![Successful Connection](images/10330-SuccessfulConnectionTest.png)
+
+1. Again, press the "**+ Add**" button at the top of the "**Outputs**" blade, then complete the "**New output**" blade properties as follows and click "**Create**":
+
+    - Name - **alerts** (Again, you really should just use this name and not change it)
+    - Sink - **Event hub**
+    - Subscription - **Use event hub from current subscription**
+    - Service bus namespace - ***&lt;name&gt;ns***
+    - Event hub name - ***&lt;name&gt;alerts***
+    - Event hub policy name - **RootManageSharedAccessKey**
+    - Partition key column - **0**
+    - Event serialization format - **JSON**
+    - Encoding - **UTF-8**
+    - Format - **Line separated**
+
+    ![Alerts Output Properties](images/10340-AlertsOuputProperties.png)
+
+1. Verify that the test connection the **alerts** output was successful:
+
+    ![Alerts Test Success](images/10350-SuccessfulAlertsTest.png)
+
+1. Close the "**Outputs**" blade, and then back on the job blade, click the "**Query**" button.
+
+    ![Query](images/10360-Queries.png)
+
+1. Back in Visual Studio Code with the "**HOLs**" folder open, locate open the "**Stream Analytics\Stream Analytics Query.sql**" file and copy it's contents to the clipboard:
+
+    > **Note**: Stream Analytics uses a SQL like syntax for it's queries.  It provides a very powerful way to query the data streaming through the Azure IoT Hub as if it were data in a table.  Pretty cool!  
+
+    ![Copy ASA Query](images/10370-CopyASAQuery.png)
+
+1. Back in the browser, replace the default syntax in the query with the code you just copied, then click the "**Save**" button along the top.  
+
+    > **Note**: There are actually two queries here.  The first one queries all of the messages from the "**iothub**" intput and dumps them into the "*sqldb**" output.  
+    <br/>
+    <br/>
+    The second query looks for messages coming in from the "**iothub**" input only where the "**temperature**" value is greater than **40** and then sends those messages into the "**alerts**" output. 
+    <br/>
+    <br/>
+    You may decide to change the **40** threshold value to something more appropriate for the temperatures your sensor is reporting.  You want something that is higher than the average value, but low enough that you can reach it by forcefully heating up your temp sensor.  
+
+    ![Create Query](images/10380-CreateQuery.png)
+
+1. Close the "**Query**" blade, and back on the job blade, click the "**Error Policy** link along the left.  Change the policy to "**Drop**" and click the "**Save**" button along the top:
+
+    ![Drop Errors](images/10385-DropErrors.png)
+
+1. Click the "**Overview**" link along the left to return to the job's properities:
+
+    ![Overview](images/10387-Overview.png)
+
+1. Click the "**Start**" button along the top, select "**Now**" to have it start processing messages on from now on, and not ones in the past, the click "**Start**" button to start the job.
+
+    ![Start the job](images/10390-StartJob.png)
+
+1. It will take a few minutes for the job to start.  Watch for the notification that it started successfully.
+
+    ![Job Started](images/10400-JobStarted.png)
+
+1. At this point, we should have data being forwarded into our SQL Database.  We can verify that using Visual Studio Code.  In Code, open the "**SQL Database Scripts\Create SQL Database Objects.sql**" file we used before, and hightlight the query:
+
+    ```sql
+    select * from dbo.Measurement;
+    ```
+
+1. And press **Ctrl-Shift-E** (Or pull up the command palette and enter "**>MSSQL: Run T-SQL Query**") to execute it.  You should see multiple rows of your device data showing up io the "**MSSQL Output**" tab.
+
+    ![SQL Data](images/10410-SQLData.png)
+
+1. Pretty cool!  Our device message data is now getting pushed into our Azure SQL Database. Of course, we also have the "**alerts**" output which can push high temperature messages off to our ***&lt;name&gt;alerts*** event hub, but we'll come back to those in another task.  For now, pat yourself on the back, this task had a lot of steps. 
 ___
+
+Now that we have our device message data being stored in our Azure SQL Database, let's use a web application to display that data!
 
 <a name="AzureWebApp"></a>
 Displaying Temperature Data with Azure Web Apps

@@ -1,3 +1,0 @@
-if exists(select object_id from sys.objects where type='U' and name = 'Measurement') drop table dbo.Measurement;
-create table dbo.Measurement ( MeasurementID int IDENTITY(1,1) not null constraint PK_Measurement_MeasurementID primary key CLUSTERED, deviceID nvarchar(15) not null constraint DF_Measurement_deviceID default '', [timestamp] datetime  null, temperature float(53) );
-select * from dbo.Measurement;
