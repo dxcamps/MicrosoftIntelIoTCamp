@@ -72,7 +72,7 @@ Getting Started with Grove IoT Commercial Developer Kit
 
     ![IoT Gateway Ethernet and Power](images/01080-IoTGatewayEthernetAndPower.png)
 
-1. Press the power button on the IoT Gateway to boot it.  It will take about two minutes or so for the device to boot.  Once it has booted the default Node-RED flow on the gateway will run and display the Gateway's IP Address on the LCD panel attached to the Arduion 101.  ***The IP Address displayed is the IP Address of your Intel IoT Gateway NUC.  You will use this to attach to your gateway throughout the rest of this lab.***  
+1. Press the power button on the IoT Gateway to boot it.  It will take about two minutes or so for the device to boot.  Once it has booted the default Node-RED flow on the gateway will run and display the Gateway's IP Address on the LCD panel attached to the Arduino 101.  ***The IP Address displayed is the IP Address of your Intel IoT Gateway NUC.  You will use this to attach to your gateway throughout the rest of this lab.***  
 
     ![IP Address on LCD Panel](images/01090-IPAddressOnLCD.png)
 
@@ -115,13 +115,13 @@ The Developer Hub is a front end interface for the Gateway. It has 5 main functi
 
 1. The "**Packages**" page allows you to manage the various RPM package repositories and installed packages on your gateway.  We will use this page later to add the Microsoft Azure related capabilities to your gateway.
 
-    > **Note**: PLEASE DO NOT INSTALL UPDATES AT THIS TIME.  While normally you would want to update your devices, in the lab environment this will take too long and negatively impact the available network bandwidth.  Please refrain from updating your IoT Gateway while at an IoT Camp event. You are welcome to perform the updates back on your own network. 
+    > **Note**: **PLEASE DO NOT INSTALL UPDATES AT THIS TIME**.  While normally you would want to update your devices, in the lab environment this will take too long and negatively impact the available network bandwidth.  Please refrain from updating your IoT Gateway while at an IoT Camp event. You are welcome to perform the updates back on your own network. 
 
     ![Packages](images/02030-Packages.png)  
 
 1. The "Administration" page provides easy access to a number of tools.  The tools most applicable to this lab are the "Quick Tools":
 
-    > **Note**: PLEASE DO NOT INSTALL OS UPDATES OR UPGRADE TO PRO AT THIS TIME.  While these options may be desirable they will take too long for the time frame of this lab as well as have a negative impact on the available bandwidth at the event.  Please refrain from updating your IoT Gateway while at an IoT Camp event.  You are welcome to perform the updates back on your own network. 
+    > **Note**: **PLEASE DO NOT INSTALL OS UPDATES OR UPGRADE TO PRO AT THIS TIME**.  While these options may be desirable they will take too long for the time frame of this lab as well as have a negative impact on the available bandwidth at the event.  Please refrain from updating your IoT Gateway while at an IoT Camp event.  You are welcome to perform the updates back on your own network. 
 
     - Easy access to the Node-RED development environment that has been pre-installed on the IoT Gateway.  We will use this extensively in this lab.
     - A way to register your gateway with the "Wind River Helix App Cloud".  We won't be using this feature as part of this lab.
@@ -161,7 +161,7 @@ In order to perform advanced configuration of the Gateway either a monitor and k
 
     ![PuTTY Security Alert](images/03030-PuTTYSecurityAlert.png)
 
-    - You can login with the username root and the password root.
+    - You can login with the username **root** and the password **root**.
 
     ![Login as root](images/03040-LoginAsRoot.png)
 
@@ -242,7 +242,7 @@ Reading the Temperature Sensor
 ---
 
 Now that you have a basic understanding of how to interact with the Gateway. Let’s move on to adding some more sensor data and processing to the gateway. 
-We will create Node-red flow to get data from temperature sensor and display it on debug window. We will be extending this flow to send data to Azure IoT hub later. 
+We will create Node-RED flow to get data from temperature sensor and display it in the debug panel. We will be extending this flow to send data to Azure IoT hub later. 
 
 1. Attach the **Grove Temperature Sensor** to the **Grove Base Shield** port **A1**
  using one of the supplied cables.
@@ -395,7 +395,7 @@ ___
 Planning your Azure Resources
 ---
 
-[Microsoft Azure](http://azure.com) provides an incredibly powerful and flexible backend for your IoT solutions.  In this lab, we will configure a robust collection of services to mimic the real world solutions you may implement your self.  With the number of services we will configure, it is helpful to first understand what those services are, and to gather the configuration details we will need for them in advance.  Having done so, the configuraiton of the services themselves will be much easier.  By being consitent on how we organize our resources as well as where we deploy them and how we name them, our job of working with them and managing them is made much simpler.
+[Microsoft Azure](http://azure.com) provides an incredibly powerful and flexible backend for your IoT solutions.  In this lab, we will configure a robust collection of services to mimic the real world solutions you may implement yourself.  With the number of services we will configure, it is helpful to first understand what those services are, and to gather the configuration details we will need for them in advance.  Having done so, the configuraiton of the services themselves will be much easier.  By being consitent on how we organize our resources as well as where we deploy them and how we name them, our job of working with them and managing them is made much simpler.
 
 The following diagram provides an overview of the architecture we will be implementing:
 
@@ -403,7 +403,7 @@ The following diagram provides an overview of the architecture we will be implem
 
 ### Common Resource Group ###
 
-We will be placing all of the azure resources we provision in this lab into a single "**Resource Group**" (<a href="https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/#resource-groups)).  Resource groups are a core concept in the "**Azure Resource Manager**" (<a href="https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/#resource-groups">link</a>) technology used by the Azure platform.  Resource Groups allow you to keep all the resources related to a solution in a single organizational container.  This in invaluable when securing, deploying, and removing the resources.    
+We will be placing all of the azure resources we provision in this lab into a single "**Resource Group**" (<a href="https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/#resource-groups">link</a>).  Resource groups are a core concept in the "**Azure Resource Manager**" (<a href="https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/#resource-groups">link</a>) technology used by the Azure platform.  Resource Groups allow you to keep all the resources related to a solution in a single organizational container.  This in invaluable when securing, deploying, and removing the resources.    
 
 ### Common Location or "Region" ###
 
@@ -433,7 +433,7 @@ At the time this is being written (October 2016), the following regions have all
 
 We will be provisioning a number of resources in this lab.  Some of these resources require globally unique names.  In addition, we need to be able to refer to those resources in the lab documentation.  To facilitate that, it is ***strongly recommended*** that you juse the naming convention outlined here.  In the architecture diagram above, you will see that resources have been named with a ***`<name>`*** prefix, and then some resource specific name.  
 
-Choose a ***`<name>`*** prefix that is unique to you.  It is recommended that you use something like your initials.  For example if your name where "**Jane Q. Doe"** you might select "**jqd**" as your name prefix. To add a little more uniqueness you could add in your two digit birth month.  For example, if Jane was born in "**October**" she might use "**jqd10**". 
+Choose a ***`<name>`*** prefix that is unique to you.  It is recommended that you use something like your initials.  For example if your name where "**Jane Q. Doe"** you might select "**jqd**" as your name prefix. To add a little more uniqueness you could add in your two digit birth month.  For example, if Jane was born in "**October**" she might use "**jqd10**".  **Some resources name must be at least six characters or longer.  Having a prefix that is 4-6 characters long will help ensure our names meet the minimum lenght.** 
 
 You can choose anything you like, but it must help create unique names, and it should be short because you'll be typing it a fair amount.
 
@@ -504,12 +504,12 @@ In this task, we'll create the ***&lt;name&gt;iot*** Azure IoT Hub and since it'
 
     ![IoT Hub Blad](images/07040-IoTHubProperties.png)
 
-1. In order to connect to your IoT Hub from client applications, you need to know the name and key for a "Shared Access Policy" (SAS Policy) that provides your client application the necessary privileges.  Your IoT Hub comes pre-provisioned with a number of  SAS policies that you can use. Or you can create additonal policies as needed.  In this lab we will use two of the default SAS policies.
+1. In order to connect to your IoT Hub from client applications, you need to know the name and key for a "Shared Access Policy" (SAS Policy) that provides your client application the necessary privileges.  Your IoT Hub comes pre-provisioned with a number of  SAS policies that you can use, or you can create additonal policies as needed.  In this lab we will use two of the default SAS policies.
 
     - "**iothubowner**" - This policy allows applications that connect with it full access to the IoT Hub.  They can manage devices registered with the hub, as well as send and receive messages.  We will use this SAS policy when we want to manage our IoT Hub.  
     - "**service**" - This policy is intended for back-end services or client applications that need to interact with devices via the IoT Hub.  These applications need to be able to receive messages coming into the hub from devices in the field, as well as send messages back to those devices.  This policy is granted the "service connect" permission which allows it to do just that.   
 
-1. In the portal, with your IoT Hub blade open, click on the "Shared access policies" along the left edge to see the hub's SAS policies:
+1. In the portal, with your IoT Hub blade open, click on the "**Shared access policies**" along the left edge to see the hub's SAS policies:
 
     ![SAS Policies Link](images/07050-SASPoliciesLink.png)
 
@@ -521,7 +521,7 @@ In this task, we'll create the ***&lt;name&gt;iot*** Azure IoT Hub and since it'
 
     ![Document iothubowner Connection String](images/07070-DocumentIoTHubOwnerConnectionString.png)
 
-1. Repeate the last to steps to copy and document the "**service**" SAS policy primary connection string:
+1. Repeate the last two steps to copy and document the "**service**" SAS policy primary connection string:
 
     > **Note**: Make sure to save the changes to the **[myresources.txt](./myresources.txt)**" file each time.  
 
@@ -762,6 +762,12 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
     ```
 
 1. Now, open the Node-RED development environment in the browser (Remember you can just point your browser to port 1880 on your NUC, eg: http://xxx.xxx.xxx.xxx:1880 where xxx.xxx.xxx.xxx is your NUC's IP Address).  In the list of nodes on the left, you should see a new "**cloud**" category, and within it the "**azureiothub**" node:
+
+    > **Note**: if the "**cloud**" category and "**azureiothubnode**" node don't appear, you may need to manually install the "**node-red-control-azureiothubnode**" package on the NUC.  If that is necessary, ssh into the NUC, and from the prompt run the following two commands:
+    <br/>
+    `npm install -g node-red-contrib-azureiothubnode`
+    <br/>
+    `systemctl restart node-red-experience`
 
     ![New azureiothubnode](images/09080-AzureIoTHubNode.png)
 
