@@ -1,12 +1,12 @@
 {
     "localport": "3000",
-    "iotHubConnString": "HostName=msiniothub.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=nEDxGuR9J8nAn2EysyiFAvNpiojs+wlEW2sF6ZsH69M=",
-    "sqlServer": "msinsql.database.windows.net",
-    "sqlDatabase" : "msindb",
-    "sqlLogin" : "sqladmin",
-    "sqlPassword" : "Pa$$w0rd",
-    "powerbiCollectionName": "msincollection",
-    "powerbiWorkspaceId": "649f253f-a3cd-459b-84ce-5e63eb70e9e1",
-    "powerbiReportId": "0707f7a5-bdf1-482f-8b4f-950a5d8de01e",
-    "powerbiAccessKey": "Ssh0wXU61rnqhx+z8YLFZVPDTCooxgRK/d7KwEpb3KaMGGtHLT0ta5nVhktlWsYBrjvsmRygbZNyuU5II1gHmA=="
+    "iotHubConnString": "<PASTE YOUR IOT HUB 'SERVICE' SAS POLICY PRIMARY CONNECTION STRING HERE>",
+    "sqlServer": "<PASTE YOUR AZURE SQL SERVER FULLY QUALIFIED DOMAIN NAME (FQDN) HERE>",
+    "sqlDatabase" : "<PASTE YOUR AZURE SQL DATABASE NAME HERE>",
+    "sqlLogin" : "<PASTE YOUR AZURE SQL SERVER LOGIN HERE>",
+    "sqlPassword" : "<PASTE YOUR AZURE SQL SERVER PASSWORD HERE>",
+    "powerbiCollectionName": "<PASTE YOUR POWER BI EMBEDDED WORKSPACE COLLECTION NAME HERE>",
+    "powerbiWorkspaceId": "<PASTE YOUR POWER BI EMBEDDED WORKSPACE ID HERE>",
+    "powerbiReportId": "<PASTE YOUR POWER BI EMBEDDED REPORT ID HERE>",
+    "powerbiAccessKey": "<PASTE YOUR POWER BI EMBEDDED WORKSPACE COLLECTION ACCESS KEY HERE>"
 } 

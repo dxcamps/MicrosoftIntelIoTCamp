@@ -365,7 +365,7 @@ We will create Node-red flow to get data from temperature sensor and display it 
 
     ![Current temp on the LCD](images/05140-TempOnLcd.png)
 
-1. If you are having problems with your flow, you can get a copy of a working version of the flow from the [Node-RED Flows/Flow 3 - V1.json](Node-RED Flows/Flow 3 - V1.json) file in the lab files.  To use it:
+1. If you are having problems with your flow, you can get a copy of a working version of the flow from the <a href="./Node-RED Flows/Flow 3 - 01 - Temperature on LCD.json">Node-RED Flows/Flow 3 - 01 - Temperature on LCD.json</a> file in the lab files.  To use it:
 
     ***YOU DO NOT NEED TO DO THESE STEPS UNLESS YOU ARE HAVING A PROBLEM AND WANT TO IMPORT WORKING CODE***
 
@@ -377,7 +377,7 @@ We will create Node-red flow to get data from temperature sensor and display it 
 
         ![Select nodes have an orange border](images/05146-SelectedNodesOrangeBorder.png)
     
-    - Open the "**Flow 3 - V1.json**" file in the code editor of your choice, and copy it's contents. 
+    - Open the "**<a href="./Node-RED Flows/Flow 3 - 01 - Temperature on LCD.json">Node-RED Flows/Flow 3 - 01 - Temperature on LCD.json</a>**" file in the code editor of your choice, and copy it's contents. 
 
     - In the Node-RED editor, from the "Hamburger" button in the top right corner, select "**Import**" | "**Clipboard**"
 
@@ -475,7 +475,7 @@ ___
 Creating an Azure IoT Hub
 ---
 
-In this task, we'll create the ***&lt;name&gt;*** iot Azure IoT Hub and since it's our first Azure resource, we'll create the ***&lt;name&gt;group*** resource group to put it in.  Make sure that you understand the information in the [Planning your Azure Resources](#PlanningAzure) section before continuing.
+In this task, we'll create the ***&lt;name&gt;iot*** Azure IoT Hub and since it's our first Azure resource, we'll create the ***&lt;name&gt;group*** resource group to put it in.  Make sure that you understand the information in the [Planning your Azure Resources](#PlanningAzure) section before continuing.
 
 1. Open the [Azure Portal](https://portal.azure.com) ([https://portal.azure.com](https://portal.azure.com)) and login to your subscription.  If you don't have a current Azure Subscription you can create a <a href="https://azure.microsoft.com/en-us/free/">free trial</a>.
 
@@ -623,7 +623,7 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
 1. Note the `iothub-explorer login` option.  This allows you to etner your IoT Hub connection string once, and not have to re-supply the connection string for every command during the "session".  The "session" lasts for one hour by default. To login, we'll need the "iothubowner" SAS policy connection string we copied int the "**[myresources.txt](./myresources.txt)**" file previously.  Retrieve that string from the file, and use it to login to your Azure IoT Hub with iothub-explorer as follows:
 
     ```bash
-    iothub-explorer login "<<past your iothub owner connection string here>>"
+    iothub-explorer login "<paste your iothub owner connection string here>"
     ```
     For example:
 
@@ -740,9 +740,9 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
     ![Close Manage Repositories Window](images/09040-CloseManageRepositoriesWindow.png)
 
-1. Next, click the "**Add Packages +" button:
+1. Next, click the "**Add Packages +**" button:
 
-    ![Add Packages](images/09040-AddPackagesButton.png)
+    ![Add Packages](images/09050-AddPackagesButton.png)
 
 1. In the "**Add New Packages**" window, in the search box, type "**cloud-azure**", then click the "**Install**" button next to the "**packagegroup-cloud-azure**" package.  Again, this takes a few minutes so be patient:
 
@@ -840,7 +840,7 @@ ___
 Processing Temperature Data with Stream Analytics
 ---
 
-Now that we have messages makeing it into our Azure IoT Hub from our device, we can start to process those messages in the cloud. 
+Now that we have messages making it into our Azure IoT Hub from our device, we can start to process those messages in the cloud. 
 
 In the [Planning your Azure Resources](#PlanningAzure) section, we discussed the ***&lt;name&gt;job*** Stream Analytics Job and it's two outputs, the ***&lt;name&gt;db*** SQL Database and the ***&lt;name&gt;alerts*** Event Hub.  It's much easier to configure the Stream Analytics job if it's outputs already exist.  So we'll start by creating those resources first.  
 
@@ -861,6 +861,7 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
     - Database name - ***&lt;name&gt;db*** 
     - Subscription - **Chose the subscription you used for your Azure IoT Hub**
     - Resource group - Choose "**Use existing**" and select the ***&lt;name&gt;group*** we created when provising the Azure IoT Hub.
+    - Select source - "**Blank database**"
     - Collation - Leave it at the default "**SQL_Latin1_General_CP1_CI_AS**"
 
     ![New SQL Database Properties](images/10020-NewSqlDbProperties.png)
@@ -885,7 +886,7 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     ![Create Database and Server](images/10050-CreateDatabaseAndServer.png)
 
-1. It'll take a few minutes to provision your new Azure SQL Server and Database, but when they deployment is done, the blade for the Database will open. When it does, click on the link to the server at the top of the blade:
+1. It'll take a few minutes to provision your new Azure SQL Server and Database, but when the deployment is done, the blade for the Database will open. When it does, click on the link to the server at the top of the blade:
 
     ![Click Server Link](images/10060-ClickOnServerLink.png)
 
@@ -959,7 +960,9 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     ![MSSQL Output](images/10200-SQLMessages.png)
 
-1. You can use the "**Results**" tab to view the results from the three "**select**" statements in the script.  However, since there is no data in the "**dbo.Measurement**" table yet, there aren't any rows retrieved.  
+1. You can use the "**Results**" tab to view the results from the three "**select**" statements in the script.  However, since there is no data in the "**dbo.Measurement**" table yet, there aren't any rows retrieved.
+
+    ![SQL Results](images/10210-SQLResults.png)
 
 ### Create the Event Hub ###
 
@@ -1188,6 +1191,8 @@ We'll start by creating the Azure App Service Plan and Web App in the portal.
 
 1. If you haven't setup your deployment credentials for your account subscription yet, you'll need to.  Click "**Setup connection**" and enter the credentials to use, and click "**OK**":
 
+    > **Note**: If you are not prompted for your deployment credentials, then you have likely already set them for your subscription in the past.  You can go ahead and finish creating the deployment source, the after you have created it, use the "**Deployment Credentials**" link along the left side of your Web App blade to get to the same settings shown here.  
+
     - Deployment user name - ***&lt;name&gt;user***
     - Password - **P@ssw0rd**
     - Confirm Password - **P@ssw0rd**
@@ -1290,7 +1295,7 @@ The last step is to get this web application running in Azure, not locally.  Ear
 
     ![Deployment Credentials](images/11240-DeploymentCredentials.png)
 
-1. In the [Azure Portal](https://portal.azure.com), on the "**Deployment optons**" page for your ***&lt;name&gt;web*** web app, you should see the deployment kick off.  What it tell it displays the green checkmark, and "Active".
+1. In the [Azure Portal](https://portal.azure.com), on the "**Deployment optons**" page for your ***&lt;name&gt;web*** web app, you should see the deployment kick off.  The deployment will likely take a few minutes.  Wait until it displays the green checkmark, and "Active".
 
     ![Deployment in Portal](images/11250-DeploymentInPortal.png)
 
@@ -1322,7 +1327,7 @@ We'll configure our Intel NUC to turn on it's buzzer for one second if it receiv
 
     ![Buzzer Attached](images/12010-BuzzerAttached.png)
 
-1. Copy the contents out of "**HOLs\Node-RED Flows\Flow - Add Buzzer Support.json**" file into the clipboard. 
+1. Copy the contents out of "**HOLs\Node-RED Flows\Flow 3 - 02 - Add Azure IoT Hub Node.json**" file into the clipboard. 
 
 1. Open the Intel NUCs Node-RED development environment in your browser (http://xxx.xxx.xxx.xxx:1880 where xxx.xxx.xxx.xxx is your NUC's IP Address),  from the "**Hamburger**" menu in the top right corner select "**Import**" | "**Clipboard**"
 
@@ -1374,7 +1379,11 @@ Previously, we setup our ***&lt;name&gt;job*** Stream Analytics Job to forward m
 
 In this task, we'll create the **TempAlert** function and have it receive those alert messages from the event hub, and send a temp alert message back down to the device.    
 
-1. Open the [Azure Port](https://portal.azure.com) in the browser, and close any blades open from previous steps.  Then click "**+ New**" | "**Compute**" | "**Function App**".  Complete the properties as follows then click the "**Create**" button:
+1. Open the [Azure Port](https://portal.azure.com) in the browser, and close any blades open from previous steps.  Then click "**+ New**" | "**Compute**" | "**Function App**".
+
+    ![New Function App](images/12065-NewFunctionApp.png)
+
+1. Complete the properties as follows then click the "**Create**" button:
 
     - App name - ***&lt;name&gt;functions***
     - Subscription - **Chose the same subscription used for the previous resources**
@@ -1438,9 +1447,11 @@ In this task, we'll create the **TempAlert** function and have it receive those 
 1. In the "**run.csx**" file, locate the line of code that reads:
 
     ```c#
-    static string connectionString = "<your iot hub 'service' shared access policy connection string goes here>";
+    static string connectionString = "<Your IoT Hub "service" SAS Policy Primary Connection String goes here>";
     ```
-    and replace `<your iot hub 'service' shared access policy connection string goes here>` with the "**IoT Hub "service" SAS Policy Primary Connection String**" value from the **[myresources.txt](./myresources.txt)** file.  For example:
+    and replace `<your Your IoT Hub "service" SAS Policy Primary Connection String goes here>` with the "**IoT Hub "service" SAS Policy Primary Connection String**" value from the **[myresources.txt](./myresources.txt)** file.  
+    
+    For example:
 
     ```c#
     static string connectionString = "HostName=mic16iot.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=wQF6dryjMwQ1mMEwDFfcgkSaSscFthHVVJeIfq6iVWQ=";
@@ -1460,6 +1471,8 @@ In this task, we'll create the **TempAlert** function and have it receive those 
     - That will trigger our function, and allow the function to send a cloud-to-device message back to the Intel NUC via the Azure IoT Hub.
 
 1. To try it out:
+
+    > **Note**: If the sensor is already publishing values that exceeds the threshold value in the ***&lt;name&gt;job*** Stream Analytics Job Query (**40** by default), you should begin receive alerts immediately. This can become irritating if the threshold is set to low.  If desired, you can go back to your ***&lt;name&gt;job*** Stream Analytics Job Query definition and increase the threshold value.  
 
     - Warm your hands up by rubbing them vigoursly together, then pinch the Temperature sensor on both sides with your warm fingers and try to get the NUC to generate a reading of the threshold value (again, **40** by default)
 
@@ -1667,7 +1680,9 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     ```bash
     powerbi update-connection --dataset "ed212c12-0335-414d-b0f1-d4e1be1268da" --username sqladmin --password "P@ssw0rd" --connectionString "data source=mic16sql.database.windows.net;initial catalog=mic16db;persist security info=True;encrypt=True;trustservercertificate=False"
     ```
-    Which returns something similar to:    
+    Which returns something similar to:
+
+    > **Note**: Sometimes this fails.  If you get an error, double check your parameters, but even if they are correct, simply running the command a second or third time may work.      
 
     ```
     [ powerbi ] Found dataset!
@@ -1701,22 +1716,22 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     > **Note**: The div that will contain our embedded report has been commented out, and a place holder <img/> is being displayed instead.  We need to switch that around so the <img/> is commented out, and the <div..></div> is availabe.
 
-    ```html
-    <img src="images/chartplaceholder.png" style="width:455px;height:380px;border:none;" />
-    <!--
-    <div id="powerbiReport" powerbi-type="report" style="height:380px;"></div>
-    -->
-    ```
-    ![Commented out DIV](images/13090-CommentedOutDiv.png)
+        ```html
+        <img src="images/chartplaceholder.png" style="width:455px;height:380px;border:none;" />
+        <!--
+        <div id="powerbiReport" powerbi-type="report" style="height:380px;"></div>
+        -->
+        ```
+        ![Commented out DIV](images/13090-CommentedOutDiv.png)
 
-    and switch them around so the `<img.../>` tag is commented out, and the `<div...></div>` tag isn't
+        and switch them around so the `<img.../>` tag is commented out, and the `<div...></div>` tag isn't
 
-    ```html
-    <!--
-    <img src="images/chartplaceholder.png" style="width:455px;height:380px;border:none;" />
-    -->
-    <div id="powerbiReport" powerbi-type="report" style="height:380px;"></div>
-    ```
+        ```html
+        <!--
+        <img src="images/chartplaceholder.png" style="width:455px;height:380px;border:none;" />
+        -->
+        <div id="powerbiReport" powerbi-type="report" style="height:380px;"></div>
+        ```
 
 1. Next, near the bottom of the "**public\index.html**" file locate the following code:
 

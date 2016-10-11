@@ -1,0 +1,233 @@
+[
+    {
+        "id": "f94b0ea1.a2eb5",
+        "type": "upm-grove-temperature",
+        "z": "ed9f6c5e.d1a",
+        "name": "",
+        "platform": "512",
+        "unit": "C",
+        "pin": "1",
+        "interval": "10000",
+        "x": 118,
+        "y": 149,
+        "wires": [
+            [
+                "dcefa135.fae0e"
+            ]
+        ]
+    },
+    {
+        "id": "dcefa135.fae0e",
+        "type": "function",
+        "z": "ed9f6c5e.d1a",
+        "name": "Data Conversion",
+        "func": "msg.payload = msg.payload * 3.3 / 5\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 338,
+        "y": 149,
+        "wires": [
+            [
+                "f55709e7.7cd1b8",
+                "6b01e55a.c6f81c"
+            ]
+        ]
+    },
+    {
+        "id": "f55709e7.7cd1b8",
+        "type": "function",
+        "z": "ed9f6c5e.d1a",
+        "name": "Create Payload",
+        "func": "var gateway = \"PASTE YOUR <name>IntelIoTGateway DEVICE ID HERE\";\nreturn {\n    payload: {\n        deviceID: gateway,\n        timestamp: new Date().toISOString(),\n        temperature: msg.payload\n    }\n};",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 148,
+        "y": 229,
+        "wires": [
+            [
+                "dd060a97.1c2e48"
+            ]
+        ]
+    },
+    {
+        "id": "dd060a97.1c2e48",
+        "type": "json",
+        "z": "ed9f6c5e.d1a",
+        "name": "",
+        "x": 298,
+        "y": 229,
+        "wires": [
+            [
+                "fd53ca57.eec0b8",
+                "ddf26474.a30fb8"
+            ]
+        ]
+    },
+    {
+        "id": "fd53ca57.eec0b8",
+        "type": "debug",
+        "z": "ed9f6c5e.d1a",
+        "name": "",
+        "active": false,
+        "console": "false",
+        "complete": "false",
+        "x": 438,
+        "y": 229,
+        "wires": []
+    },
+    {
+        "id": "6b01e55a.c6f81c",
+        "type": "upm-grove-rgb-lcd",
+        "z": "ed9f6c5e.d1a",
+        "name": "Show the Temperature",
+        "platform": "512",
+        "r": 0,
+        "g": "255",
+        "b": "0",
+        "row": "1",
+        "column": 0,
+        "x": 376,
+        "y": 63,
+        "wires": []
+    },
+    {
+        "id": "ddf26474.a30fb8",
+        "type": "azureiothub",
+        "z": "ed9f6c5e.d1a",
+        "name": "Azure IoT Hub",
+        "protocol": "amqp",
+        "x": 120,
+        "y": 320,
+        "wires": [
+            [
+                "4f98a969.675df8"
+            ]
+        ]
+    },
+    {
+        "id": "a43f9d3b.c24d",
+        "type": "json",
+        "z": "ed9f6c5e.d1a",
+        "name": "",
+        "x": 450,
+        "y": 320,
+        "wires": [
+            [
+                "4a0a1743.3ed1c8",
+                "efc20fec.d10e7",
+                "1020cdb3.f543a2"
+            ]
+        ]
+    },
+    {
+        "id": "4f98a969.675df8",
+        "type": "function",
+        "z": "ed9f6c5e.d1a",
+        "name": "To String",
+        "func": "msg.payload = String.fromCharCode.apply(null, new Uint16Array(msg.payload));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 300,
+        "y": 320,
+        "wires": [
+            [
+                "a43f9d3b.c24d"
+            ]
+        ]
+    },
+    {
+        "id": "4a0a1743.3ed1c8",
+        "type": "switch",
+        "z": "ed9f6c5e.d1a",
+        "name": "If Temp Alert",
+        "property": "payload.type",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "temp",
+                "vt": "str"
+            }
+        ],
+        "checkall": "false",
+        "outputs": 1,
+        "x": 206,
+        "y": 394,
+        "wires": [
+            [
+                "45d430ff.db52e"
+            ]
+        ]
+    },
+    {
+        "id": "1020cdb3.f543a2",
+        "type": "debug",
+        "z": "ed9f6c5e.d1a",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 390,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "45d430ff.db52e",
+        "type": "function",
+        "z": "ed9f6c5e.d1a",
+        "name": "Turn on Buzzer",
+        "func": "msg.payload = 1;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 205,
+        "y": 458,
+        "wires": [
+            [
+                "45e6e757.d26de8"
+            ]
+        ]
+    },
+    {
+        "id": "efc20fec.d10e7",
+        "type": "function",
+        "z": "ed9f6c5e.d1a",
+        "name": "Get the Message",
+        "func": "msg.payload = msg.payload.message\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 441,
+        "y": 523,
+        "wires": [
+            [
+                "1ad5796c.fb55f7"
+            ]
+        ]
+    },
+    {
+        "id": "45e6e757.d26de8",
+        "type": "UPM-Grove-Buzzer",
+        "z": "ed9f6c5e.d1a",
+        "name": "",
+        "platform": "512",
+        "volume": "0.125",
+        "pin": "3",
+        "x": 214,
+        "y": 532,
+        "wires": []
+    },
+    {
+        "id": "1ad5796c.fb55f7",
+        "type": "upm-grove-rgb-lcd",
+        "z": "ed9f6c5e.d1a",
+        "name": "Show the Message",
+        "platform": "512",
+        "r": "255",
+        "g": 0,
+        "b": "0",
+        "row": "1",
+        "column": 0,
+        "x": 440,
+        "y": 602,
+        "wires": []
+    }
+]

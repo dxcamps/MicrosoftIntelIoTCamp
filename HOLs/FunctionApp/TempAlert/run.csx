@@ -24,7 +24,7 @@ class AlertMessage {
 
 // In the portal, open up the IoT Hub, then "Shared Access Policies" and copy the primary connection string
 // for the "service" access policy and paste it in below
-static string connectionString = "<your iot hub 'service' shared access policy connection string goes here>";
+static string connectionString = "<Your IoT Hub "service" SAS Policy Primary Connection String goes here>";
 
 // This is the Azure IoT Hub client. 
 // We'll use it to send an alert message to the device

@@ -10,17 +10,17 @@
         // Properties for a connection
         {
             // [Required] Server to connect to. Use 'hostname\\instance' or '<server>.database.windows.net'.
-            "server": "msinsql.database.windows.net",
+            "server": "<paste your Azure SQL Server Fully Qualified Domain Name (FQDN) here>",
 
             // [Optional] Database to connect to.
             // If this is empty, default depends on server configuration, typically 'master'.
-            "database": "msindb",
+            "database": "<paste your Azure SQL Database Name here>",
 
             // [Required] User name for SQL authentication. If this is empty, you are prompted when you connect.
-            "user": "sqladmin@msinsql",
+            "user": "<paste your Azure SQL Server Qualified SQL Login here>",
 
             // [Required] Password for SQL authentication. If this is empty, you are prompted when you connect.
-            "password": "Pa$$w0rd",
+            "password": "<paste your Azure SQL Server Password here>",
 
             // Below are more optional settings in case you wish to override them
 

@@ -46,13 +46,13 @@ Azure SQL Server Name:
 Azure SQL Server Fully Qualified Domain Name (FQDN):
 <paste your Azure SQL Database name here>.database.windows.net
 
-Azure SQL Login (sqladmin is recommeded):
+Azure SQL Server Login (sqladmin is recommeded):
 <paste your sql admin login name here>
 
-Azure Server Qualified SQL Login:
+Azure SQL Server Qualified SQL Login:
 <paste your sql admin login name here>@<paste your Azure SQL Server name here>
 
-Azure SQL Password (P@ssword is recommended):
+Azure SQL Server Password (P@ssword is recommended):
 <paste your sql admin password here>
 
 ========================================
