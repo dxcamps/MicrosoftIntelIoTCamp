@@ -1714,7 +1714,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
 1. Next, open the "**public/index.html**" file and locate the following code
 
-    > **Note**: The div that will contain our embedded report has been commented out, and a place holder <img/> is being displayed instead.  We need to switch that around so the <img/> is commented out, and the <div..></div> is availabe.
+    > **Note**: The div that will contain our embedded report has been commented out, and a place holder `<img/>` is being displayed instead.  We need to switch that around so the `<img/>` is commented out, and the `<div..></div>` is availabe.
 
         ```html
         <img src="images/chartplaceholder.png" style="width:455px;height:380px;border:none;" />
@@ -1749,7 +1749,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     ![Uncomment embedReport() call](images/13110-EmbedReportCallUncommented.png)
 
-    This will cause some code to run when the page is loaded to embed the report into the <div /> container we uncommented above.
+    This will cause some code to run when the page is loaded to embed the report into the `<div />` container we uncommented above.
     
 1. The following information is just FYI, you don't need to do anything with this code:
 
