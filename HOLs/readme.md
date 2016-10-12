@@ -298,7 +298,8 @@ We will create Node-RED flow to get data from temperature sensor and display it 
             return {
                 payload: {
                     deviceID: gateway,
-                    temp: msg.payload
+                    timestamp: new Date().toISOString(),
+                    temperature: msg.payload
                 }
             };
             ````
