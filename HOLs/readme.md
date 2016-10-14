@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD003 MD033 MD002 -->
 Intel IoT Gateway, Arduino 101 and Microsoft Azure Hands-On-Lab
 ===
 
@@ -6,8 +7,7 @@ Overview
 
 In this lab, we will unbox and set up an Intel IoT Gateway and the Arduino 101 board (with a Grove Starter kit) along with several services available in Microsoft Azure to monitor the temperature and alert maintenance of a high temperature. Using Node-RED, running on the Intel NUC Gateway, the application will read the temperature value from a Grove temperature sensor and publish that data to an Azure IoT Hub.  From there a collection of Azure services including Stream Analytics, Event Hubs, SQL Database, Web Applications and Power BI Embedded will be used to both display the temperature data as well as alert the user to temperature readings over a certain threshold.
 
-![Lab Architecture](images/00000-LabArchitecture.jpg) 
-
+![Lab Architecture](images/00000-LabArchitecture.jpg)
 
 Prerequisites
 ---
@@ -17,10 +17,10 @@ In order to successfully complete this lab you will need:
 - Intel Grove Commercial IoT Developer Kit **<a target="_blank" href="https://www.seeedstudio.com/Grove-IoT-Commercial-Developer-Kit-p-2665.html">link</a>**
 - Arduino 101 **<a target="_blank" href="https://www.arduino.cc/en/Main/ArduinoBoard101">link</a>**
 - A computer.  Windows, Mac OSx or Linux
-- An active Microsoft Azure Subscription.  If you do not have a current subscription, you can create one using the <a target="_blank" href="https://azure.microsoft.com/en-us/free/">free trial</a>
-- Node.js 4.x or later.  You can install Node.js from **<a target="_blank" href="https://nodejs.org/en/">https://nodejs.org/en/</a>**
-- Visual Studio Code. Visual Studio Code is a free, open source, cross platform development environment.  You can install it from **<a target="_blank" href="http://code.visualstudio.com">http://code.visualstudio.com</a>**
-- Git installed and in your system path - You can install Git from **<a target="_blank" href="https://git-scm.com/downloads">https://git-scm.com/downloads</a>**
+- An active Microsoft Azure Subscription.  If you do not have a current subscription, you can create one using the **<a target="_blank" href="https://azure.microsoft.com/en-us/free/">free trial</a>**
+- Node.js 4.x or later.  You can install Node.js from **<a target="_blank" href="https://nodejs.org/en/">nodejs.org</a>**
+- Visual Studio Code. Visual Studio Code is a free, open source, cross platform development environment.  You can install it from **<a target="_blank" href="http://code.visualstudio.com">code.visualstudio.com</a>**
+- Git installed and in your system path - You can install Git from **<a target="_blank" href="https://git-scm.com/downloads">git-scm.com/downloads</a>**
 
 Tasks
 ---
@@ -45,7 +45,6 @@ ___
 <a name="GettingStartedWithGrove"></a>
 Getting Started with Grove IoT Commercial Developer Kit
 ---
-
 
 1. Unbox the Grove Starter Kit and Arduino 101
 
@@ -73,11 +72,15 @@ Getting Started with Grove IoT Commercial Developer Kit
 
     ![IoT Gateway Ethernet and Power](images/01080-IoTGatewayEthernetAndPower.png)
 
-1. Press the power button on the IoT Gateway to boot it.  It will take about two minutes or so for the device to boot.  Once it has booted the default Node-RED flow on the gateway will run and display the Gateway's IP Address on the LCD panel attached to the Arduino 101.  ***The IP Address displayed is the IP Address of your Intel IoT Gateway NUC.  You will use this to attach to your gateway throughout the rest of this lab.***  
+1. Press the power button on the IoT Gateway to boot it.  It will take about two minutes or so for the device to boot.  Once it has booted the default Node-RED flow on the gateway will run and display the Gateway's IP Address on the LCD panel attached to the Arduino 101.  ***The IP Address displayed is the IP Address of your Intel IoT Gateway NUC.  You will use this to attach to your gateway throughout the rest of this lab.***
+
+    > **Note**: If you do not see your IP address within about five minutes (make sure you give the NUC plenty of time to boot), you can try the following:<br/><br/>- Ensure that the network cable is connected properly and that it is connected to a network with Internet Access.  If you re-connect the cable wait at least one minute to see if the IP Address appears on the LCD.  The default flow only updates the display of the address once every minute.<br/>- If you still don't see an IP Address, you can try re-booting it by pressing the powerbutton until the light turns off, then turning it back on again.
 
     ![IP Address on LCD Panel](images/01090-IPAddressOnLCD.png)
 
-1. Open your browser and go to the IP Address from the previous step (http://xxx.xxx.xxx.xxx where xxx.xxx.xxx.xxx is the IP Address from above).  If you are presented with a **"Privacy Statement"** click **"Continue"**.
+1. Once the IP Address has been dispalyed, wait another two minutes and then open your browser and go to the IP Address from the previous step (`http://your.nucs.ip.address` where `your.nucs.ip.address is` the IP Address from above).  If you are presented with a **"Privacy Statement"** click **"Continue"**.
+
+    > **Note:** Why are we waiting?  The "IoT Gateway Developer Hub" is a web application that is delivered by an nginx web server instance that takes a little bit of time to spin up.  Just because the IP Address is showing on the LCD, that doesn't mean that the web application is ready yet.  Give it a couple of minutes, and you'll likely be less frustrated!  ***Have some fun while you wait, try turning the knob on the Rotary Angle Sensor to see the background colors on the RGB LCD change.  That happens because the default flow is reading that sensor value and changing the background color based on the value it reads.  Enjoy.***
 
     ![Privacy Statement](images/01100-PrivacyStatement.png)
 
@@ -89,7 +92,7 @@ Getting Started with Grove IoT Commercial Developer Kit
 
     ![License Agreement](images/01120-Eula.png)
 
-1. Once you have successfully logged in, you should see the "**IoT Gateway Developer Hub". 
+1. Once you have successfully logged in, you should see the "**IoT Gateway Developer Hub**".
 
     ![IoT Gateway Developer Hub](images/01130-IoTGatewayDeveloperHub.png)
 ___
@@ -100,40 +103,40 @@ Intel NUC Developer Hub Overview
 
 The Developer Hub is a front end interface for the Gateway. It has 5 main functions:
 
-- Display sensor data and basic Gateway information on a configurable dashboard 
-- Access the Node-RED development environment 
+- Display sensor data and basic Gateway information on a configurable dashboard
+- Access the Node-RED development environment
 - Add repositories, install and upgrade packages
-- Administer the Gateway – update OS, configure network setting 
-- Access documentation 
+- Administer the Gateway – update OS, configure network setting
+- Access documentation
 
-1. The "**Sensors**" page can be used to monitor the sensor data that is being published to the dashboard.  By default the gateway is configured to display the value of the rotary angle sensor (knob) attached to the Arduino 101.  You can twisth the knob to see the values change in the Device and Sensor Information panel on this page.  
+1. The "**Sensors**" page can be used to monitor the sensor data that is being published to the dashboard.  By default the gateway is configured to display the value of the rotary angle sensor (knob) attached to the Arduino 101.  You can twisth the knob to see the values change in the Device and Sensor Information panel on this page.
 
     ![Sensor Dashboard](images/02010-Sensors.png)
 
-1. You can collapse the Device and Sensor Information panel along the top of the page to make the other information below easier to see by clicking the arrow at the top of the navigation bar.  Click the button again to expand the panel again.  
+1. You can collapse the Device and Sensor Information panel along the top of the page to make the other information below easier to see by clicking the arrow at the top of the navigation bar.  Click the button again to expand the panel again.
 
     ![Collapsed Panel](images/02020-CollapsedDeviceAndSensorData.png)
 
 1. The "**Packages**" page allows you to manage the various RPM package repositories and installed packages on your gateway.  We will use this page later to add the Microsoft Azure related capabilities to your gateway.
 
-    > **Note**: **PLEASE DO NOT INSTALL UPDATES AT THIS TIME**.  While normally you would want to update your devices, in the lab environment this will take too long and negatively impact the available network bandwidth.  Please refrain from updating your IoT Gateway while at an IoT Camp event. You are welcome to perform the updates back on your own network. 
+    > **Note**: **PLEASE DO NOT INSTALL UPDATES AT THIS TIME**.  While normally you would want to update your devices, in the lab environment this will take too long and negatively impact the available network bandwidth.  Please refrain from updating your IoT Gateway while at an IoT Camp event. You are welcome to perform the updates back on your own network.
 
-    ![Packages](images/02030-Packages.png)  
+    ![Packages](images/02030-Packages.png)
 
 1. The "Administration" page provides easy access to a number of tools.  The tools most applicable to this lab are the "Quick Tools":
 
-    > **Note**: **PLEASE DO NOT INSTALL OS UPDATES OR UPGRADE TO PRO AT THIS TIME**.  While these options may be desirable they will take too long for the time frame of this lab as well as have a negative impact on the available bandwidth at the event.  Please refrain from updating your IoT Gateway while at an IoT Camp event.  You are welcome to perform the updates back on your own network. 
+    > **Note**: **PLEASE DO NOT INSTALL OS UPDATES OR UPGRADE TO PRO AT THIS TIME**.  While these options may be desirable they will take too long for the time frame of this lab as well as have a negative impact on the available bandwidth at the event.  Please refrain from updating your IoT Gateway while at an IoT Camp event.  You are welcome to perform the updates back on your own network.
 
     - Easy access to the Node-RED development environment that has been pre-installed on the IoT Gateway.  We will use this extensively in this lab.
     - A way to register your gateway with the "Wind River Helix App Cloud".  We won't be using this feature as part of this lab.
-    - Access to the "LuCI" ( <a target="_blank" href="https://github.com/openwrt/luci/wiki">link</a> ) interface to configure administrative settings on your gateway.  **PLEASE DO NOT MAKE CHANGES USING THIS TOOL.**     
+    - Access to the "LuCI" ( <a target="_blank" href="https://github.com/openwrt/luci/wiki">link</a> ) interface to configure administrative settings on your gateway.  **PLEASE DO NOT MAKE CHANGES USING THIS TOOL.**
     - The "Cloud Commander" web console, file manager, and editor.
 
     ![Administration](images/02040-Administration.png)
 
 1. The "Documentation" page provides a wealth of documentation, community, and source code resources.
 
-    ![Documentation](images/02050-Documentation.png)  
+    ![Documentation](images/02050-Documentation.png)
 
 ___
 
@@ -142,7 +145,6 @@ Connecting to your Gateway using SSH
 ---
 
 In order to perform advanced configuration of the Gateway either a monitor and keyboard, or a Secure Shell (SSH) connection is required. On OSX and Linux there are default programs that can do this - Screen and SSH respectively. However on Windows no default exists, however PuTTY is light weight and easy to install and can be used to SSH into the Gateway.
-
 
 1. For Windows users:
 
@@ -169,7 +171,7 @@ In order to perform advanced configuration of the Gateway either a monitor and k
 1. For Mac OSx and Linux users
 
     - Open a terminal Window
-    - At the prompt, type the follwing command.  Replace `<<IP Address>>` with the IP Address of your IoT Gateway: 
+    - At the prompt, type the follwing command.  Replace `<<IP Address>>` with the IP Address of your IoT Gateway:
 
         `ssh root@<<IP Address>>`
 
@@ -181,19 +183,19 @@ ___
 Blinking an LED with Node-RED
 ---
 
-In this exercise, you will use the Node-RED development environment pre-installed on the Intel IoT Gateway to blink the onboard LED on your Arduino 101. 
+In this exercise, you will use the Node-RED development environment pre-installed on the Intel IoT Gateway to blink the onboard LED on your Arduino 101.
 
 1. To open the Node-RED development environment on your IoT Gateway:
 
-    - In your browser, navigate to http://xxx.xxx.xxx.xxx where xxx.xxx.xxx.xxx is your gateway's IP Address.
+    - In your browser, navigate to `http://your.nucs.ip.address` where `your.nucs.ip.address is` your gateway's IP Address.
     - Click the "Administration" link
     - Click the "Launch" button under the "Node-RED" icon.
 
     ![Launch Node-RED](images/04010-LaunchNodeRed.png)
 
-    > **Note**: Accessing the Node-RED environment from the Administration page leaves the IoT Gateway links, etc. still visible at the top of the page and can cause some difficulty with the Node-RED environemtn.  If you prefer to access the Node-RED environment directly, you can do so by navigating to port **1880** on your gateway using **http://xxx.xxx.xxx.xxx:1880** . Again, replace xxx.xxx.xxx.xxx with your gateway's IP Address.   
+    > **Note**: Accessing the Node-RED environment from the Administration page leaves the IoT Gateway links, etc. still visible at the top of the page and can cause some difficulty with the Node-RED environemtn.  If you prefer to access the Node-RED environment directly, you can do so by navigating to port **1880** on your gateway using **`http://your.nucs.ip.address:1880`** . Again, replace your.nucs.ip.address with your gateway's IP Address.
 
-1. The Node-RED environment will show the default "Flow 1" workflow that is responsible for retrieving your gateway's IP Address and displaying it on the LCD panel as well as reading the value from the rotary angle sensor and displaying it in the charts on the IoT Gateway web portal.  Leave this flow as is for now. 
+1. The Node-RED environment will show the default "Flow 1" workflow that is responsible for retrieving your gateway's IP Address and displaying it on the LCD panel as well as reading the value from the rotary angle sensor and displaying it in the charts on the IoT Gateway web portal.  Leave this flow as is for now.
 
     ![Node-RED Environment](images/04020-NodeREDEnvironment.png)
 
@@ -219,13 +221,13 @@ In this exercise, you will use the Node-RED development environment pre-installe
 
     ![Blinky Properties](images/04060-BlinkyProperties.png)
 
-1. Click the "**Deploy**" button in the top right corner of the Node-RED environment to deploy the new flow. 
+1. Click the "**Deploy**" button in the top right corner of the Node-RED environment to deploy the new flow.
 
     ![Deploy Blinky](images/04070-DeployBlinky.png)
 
 1. Once the flow has been deployed, the LED onboard the Arduino 101 will start blinking on and off in one second (1000ms) intervals.
 
-    > **Note**: With the Grove Base Shield attached to the Arduino, the LED will be difficult to see.  You will need to peek under the shield to see the LED on the Arduino 101 blinking on and off. 
+    > **Note**: With the Grove Base Shield attached to the Arduino, the LED will be difficult to see.  You will need to peek under the shield to see the LED on the Arduino 101 blinking on and off.
 
     ![Arduino 101 LED](images/04080-Arduino101LED.png)
 
@@ -234,7 +236,7 @@ In this exercise, you will use the Node-RED development environment pre-installe
     ![Blink Node Statuts](images/04090-BlinkyNodeStatus.png)
 
  > **Note**: When connecting the Intel Iot Gateway to an Arduino 101, the gateway uses a subplatform called Firmata to communicate GPIO requests to the Arduino 101.
-Firmata is a generic protocol for communicating with microcontrollers from software on a host computer. It is intended to work with any host computer software package.Basically, this firmware establishes a protocol for talking to the Arduino from the host software. 
+Firmata is a generic protocol for communicating with microcontrollers from software on a host computer. It is intended to work with any host computer software package.Basically, this firmware establishes a protocol for talking to the Arduino from the host software.
 
 ___
 
@@ -242,21 +244,21 @@ ___
 Reading the Temperature Sensor
 ---
 
-Now that you have a basic understanding of how to interact with the Gateway. Let’s move on to adding some more sensor data and processing to the gateway. 
-We will create Node-RED flow to get data from temperature sensor and display it in the debug panel. We will be extending this flow to send data to Azure IoT hub later. 
+Now that you have a basic understanding of how to interact with the Gateway. Let’s move on to adding some more sensor data and processing to the gateway.
+We will create Node-RED flow to get data from temperature sensor and display it in the debug panel. We will be extending this flow to send data to Azure IoT hub later.
 
 1. Attach the **Grove Temperature Sensor** to the **Grove Base Shield** port **A1**
  using one of the supplied cables.
 
-    ![Attach Temperature Sensor](images/05010-AttachTemperatureSensor.png)    
+    ![Attach Temperature Sensor](images/05010-AttachTemperatureSensor.png)
 
-1. In the Node-RED environment, create a new flow named "Flow 3" 
+1. In the Node-RED environment, create a new flow named "Flow 3"
 
     ![Create Flow 3](images/05020-CreateFlow3.png)
 
 1. From the "**UPM_Sensors**" group in the nodes, panel, drag a "**Grove Temperature Sensor**" into the visual editor for "**Flow 3**". Then double click on the new node, and set the properties as follows.  Click the "**OK**" button to save the changes:
 
-    > **Note**: The interval of 10000ms really means the temperature will only update once everyt 10 seconds.  You can speed that up by lowering the number to 5000ms or even 1000ms, but later when we are publishing data to Azure it might be better to publish less frequently just to help reduce network traffic and resource utilization in Azure.  
+    > **Note**: The interval of 10000ms really means the temperature will only update once everyt 10 seconds.  You can speed that up by lowering the number to 5000ms or even 1000ms, but later when we are publishing data to Azure it might be better to publish less frequently just to help reduce network traffic and resource utilization in Azure.
 
     - Name - **Leave Blank**
     - Platform - **Firmata**
@@ -282,13 +284,13 @@ We will create Node-RED flow to get data from temperature sensor and display it 
 
     ![Data Conversion Function](images/05040-AddFunctionNode.png)
 
-1. Connect the existing "**Temperature**" node to the new "**Data Conversion**" function node by dragging a line from the square box at on the right end of the "**Temperature**" node to the squre box on the left edge of the "**Data Conversion**" node. 
+1. Connect the existing "**Temperature**" node to the new "**Data Conversion**" function node by dragging a line from the square box at on the right end of the "**Temperature**" node to the squre box on the left edge of the "**Data Conversion**" node.
 
     ![Connect Nodes](images/05050-ConnectNodes.png)
 
 1. Add the following nodes, configure them as follows, and connect them as shown below:
 
-    > **Note**: The "**Create Payload**" function creates the data payload that will eventually be sent up to the Azure IoT Hub.  
+    > **Note**: The "**Create Payload**" function creates the data payload that will eventually be sent up to the Azure IoT Hub.
 
     - From the "**function**" group, another "**function**" node.
         - Name - "**Create Payload**"
@@ -314,7 +316,7 @@ We will create Node-RED flow to get data from temperature sensor and display it 
 
     ![Deploy](images/05065-Flow3Deploy.png)
 
-1. Before we test the new flow, we want to turn off any debug messages being generated by the default flow on the "**Flow 1**" tab. 
+1. Before we test the new flow, we want to turn off any debug messages being generated by the default flow on the "**Flow 1**" tab.
     - In the Node-RED editor, switch to the "**Flow 1**" tab.
     - On the right hand side, click on the "**debug**" tab to view debug messages.
     - You may or may not see debug messages showing the current value of the rotary angle sensor
@@ -323,7 +325,7 @@ We will create Node-RED flow to get data from temperature sensor and display it 
 
         ![Debug messages enabled](images/05080-DebugMessagesEnabled.png)
 
-        - Debug messages are disabled, and no messages will appear on the "**debug**" tab. 
+        - Debug messages are disabled, and no messages will appear on the "**debug**" tab.
 
         ![Debug messages disabled](images/05090-DebugMessagesDisabled.png)
 
@@ -333,15 +335,17 @@ We will create Node-RED flow to get data from temperature sensor and display it 
 
     ![Delete Debug Messages](images/05100-DeleteDebugMessages.png)
 
-1. Finally, we can test the new flow.  
+1. Finally, we can test the new flow.
     - Switch back to the "**Flow 3**" tab
     - Click the "**Deploy**" button
     - Once you have deployed "**Flow 3**" ensure that it's "**msg.payload*"" debug has it's debug messages enabled
     - Watch for the debug messages to appear on the "**debug**" tab.
 
+    <!-- markdownlint-disable MD028 -->
     > **Note**: If you can't see the entire debug message on the debug tab, you can drag the splitter bar between the "**Visual Editor**" and "**debug**" tab panels to expand the view, or you can scroll to the right on the "**debug**" tab using the horizontal scroll bar at the bottom of it.
 
-    > **Note**: You can touch the temperature sensor (or blow on it) to see the value of the "**temp**" displayed change on the "**debug**" tab.   
+    > **Note**: You can touch the temperature sensor (or blow on it) to see the value of the "**temp**" displayed change on the "**debug**" tab.
+    <!-- markdownlint-enable MD028 -->
 
     ![Flow 3 Debug Messages](images/05110-Flow3DebugMessages.png)
 
@@ -363,7 +367,7 @@ We will create Node-RED flow to get data from temperature sensor and display it 
 
     ![Deploy the updated flow](images/05130-DeployFlow.png)
 
-1. And now the LCD Panel should flash green, and update the display to show the current temperature on the second row of text. 
+1. And now the LCD Panel should flash green, and update the display to show the current temperature on the second row of text.
 
     ![Current temp on the LCD](images/05140-TempOnLcd.png)
 
@@ -371,21 +375,20 @@ We will create Node-RED flow to get data from temperature sensor and display it 
 
     ***YOU DO NOT NEED TO DO THESE STEPS UNLESS YOU ARE HAVING A PROBLEM AND WANT TO IMPORT WORKING CODE***
 
-    - You should first delete the nodes you have by selecting them all, and pressing the "**Delete**" key.  
+    - You should first delete the nodes you have by selecting them all, and pressing the "**Delete**" key.
 
         ![Select all nodes](images/05143-SelectAllNodes.png)
 
         you can tell that nodes are "selected" when they have an orange border:
 
-        ![Select nodes have an orange border](images/05146-SelectedNodesOrangeBorder.png)
-    
-    - Open the "**<a target="_blank" href="./Node-RED Flows/Flow 3 - 01 - Temperature on LCD.json">Node-RED Flows/Flow 3 - 01 - Temperature on LCD.json</a>**" file in the code editor of your choice, and copy it's contents. 
+        ![Select nodes have an orange border](images/05146-SelectedNodesOrangeBorder.png
+    - Open the "**<a target="_blank" href="./Node-RED Flows/Flow 3 - 01 - Temperature on LCD.json">Node-RED Flows/Flow 3 - 01 - Temperature on LCD.json</a>**" file in the code editor of your choice, and copy it's contents.
 
     - In the Node-RED editor, from the "Hamburger" button in the top right corner, select "**Import**" | "**Clipboard**"
 
         ![Import flow from clipboard](images/05150-ImportFromClipboard.png)
 
-    - In the "**Import nodes**" window, paste the json you copied, and then press "**OK**". 
+    - In the "**Import nodes**" window, paste the json you copied, and then press "**OK**".
 
         ![Paste flow code](images/05160-PasteFlowCode.png)
 
@@ -401,15 +404,15 @@ Planning your Azure Resources
 
 The following diagram provides an overview of the architecture we will be implementing:
 
-![Lab Architecture](images/00000-LabArchitecture.jpg) 
+![Lab Architecture](images/00000-LabArchitecture.jpg)
 
 ### Common Resource Group ###
 
-We will be placing all of the azure resources we provision in this lab into a single "**Resource Group**" (<a target="_blank" href="https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/#resource-groups">link</a>).  Resource groups are a core concept in the "**Azure Resource Manager**" (<a target="_blank" href="https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/#resource-groups">link</a>) technology used by the Azure platform.  Resource Groups allow you to keep all the resources related to a solution in a single organizational container.  This in invaluable when securing, deploying, and removing the resources.    
+We will be placing all of the azure resources we provision in this lab into a single "**Resource Group**" (<a target="_blank" href="https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/#resource-groups">link</a>).  Resource groups are a core concept in the "**Azure Resource Manager**" (<a target="_blank" href="https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/#resource-groups">link</a>) technology used by the Azure platform.  Resource Groups allow you to keep all the resources related to a solution in a single organizational container.  This in invaluable when securing, deploying, and removing the resources.
 
 ### Common Location or "Region" ###
 
-We want to make sure to deploy all of the resources are deployed in the same Azure data center, or "**Region**" (<a target="_blank" href="https://azure.microsoft.com/en-us/regions/">link</a>). This will help to ensure that the resources have low latency connections to each other (for example, the web application can directly access the sql database), as well as keep our costs low by reducing the amount of data leaving a the data center and incurrent data egress charges.  
+We want to make sure to deploy all of the resources are deployed in the same Azure data center, or "**Region**" (<a target="_blank" href="https://azure.microsoft.com/en-us/regions/">link</a>). This will help to ensure that the resources have low latency connections to each other (for example, the web application can directly access the sql database), as well as keep our costs low by reducing the amount of data leaving a the data center and incurrent data egress charges.
 
 That means that when need to select a region that supports all of the services we will use in our solution.  You can review the list of <a target="_blank" href="https://azure.microsoft.com/en-us/regions/services/">Products available by region</a> to verify that the services required by this lab are available in the region you want to use. The services used in this lab inclue:
 
@@ -420,38 +423,38 @@ That means that when need to select a region that supports all of the services w
 - Azure SQL Database
 - Azure Web Apps
 - Azure Function Apps
-- Azure PowerBI Embedded 
+- Azure PowerBI Embedded
 
 <a name="locations"></a>
-At the time this is being written (October 2016), the following regions have all of the required services. **THIS LIST WILL GROW OVER TIME**. You are welcome to review the <a target="_blank" href="https://azure.microsoft.com/en-us/regions/services/">Products available by region</a> to see if any additional regions provide the resources needed.  Otherwise, simply pick the region from the list below that is closest to you, and ensure that you choose that region for each resource you deploy.   
+At the time this is being written (October 2016), the following regions have all of the required services. **THIS LIST WILL GROW OVER TIME**. You are welcome to review the <a target="_blank" href="https://azure.microsoft.com/en-us/regions/services/">Products available by region</a> to see if any additional regions provide the resources needed.  Otherwise, simply pick the region from the list below that is closest to you, and ensure that you choose that region for each resource you deploy.
 
-- West US 
-- North Europe 
-- West Europe 
-- Southeast Asia 
-- Australia Southeast  
+- West US
+- North Europe
+- West Europe
+- Southeast Asia
+- Australia Southeast
 
 ### Common Naming Convention ###
 
-We will be provisioning a number of resources in this lab.  Some of these resources require globally unique names.  In addition, we need to be able to refer to those resources in the lab documentation.  To facilitate that, it is ***strongly recommended*** that you juse the naming convention outlined here.  In the architecture diagram above, you will see that resources have been named with a ***`<name>`*** prefix, and then some resource specific name.  
+We will be provisioning a number of resources in this lab.  Some of these resources require globally unique names.  In addition, we need to be able to refer to those resources in the lab documentation.  To facilitate that, it is ***strongly recommended*** that you juse the naming convention outlined here.  In the architecture diagram above, you will see that resources have been named with a ***`<name>`*** prefix, and then some resource specific name.
 
-Choose a ***`<name>`*** prefix that is unique to you.  It is recommended that you use something like your initials.  For example if your name where "**Jane Q. Doe"** you might select "**jqd**" as your name prefix. To add a little more uniqueness you could add in your two digit birth month.  For example, if Jane was born in "**October**" she might use "**jqd10**".  **Some resources name must be at least six characters or longer.  Having a prefix that is 4-6 characters long will help ensure our names meet the minimum lenght.** 
+Choose a ***`<name>`*** prefix that is unique to you.  It is recommended that you use something like your initials.  For example if your name where "**Jane Q. Doe"** you might select "**jqd**" as your name prefix. To add a little more uniqueness you could add in your two digit birth month.  For example, if Jane was born in "**October**" she might use "**jqd10**".  **Some resources name must be at least six characters or longer.  Having a prefix that is 4-6 characters long will help ensure our names meet the minimum lenght.**
 
 You can choose anything you like, but it must help create unique names, and it should be short because you'll be typing it a fair amount.
 
-For the purposes of this lab, I'll use the "**mic16**" prefix, short for "**Microsoft Intel Camp 2016**".  
+For the purposes of this lab, I'll use the "**mic16**" prefix, short for "**Microsoft Intel Camp 2016**".
 
-**DO NOT USE THE _"mic16"_ PREFIX FOR YOUR OWN RESOURCES**.  
+**DO NOT USE THE _"mic16"_ PREFIX FOR YOUR OWN RESOURCES**.
 
 ### Service Descriptions ###
 
-| Service | Name | Description | 
+| Service | Name | Description |
 | ------- | ---- | ----------- |
 | The Device | Intel NUC, Arduino 101 & Grove Sensors  | The Intel NUC is our "Device".  It get's sensor values from the Arduino 101 and Grove sensors that are attached.  We use an easy graphical development environment called "Node-RED" on the NUC to help the NUC send messages with sensor data to the cloud, as well as to receive messags from the cloud and act on them.  |
-| Resource Group | ***&lt;name&gt;group*** | Azure Resource Groups provide a convenient way to organize all of the Azure resources for a solution into a single container.  The Resource Group can then be a unit of deployment, a securable collection, and an easy way to delete all of the resources in the group in a single operation.  We want to make sure that all of the resources we create in this lab are placed in the ***&lt;name&gt;group*** resource group.|   
+| Resource Group | ***&lt;name&gt;group*** | Azure Resource Groups provide a convenient way to organize all of the Azure resources for a solution into a single container.  The Resource Group can then be a unit of deployment, a securable collection, and an easy way to delete all of the resources in the group in a single operation.  We want to make sure that all of the resources we create in this lab are placed in the ***&lt;name&gt;group*** resource group.|
 |  IoT Hub | ***&lt;name&gt;iot*** | Provides a way for devices (like the Intel NUC with Arduino 101 in our lab) to send and receive messages in the cloud.  Backend services can read those messages sent by our devices, act on them, and send messages back to the device as needed. |
 | IoT Hub Device Identity | ***&lt;name&gt;IntelIoTGateway*** | This is the id we will use for our device's identity in the Azure IoT Hub Device Identiy Registry.   |
-|  Stream Analytics Job | ***&lt;name&gt;job*** | The Azure Stream Analytics Job provides a way to watch messages coming into the Azure IoT Hub from our devices and act on them.  In our case it will forward all messages off to a SQL Database so we can report on them, but it will also watch the temperature sensor values in those messages, and forward them to an Event Hub if they exceed a pre-defined threshold temperature. |
+|  Stream Analytics Job | ***&lt;name&gt;job*** | The Azure Stream Analytics Job provides a way to watch messages coming into the Azure IoT Hub from our devices and act on them.  In our case it will forward all messages off to a SQL Database so we can report on them, but it will also watch the temperature sensor values in those messages, and forward them to an Event Hub if they exceed a pre-defined threshold temperature.
 | SQL Server |  ***&lt;name&gt;sql*** | The Azure SQL Server instance that will host our Azure SQL Database. Other than creating it to host our database.  This is also where the administrative login for our SQL Server is defined.  It is recommended that you use these login credentials:<br/><br/>login:***sqladmin***<br/>password: ***P@ssw0rd***  |
 | SQL Database |  ***&lt;name&gt;db*** | This will store the **dbo.Measurement** table.  The Stream Analytics Job above will forward all temperature messages sent to the IoT Hub into this table so we can report on the temperature data. |
 | Event Hub Namespace |  ***&lt;name&gt;ns*** | This is the Service Bus Namespace that hosts our Event Hub.  We really won't do much with this directly, we just need one to host our Event Hub for us.   |
@@ -461,7 +464,7 @@ For the purposes of this lab, I'll use the "**mic16**" prefix, short for "**Micr
 | Web App |  ***&lt;name&gt;web*** | The Azure Web App is where we will deploy our Node.js application that provides the web site for our solution.  We can then go to this site to view temperatures from our devices |
 | Function App |  ***&lt;name&gt;functions*** | The Azure Function App contains the ***TempAlert*** function. |
 | Function |  ***TempAlert*** | The ***TempAlert*** function will be triggered automatically whenever a new message is sent to our ***&lt;name&gt;alerts*** event hub. It will then read those messages, retrieve the id of the device it was sent from, and then send a message through the IoT Hub back to that device to let it know that it's temperature has exceeded acceptible levels.  The device can then sound an alarm by turning on it's buzzer. |
-| Power BI Embedded Workspace Collection |  ***&lt;name&gt;collection*** | Power BI Embedded Collections are what you configure in Azure to host one or more Power BI Embedded Workspaces. | 
+| Power BI Embedded Workspace Collection |  ***&lt;name&gt;collection*** | Power BI Embedded Collections are what you configure in Azure to host one or more Power BI Embedded Workspaces. |
 | Power BI Embedded Workspace |  ***system generated guid*** | The Power BI Embedded Workspace is where we can upload one or more reports. |
 | Power BI Embedded Report |  ***TemperatureChart*** | The ***TemperatureChart*** report is a pre-built report that displays device and temperature data from the ***&lt;name&gt;db*** Azure SQL Database.  It is provided as the ***TemperatureChart.pbix*** Power BI Desktop file in the lab files.  We'll upload this report into our Power BI Embedded Workspace and then embed it in the UI of our Web Application.  Users viewing the web application in their browser can then see that report. |
 
@@ -494,7 +497,7 @@ In this task, we'll create the ***&lt;name&gt;iot*** Azure IoT Hub and since it'
     - Resource Group: **Create new** resource group using the ***&lt;name&gt;group*** naming convention
     - Enable Device Management - PREVIEW: **Leave Unchecked**
     - Location: **Choose the location [listed above](#locations) that is closest to you, and then make sure to use that location for all other resources in the lab**
-    - Pin to dashboard: **Checked** (this will place a tile for the IoT Hub on your portal dashboard.)  
+    - Pin to dashboard: **Checked** (this will place a tile for the IoT Hub on your portal dashboard.)
 
     ![New IoT Hub Properites](images/07020-NewIoTHubProperites.png)
 
@@ -508,24 +511,24 @@ In this task, we'll create the ***&lt;name&gt;iot*** Azure IoT Hub and since it'
 
 1. In order to connect to your IoT Hub from client applications, you need to know the name and key for a "Shared Access Policy" (SAS Policy) that provides your client application the necessary privileges.  Your IoT Hub comes pre-provisioned with a number of  SAS policies that you can use, or you can create additonal policies as needed.  In this lab we will use two of the default SAS policies.
 
-    - "**iothubowner**" - This policy allows applications that connect with it full access to the IoT Hub.  They can manage devices registered with the hub, as well as send and receive messages.  We will use this SAS policy when we want to manage our IoT Hub.  
-    - "**service**" - This policy is intended for back-end services or client applications that need to interact with devices via the IoT Hub.  These applications need to be able to receive messages coming into the hub from devices in the field, as well as send messages back to those devices.  This policy is granted the "service connect" permission which allows it to do just that.   
+    - "**iothubowner**" - This policy allows applications that connect with it full access to the IoT Hub.  They can manage devices registered with the hub, as well as send and receive messages.  We will use this SAS policy when we want to manage our IoT Hub.
+    - "**service**" - This policy is intended for back-end services or client applications that need to interact with devices via the IoT Hub.  These applications need to be able to receive messages coming into the hub from devices in the field, as well as send messages back to those devices.  This policy is granted the "service connect" permission which allows it to do just that.
 
 1. In the portal, with your IoT Hub blade open, click on the "**Shared access policies**" along the left edge to see the hub's SAS policies:
 
     ![SAS Policies Link](images/07050-SASPoliciesLink.png)
 
-1. Click on the "**iothubowner**" policy name to see it's details, then click on the ![Copy Icon](images/00000-CopyIcon.png) icon to the right of the "**Connect string - primary key**" to copy the connection string to your clipboard. 
+1. Click on the "**iothubowner**" policy name to see it's details, then click on the ![Copy Icon](images/00000-CopyIcon.png) icon to the right of the "**Connect string - primary key**" to copy the connection string to your clipboard.
 
     ![iothubowner SAS Policy](images/07060-IoTHubOwnerPolicy.png)
 
-1. Then paste it into the "**[myresources.txt](./myresources.txt)**" file so you can retrieve it easily later.  Go ahead and document your Azure IoT Hub name while you're there.  
+1. Then paste it into the "**[myresources.txt](./myresources.txt)**" file so you can retrieve it easily later.  Go ahead and document your Azure IoT Hub name while you're there.
 
     ![Document iothubowner Connection String](images/07070-DocumentIoTHubOwnerConnectionString.png)
 
 1. Repeate the last two steps to copy and document the "**service**" SAS policy primary connection string:
 
-    > **Note**: Make sure to save the changes to the **[myresources.txt](./myresources.txt)**" file each time.  
+    > **Note**: Make sure to save the changes to the **[myresources.txt](./myresources.txt)**" file each time.
 
     ![service SAS policy](images/07080-ServiceSASPolicy.png)
 
@@ -533,13 +536,13 @@ In this task, we'll create the ***&lt;name&gt;iot*** Azure IoT Hub and since it'
 
 1. The last thing we need to do to configure our IoT Hub is to add a "**Consumer Group**" for the ***&lt;name&gt;job*** Stream Analytics Job to use as it reads messages from the IoT Hub.
 
-    > **Note**: Consumer groups enable multiple consuming applications to each have a separate view of the event stream, and to read the stream independently at their own pace and with their own offsets. In a stream processing architecture, each downstream application equates to a consumer group.  By creating a consumer group specifically for the Stream Analytics Job, it allows us to use other tools (like iothub-explorer) to monitor messages using the **$Default** consumer group, and not conflict with the Stream Analytics job. Basically each consumer group allows you to run a different application (or pool of consumers) on the hub and allow each application to receive their own copy of the messages. 
+    > **Note**: Consumer groups enable multiple consuming applications to each have a separate view of the event stream, and to read the stream independently at their own pace and with their own offsets. In a stream processing architecture, each downstream application equates to a consumer group.  By creating a consumer group specifically for the Stream Analytics Job, it allows us to use other tools (like iothub-explorer) to monitor messages using the **$Default** consumer group, and not conflict with the Stream Analytics job. Basically each consumer group allows you to run a different application (or pool of consumers) on the hub and allow each application to receive their own copy of the messages.
 
     - Click on the "**Messaging**" link along the left, then at the bottom of the messaging blade, enter the following name into the empty box below the **$Default** consumer group:
 
         `streamanalytics`
 
-    - Click the "**Save**" button at the top of the messaging blade to save the new consumer group.  
+    - Click the "**Save**" button at the top of the messaging blade to save the new consumer group.
 
     ![Create streamanalytics Consumer Group](images/07100-StreamAnalyticsConsumerGroup.png)
 
@@ -549,13 +552,13 @@ ___
 Creating an Azure IoT Hub Device Identity
 ---
 
-Now that we have our Azure IoT Hub created, we want to create an entry in the hub's device identity registry.  As "device identity" in the IoT Hub's device identity registry is basically a unique id, and access key that can be used by the actual device in the field (The Intel NUC and with Arduino 101 in our case) to connect to the IoT Hub.  The connection string for the device entry in the registry will be used by the actual device to securely connect to the IoT Hub and send and receive messages as that device.  You can learn more about Azure IoT Hub devices in the "**<a target="_blank" href="https://azure.microsoft.com/en-us/documentation/articles/iot-hub-devguide-identity-registry/">Manage device identities in IoT Hub</a>**" article online.  
+Now that we have our Azure IoT Hub created, we want to create an entry in the hub's device identity registry.  As "device identity" in the IoT Hub's device identity registry is basically a unique id, and access key that can be used by the actual device in the field (The Intel NUC and with Arduino 101 in our case) to connect to the IoT Hub.  The connection string for the device entry in the registry will be used by the actual device to securely connect to the IoT Hub and send and receive messages as that device.  You can learn more about Azure IoT Hub devices in the "**<a target="_blank" href="https://azure.microsoft.com/en-us/documentation/articles/iot-hub-devguide-identity-registry/">Manage device identities in IoT Hub</a>**" article online.
 
 At the time this is being written, the Azure Portal does not allow you to provision device identities in the registry, although you can view existing ones.  In order to create our device identity, we will use a node.js command line interface for working with your Azure IoT Hubs called "**<a target="_blank" href="https://www.npmjs.com/package/iothub-explorer">iothub-explorer</a>**"
 
-There is a graphical tool for Windows called "**Device Explorer**".  We won't document it's use here in this lab, but if you are on Windows and wish to try it can you can download it from here <a target="_blank" href="https://github.com/Azure/azure-iot-sdks/releases/latest>https://github.com/Azure/azure-iot-sdks/releases/latest</a> (look for the first "**SetupDeviceExplorer.msi**" link) and learn more about it here: <a target="_blank" href="https://github.com/Azure/azure-iot-sdks/blob/master/tools/DeviceExplorer/doc/how_to_use_device_explorer.md">How to use Device Explorer for IoT Hub devices</a>.
+There is a graphical tool for Windows called "**Device Explorer**".  We won't document it's use here in this lab, but if you are on Windows and wish to try it can you can download it from here <a target="_blank" href="https://github.com/Azure/azure-iot-sdks/releases/latest">github.com/Azure/azure-iot-sdks/releases/latest</a> (look for the first "**SetupDeviceExplorer.msi**" link) and learn more about it here: <a target="_blank" href="https://github.com/Azure/azure-iot-sdks/blob/master/tools/DeviceExplorer/doc/how_to_use_device_explorer.md">How to use Device Explorer for IoT Hub devices</a>.
 
-1. This task requires that you have Node.js 4.x or later installed.  If you don't have it installed already, you can install it from **<a target="_blank" href="https://nodejs.org/en/">https://nodejs.org/en/</a>**.  Make sure that Node is added to the path so you can access it from anywhere on the command line.  
+1. This task requires that you have Node.js 4.x or later installed.  If you don't have it installed already, you can install it from **<a target="_blank" href="https://nodejs.org/en/">nodejs.org/</a>**.  Make sure that Node is added to the path so you can access it from anywhere on the command line.
 
 1. Open a command prompt, or terminal window, and install the "iothub-explorer" npm package globally as follows:
 
@@ -563,11 +566,11 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
 
     ```bash
     npm install -g iothub-explorer
-    ``` 
+    ```
 
 1. You should see output similar to the following:
 
-    ```bash
+    ```text
     C:\Users\iotde\AppData\Roaming\npm\iothub-explorer -> C:\Users\iotde\AppData\Roaming\npm\node_modules\iothub-explorer\iothub-explorer.js
     iothub-explorer@1.0.14 C:\Users\iotde\AppData\Roaming\npm\node_modules\iothub-explorer
     ├── uuid@2.0.3
@@ -579,16 +582,16 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
     ├── azure-event-hubs@0.0.3 (amqp10@3.2.2)
     ├── azure-iothub@1.0.17 (azure-iot-http-base@1.0.16, azure-iot-amqp-base@1.0.16)
     └── azure-iot-device@1.0.15 (azure-iot-http-base@1.0.16, debug@2.2.0, azure-storage@1.3.1)
-    ```    
+    ```
 
 1. Now that we have iothub-explorer installed, we can use it to interact with our Azure IoT Hub.  At your command window or terminal prompt, enter:
 
-    ```
+    ```bash
     iothub-explorer
-    ``` 
+    ```
     It will display it's usage details:
 
-    ```
+    ```text
     Usage
     iothub-explorer login <connection-string> [--duration=<num-seconds>]
         Creates a session lasting <num-seconds>; commands during the session can omit <connection-string>
@@ -620,7 +623,7 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
 
     Use the --display option to show only the given properties from the azure-iothub.Device object.
     Use the --connection-string option to generate a connection string for the device(s).
-    Add the --raw option to any command (except help) to minimize output and format results as JSON.    
+    Add the --raw option to any command (except help) to minimize output and format results as JSON.
     ```
 1. Note the `iothub-explorer login` option.  This allows you to etner your IoT Hub connection string once, and not have to re-supply the connection string for every command during the "session".  The "session" lasts for one hour by default. To login, we'll need the "iothubowner" SAS policy connection string we copied int the "**[myresources.txt](./myresources.txt)**" file previously.  Retrieve that string from the file, and use it to login to your Azure IoT Hub with iothub-explorer as follows:
 
@@ -635,7 +638,7 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
 
     You should see details about your login session returned.  Something similar to this:
 
-    ```
+    ```text
     Session started, expires Sun Oct 09 2016 16:52:57 GMT-0700 (Pacific Daylight Time)
     ```
 
@@ -657,7 +660,7 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
     ```
     With this result:
 
-    ```
+    ```text
     Created device mic16IntelIoTGateway
 
     -
@@ -679,7 +682,7 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
         primaryThumbprint:   null
         secondaryThumbprint: null
     -
-    connectionString: HostName=mic16iot.azure-devices.net;DeviceId=mic16IntelIoTGateway;SharedAccessKey=q9D0X2vXNsQ5LET3TlXx+FpHZ1SP6pQ9+69+hudCIZk=    
+    connectionString: HostName=mic16iot.azure-devices.net;DeviceId=mic16IntelIoTGateway;SharedAccessKey=q9D0X2vXNsQ5LET3TlXx+FpHZ1SP6pQ9+69+hudCIZk=
     ```
 1. Copy the connection string for the new device from the command output, and past it along with your device id into the "**[myresources.txt](./myresources.txt)**" file:
 
@@ -687,7 +690,7 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
 
 1. If needed, you can use the iothub-explorer to list the existing device identities along with their connection strings as follows:
 
-    ```bash
+    ```text
     iothub-explorer list --connection-string
     ```
 
@@ -697,11 +700,11 @@ ___
 Publishing Temperature Sensor Data to the Azure IoT Hub
 ---
 
-In this task, we'll update the Intel NUC with some packages to help it talk to our Azure IoT Hub, then we'll modify the "**Flow 3**" flow we created earlier to publish the temperature sensor data to our Azure IoT Hub. 
+In this task, we'll update the Intel NUC with some packages to help it talk to our Azure IoT Hub, then we'll modify the "**Flow 3**" flow we created earlier to publish the temperature sensor data to our Azure IoT Hub.
 
-1.  Open an ssh connection to your Intel NUC using the method desribed previously.  From the prompt, run the following command:
+1. Open an ssh connection to your Intel NUC using the method desribed previously.  From the prompt, run the following command:
 
-    The command will not return any result unless there was a problem. 
+    The command will not return any result unless there was a problem.
 
     ```bash
     rpm --import http://iotdk.intel.com/misc/iot_pub.key
@@ -709,12 +712,12 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
 1. Next, install the `node-red-contrib-os` npm package globally using the following statement:
 
-    You will see a number of "***WARN unmet dependency***" messages appear.  ***You can safely ignore these***.  
+    You will see a number of "***WARN unmet dependency***" messages appear.  ***You can safely ignore these***.
 
     ```bash
     npm install node-red-contrib-os -g
     ```
-    
+
     ***Keep your ssh connection open, you'll need it later.***
 
 1. Next, we need to add an rpm package repository to the system.  In your browser, navigate to your NUC's IP Address and login as root.  Then navigate to the "**Packages"** page, and click the "**Add Repo +**" button.
@@ -724,17 +727,17 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 1. In the "**Manage Repositories**" window, in the fields under "**Add New Repository**" enter the following, and click the "**Add Repository**" button:
 
     - Name - **IoT_Cloud**
-    - URL - **http://iotdk.intel.com/repos/iot-cloud/wrlinux7/rcpl13**
+    - URL - **`http://iotdk.intel.com/repos/iot-cloud/wrlinux7/rcpl13`**
     - Username - **leave blank**
     - Password - **leave blank**
 
     ![Add IoT_Coud Repository](images/09020-AddIoTCloudRepo.png)
 
-1.  You will see the following message, indicating that this update may take a few minutes.  And it does, so be patient:
+1. You will see the following message, indicating that this update may take a few minutes.  And it does, so be patient:
 
     "***Adding repository IoT_Cloud.  Package list will be updated.  This may take a few minutes...***"
 
-1. Once the update is complete, you should see the following message.  Click on the "Update Repositories" button.  Again, this will take a few mintues to complete: 
+1. Once the update is complete, you should see the following message.  Click on the "Update Repositories" button.  Again, this will take a few mintues to complete:
 
     ![Update Repositories](images/09030-UpdateRepositories.png)
 
@@ -749,7 +752,7 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 1. In the "**Add New Packages**" window, in the search box, type "**cloud-azure**", then click the "**Install**" button next to the "**packagegroup-cloud-azure**" package.  Again, this takes a few minutes so be patient:
 
     > **Note**: You can see what all is installed with the packagegroup-cloud-azure package here: <a target="_blank" href="https://github.com/intel-iot-devkit/meta-iot-cloud/blob/master/recipes-core/packagegroups/packagegroup-cloud-azure_0.9.bb">link</a> <br/>
-    Basically it is all of the node.js packages for the various Azure IoT Hub sdks.  It also includes a Node-RED node for working with Azure IoT Hubs (<a target="_blank" href="https://www.npmjs.com/package/node-red-contrib-azureiothubnode">link</a>).  
+    Basically it is all of the node.js packages for the various Azure IoT Hub sdks.  It also includes a Node-RED node for working with Azure IoT Hubs (<a target="_blank" href="https://www.npmjs.com/package/node-red-contrib-azureiothubnode">link</a>).
 
     ![Install packagegroup-cloud-azure](images/09060-InstallPackageGroupCloudAzure.png)
 
@@ -763,7 +766,7 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
     systemctl restart node-red-experience
     ```
 
-1. Now, open the Node-RED development environment in the browser (Remember you can just point your browser to port 1880 on your NUC, eg: http://xxx.xxx.xxx.xxx:1880 where xxx.xxx.xxx.xxx is your NUC's IP Address).  In the list of nodes on the left, you should see a new "**cloud**" category, and within it the "**azureiothub**" node:
+1. Now, open the Node-RED development environment in the browser (Remember you can just point your browser to port 1880 on your NUC, eg: `http://your.nucs.ip.address:1880` where `your.nucs.ip.address is` your NUC's IP Address).  In the list of nodes on the left, you should see a new "**cloud**" category, and within it the "**azureiothub**" node:
 
     > **Note**: if the "**cloud**" category and "**azureiothubnode**" node don't appear, you may need to manually install the "**node-red-control-azureiothubnode**" package on the NUC.  If that is necessary, ssh into the NUC, and from the prompt run the following two commands:
     <br/>
@@ -787,11 +790,11 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
 1. Next, double click on the "**Create Payload**" node. This function generates the actual JSON message that will be sent to the Azure IoT Hub. We will want to be able to retrieve the actual device id from that payload later, so we want to update it to use the device ID we created in our Azure IoT Hub Device Identity registry previously.
 
-    - Replace the default "**IntelIoTGateway**" name with the "***&lt;name&gt;IntelIoTGateway***" you created, the click "**OK**"  
+    - Replace the default "**IntelIoTGateway**" name with the "***&lt;name&gt;IntelIoTGateway***" you created, the click "**OK**"
 
     ![Edit DeviceId in Create Payload](images/09110-EditDeviceIdInCreatePayload.png)
 
-1. Click the "**Deploy**" button to deploy the changes.  
+1. Click the "**Deploy**" button to deploy the changes.
 
     ![Deploy the Changes](images/09120-DeployChanges.png)
 
@@ -813,7 +816,7 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
     And you should see output similar to this:
 
-    ```
+    ```text
     Monitoring events from device mic16IntelIoTGateway
     Event received:
     {
@@ -834,31 +837,32 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
     "deviceID": "mic16IntelIoTGateway",
     "timestamp": "2016-10-10T03:50:09.085Z",
     "temperature": 36.959999999999994
-    }    
+    }
     ```
 
 1. Remember that we had the Node-RED flow only getting temperatue values once every 10 seconds (10000ms).  It is recommended that you don't publish too much more frequently during this event.  It just helps to reduce the amount of traffic on the network.
 
-1. If you are feeling adventurous, trade iothubowner connection strings and device IDs with a neighbor in the lab and verify that you can monitor each other's devices.  
+1. If you are feeling adventurous, trade iothubowner connection strings and device IDs with a neighbor in the lab and verify that you can monitor each other's devices.
 
 1. One last comment, we are using the "iothubowner" connection string to monitor the events.  You could actually use a less privileged policy, like the "service" sas policy we copied the connection string for earlier.  Go ahead and try monitoring events with the "service" policy connection string you pasted into the [myresources.txt](./myresources.txt) file.
+
 ___
 
 <a name="ProcessingWithStreamAnalytics"></a>
 Processing Temperature Data with Stream Analytics
 ---
 
-Now that we have messages making it into our Azure IoT Hub from our device, we can start to process those messages in the cloud. 
+Now that we have messages making it into our Azure IoT Hub from our device, we can start to process those messages in the cloud.
 
-In the [Planning your Azure Resources](#PlanningAzure) section, we discussed the ***&lt;name&gt;job*** Stream Analytics Job and it's two outputs, the ***&lt;name&gt;db*** SQL Database and the ***&lt;name&gt;alerts*** Event Hub.  It's much easier to configure the Stream Analytics job if it's outputs already exist.  So we'll start by creating those resources first.  
+In the [Planning your Azure Resources](#PlanningAzure) section, we discussed the ***&lt;name&gt;job*** Stream Analytics Job and it's two outputs, the ***&lt;name&gt;db*** SQL Database and the ***&lt;name&gt;alerts*** Event Hub.  It's much easier to configure the Stream Analytics job if it's outputs already exist.  So we'll start by creating those resources first.
 
 ### Creating the Azure SQL Database ###
 
-We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***&lt;name&gt;db*** database on it.  The ***&lt;name&gt;job*** Stream Analytics job will forward ALL of the messages that come into the Azure IoT Hub from our device off to the "**dbo.Measurement**" table inside the database. We can then query that table for reporting purposes, or whatever!  
+We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***&lt;name&gt;db*** database on it.  The ***&lt;name&gt;job*** Stream Analytics job will forward ALL of the messages that come into the Azure IoT Hub from our device off to the "**dbo.Measurement**" table inside the database. We can then query that table for reporting purposes, or whatever!
 
 1. In your web browser, login to the [Azure Portal](https://portal.azure.com) ([https://portal.azure.com](https://portal.azure.com))
 
-1. If you have any blades open from before, you can close them by clicking the "X" icon in their top right corner.  
+1. If you have any blades open from before, you can close them by clicking the "X" icon in their top right corner.
 
 1. Click "**+ New**" | "**Databases**" | "**SQL Database**"
 
@@ -866,7 +870,7 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
 1. In the properties blade for the new SQL Database, complete the following fields, ***but don't click create yet***, we still need to configure our new Azure SQL Server and select a pricing tier:
 
-    - Database name - ***&lt;name&gt;db*** 
+    - Database name - ***&lt;name&gt;db***
     - Subscription - **Chose the subscription you used for your Azure IoT Hub**
     - Resource group - Choose "**Use existing**" and select the ***&lt;name&gt;group*** we created when provising the Azure IoT Hub.
     - Select source - "**Blank database**"
@@ -874,7 +878,7 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     ![New SQL Database Properties](images/10020-NewSqlDbProperties.png)
 
-1. Next, click  the "**Server | Configure require settings**", the "**Create a new server**" and complete the "**New server**" properties as follows, the click the "**Select**" button to select the new server:  
+1. Next, click  the "**Server | Configure require settings**", the "**Create a new server**" and complete the "**New server**" properties as follows, the click the "**Select**" button to select the new server:
 
     - Server name - ***&lt;name&gt;sql***
     - Server admin login - **sqladmin**
@@ -886,7 +890,7 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     ![New SQL Server Properties](images/10030-NewSQLServerProperites.png)
 
-1. Click "**Pricing tier**", then find and select the "**B Basic**" pricing tier, and click the "**Select**" button to select it. 
+1. Click "**Pricing tier**", then find and select the "**B Basic**" pricing tier, and click the "**Select**" button to select it.
 
     ![Basic Pricing Tier](images/10040-SQLDBPricingTier.png)
 
@@ -916,7 +920,7 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     ![Document SQL](images/10085-DocumentSQL.png)
 
-1. Now that we have the database created, we need to create the database objects inside it.  To do that, we'll use Visual Studio Code, and the "vscode-mssql" extension.  Open Visual Studio Code (if you don't have it installed you can download it for free from <a target="_blank" href="http://code.visualstudio.com">code.visualstudio.com</a>) .  When Visual Studio Code is open, from the menu bar select "**File**" | "**Open Folder...**" menu item, and select the "**HOLs**" folder wherevery you extract the lab files to. 
+1. Now that we have the database created, we need to create the database objects inside it.  To do that, we'll use Visual Studio Code, and the "vscode-mssql" extension.  Open Visual Studio Code (if you don't have it installed you can download it for free from <a target="_blank" href="http://code.visualstudio.com">code.visualstudio.com</a>) .  When Visual Studio Code is open, from the menu bar select "**File**" | "**Open Folder...**" menu item, and select the "**HOLs**" folder wherevery you extract the lab files to.
 
     ![HOLs Folder Open in VS Code](images/10090-HOLsFolderInCode.png)
 
@@ -934,19 +938,19 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     ![Open Workspace Settings](images/10130-OpenWorkspaceSettings.png)
 
-1. Two files will open: **Default Settings** and **settings.json**.  The "**Default Settings**" are just there to show you what the defaults, we can ignore them. Edit the contents of the "**settings.json**" file with the appropriate details for the Azure SQL Server and Azure SQL Database you just created  Save your changes and close the "**Default Settings" and "settings.json**" files when you are done. 
+1. Two files will open: **Default Settings** and **settings.json**.  The "**Default Settings**" are just there to show you what the defaults, we can ignore them. Edit the contents of the "**settings.json**" file with the appropriate details for the Azure SQL Server and Azure SQL Database you just created  Save your changes and close the "**Default Settings" and "settings.json**" files when you are done.
 
-    ![Connection Properties](images/10140-SQLConnectionProperties.png)    
+    ![Connection Properties](images/10140-SQLConnectionProperties.png)
 
 1. Click on the icon for the "**Explorer**" panel, select select the "**SQL Database Scripts\Create SQL Database Objects.sql**" file.  This script creates the following objects:
 
     - The "**dbo.Measurement**" table.  This table is structured to match the data being sent by the Node-RED flow Intel NUC.  It has the following columns:
-        - "**MeasurementID**" is a dynamically generated ID for each row in the database. 
-        - "**deviceID**" is a nvarchar field that will store the device id sent by the device. 
+        - "**MeasurementID**" is a dynamically generated ID for each row in the database.
+        - "**deviceID**" is a nvarchar field that will store the device id sent by the device.
         - "**timestamp**" is a datetime field that will store the "**timestamp** generated on the Intel NUC when the message was created.
         - "**temperature**" is a float column that will store the temperature sensor values.
     - The "**dbo.RecentMeasurements**" view is used by the web application to display the 20 most recent messages.
-    - The "**dbo.Devices**" view is used by the web application to display a row for each device, along with their latest reading. 
+    - The "**dbo.Devices**" view is used by the web application to display a row for each device, along with their latest reading
 
     ![Open SQL Script](images/10150-OpenCreateScript.png)
 
@@ -960,11 +964,11 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     ![Successful Connection](images/10180-SuccessfulConnection.png)
 
-1. Finally, again ensure that the "**Create SQL Database Objects.sql**" file is the active file in VS Code.  Press "**F1**" or "**Ctrl+Shift+P**" to open the "**Command Palette**" and enter "**>MSSQL: Run T-SQL query**" to execute the code in the current file (You can also just press "**Ctrl-Shift-E**" to execute the code in the currently active SQL script). 
+1. Finally, again ensure that the "**Create SQL Database Objects.sql**" file is the active file in VS Code.  Press "**F1**" or "**Ctrl+Shift+P**" to open the "**Command Palette**" and enter "**>MSSQL: Run T-SQL query**" to execute the code in the current file (You can also just press "**Ctrl-Shift-E**" to execute the code in the currently active SQL script).
 
     ![Run the SQL Script](images/10190-RunSQLScript.png)
 
-1. The "**MSSQL Output**" window will open, and on it's "**Messages**" tab you should see that no errors occurred.  The "**(0 Row(s) affected)** messages are from the test queries on the objects we just created.  Since there is no data in them, no rows are returned.  
+1. The "**MSSQL Output**" window will open, and on it's "**Messages**" tab you should see that no errors occurred.  The "**(0 Row(s) affected)** messages are from the test queries on the objects we just created.  Since there is no data in them, no rows are returned.
 
     ![MSSQL Output](images/10200-SQLMessages.png)
 
@@ -974,13 +978,13 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
 ### Create the Event Hub ###
 
-Next up is the ***&lt;name&gt;alerts*** Event Hub that the ***&lt;name&gt;job*** Stream Analytics Job will forward messages with high temperature readings off to.  
+Next up is the ***&lt;name&gt;alerts*** Event Hub that the ***&lt;name&gt;job*** Stream Analytics Job will forward messages with high temperature readings off to.
 
-1.  With your browser open to the [Azure Portal](https://portal.azure.com), close any blades that may be left open from previous steps.  
+1. With your browser open to the [Azure Portal](https://portal.azure.com), close any blades that may be left open from previous steps.
 
 1. Click "**+ New**" | "**Internet of Things**" | "**Event Hubs**"
 
-    > **Note**: the name is a bit misleading.  Before we can create an Event Hub, we need to create the "**Service bus namespace**" that will host it.  We are actually choosing to create an Event Hubs compatible Service Bus Namespace.  
+    > **Note**: the name is a bit misleading.  Before we can create an Event Hub, we need to create the "**Service bus namespace**" that will host it.  We are actually choosing to create an Event Hubs compatible Service Bus Namespace.
 
     ![New Event Hub](images/10220-NewEventHub.png)
 
@@ -995,7 +999,7 @@ Next up is the ***&lt;name&gt;alerts*** Event Hub that the ***&lt;name&gt;job***
 
     ![Create Namespace](images/10230-CreateNamespace.png)
 
-1.  With a few minutes, the namespace should be provisioned, and it's property blades opened in the portal.  Click the "**+Event Hub**" button along the top to create the actual event hub:
+1. With a few minutes, the namespace should be provisioned, and it's property blades opened in the portal.  Click the "**+Event Hub**" button along the top to create the actual event hub:
 
     ![Create Event Hub](images/10240-CreateEventHub.png)
 
@@ -1004,7 +1008,7 @@ Next up is the ***&lt;name&gt;alerts*** Event Hub that the ***&lt;name&gt;job***
     - Name - ***&lt;name&gt;alerts***
     - Partition Count - **2**
     - Message Retention - **1**
-    - Archive - **Off**  
+    - Archive - **Off**
 
     ![Create New Event Hub](images/10250-NewEventHubProperties.png)
 
@@ -1024,17 +1028,17 @@ Next up is the ***&lt;name&gt;alerts*** Event Hub that the ***&lt;name&gt;job***
 
     ![Document Event Hub](images/10265-DocumentEventHub.png)
 
-1. Close all the open blades.  
+1. Close all the open blades.
 
 ### Create the Stream Analytics Job ###
 
-Great, now we have all the pieces that the ***&lt;name&gt;job*** Stream Analytics job needs.  We have the ***&lt;name&gt;iot*** Azure IoT Hub as the **input**, and the ***&lt;name&gt;db*** SQL Database and ***&lt;name&gt;alerts*** Event Hub as the outputs.  Now we just need to create our Stream Analtyics Job and wire it up!  
+Great, now we have all the pieces that the ***&lt;name&gt;job*** Stream Analytics job needs.  We have the ***&lt;name&gt;iot*** Azure IoT Hub as the **input**, and the ***&lt;name&gt;db*** SQL Database and ***&lt;name&gt;alerts*** Event Hub as the outputs.  Now we just need to create our Stream Analtyics Job and wire it up!
 
 1. In the [Azure Portal](https://portal.azure.com), click "**+ New**" | "**Internet of Things**" | "**Stream Analytics**"
 
     ![Create Stream Analytics Job](images/10270-CreateStreamAnalyticsJob.png)
 
-1. In the "**New Stream Analytics Job**" blade, complete the properties as follows, then click the "**Create**" button. 
+1. In the "**New Stream Analytics Job**" blade, complete the properties as follows, then click the "**Create**" button.
 
     - Name - ***&lt;name&gt;job***
     - Subscription - **Chose the same subscription used for the previous resources**
@@ -1044,7 +1048,7 @@ Great, now we have all the pieces that the ***&lt;name&gt;job*** Stream Analytic
 
     ![New ASA Job Properties](images/10280-NewASAJobProperties.png)
 
-1. Once the new Stream Analytics Job has been deployed, it's blade will open in the portal.  Click the "**Inputs**" tile on the blade to open the inputs for the job.  
+1. Once the new Stream Analytics Job has been deployed, it's blade will open in the portal.  Click the "**Inputs**" tile on the blade to open the inputs for the job.
 
     ![Inputs](images/10290-Inputs.png)
 
@@ -1080,7 +1084,7 @@ Great, now we have all the pieces that the ***&lt;name&gt;job*** Stream Analytic
 
     ![SQL DB Output Properties](images/10320-SQLDBOutputProperties.png)
 
-1. Watch for the notification under the "**Notifications**" icon (bell) to verify that the connection test to the "**sqldb**" output was successful.  If it wasn't go back and fix what failed.  
+1. Watch for the notification under the "**Notifications**" icon (bell) to verify that the connection test to the "**sqldb**" output was successful.  If it wasn't go back and fix what failed.
 
     ![Successful Connection](images/10330-SuccessfulConnectionTest.png)
 
@@ -1109,11 +1113,11 @@ Great, now we have all the pieces that the ***&lt;name&gt;job*** Stream Analytic
 
 1. Back in Visual Studio Code with the "**HOLs**" folder open, locate open the "**Stream Analytics\Stream Analytics Query.sql**" file and copy it's contents to the clipboard:
 
-    > **Note**: Stream Analytics uses a SQL like syntax for it's queries.  It provides a very powerful way to query the data streaming through the Azure IoT Hub as if it were data in a table.  Pretty cool!  
+    > **Note**: Stream Analytics uses a SQL like syntax for it's queries.  It provides a very powerful way to query the data streaming through the Azure IoT Hub as if it were data in a table.  Pretty cool!
 
     ![Copy ASA Query](images/10370-CopyASAQuery.png)
 
-1. Back in the browser, replace the default syntax in the query with the code you just copied, then click the "**Save**" button along the top.  
+1. Back in the browser, replace the default syntax in the query with the code you just copied, then click the "**Save**" button along the top.
 
     > **Note**: There are actually two queries here.  The first one queries all of the messages from the "**iothub**" intput and dumps them into the "**sqldb**" output.
     <br/>
@@ -1121,7 +1125,7 @@ Great, now we have all the pieces that the ***&lt;name&gt;job*** Stream Analytic
     The second query looks for messages coming in from the "**iothub**" input only where the "**temperature**" value is greater than **40** and then sends those messages into the "**alerts**" output.
     <br/>
     <br/>
-    You may decide to change the **40** threshold value to something more appropriate for the temperatures your sensor is reporting.  You want something that is higher than the average value, but low enough that you can reach it by forcefully heating up your temp sensor.  
+    You may decide to change the **40** threshold value to something more appropriate for the temperatures your sensor is reporting.  You want something that is higher than the average value, but low enough that you can reach it by forcefully heating up your temp sensor.
 
     ![Create Query](images/10380-CreateQuery.png)
 
@@ -1151,7 +1155,8 @@ Great, now we have all the pieces that the ***&lt;name&gt;job*** Stream Analytic
 
     ![SQL Data](images/10410-SQLData.png)
 
-1. Pretty cool!  Our device message data is now getting pushed into our Azure SQL Database. Of course, we also have the "**alerts**" output which can push high temperature messages off to our ***&lt;name&gt;alerts*** event hub, but we'll come back to those in another task.  For now, pat yourself on the back, this task had a lot of steps. 
+1. Pretty cool!  Our device message data is now getting pushed into our Azure SQL Database. Of course, we also have the "**alerts**" output which can push high temperature messages off to our ***&lt;name&gt;alerts*** event hub, but we'll come back to those in another task.  For now, pat yourself on the back, this task had a lot of steps.
+
 ___
 
 <a name="AzureWebApp"></a>
@@ -1174,14 +1179,14 @@ We'll start by creating the Azure App Service Plan and Web App in the portal.
     - Subscription - **Chose the same subscription used for the previous resources**
     - Resource group - Choose "**Use existing**" and select the ***&lt;name&gt;group*** resource group created previously
     - App Insights - **Off**
-    
+
     ![New Web App Properties](images/11020-WebAppProperties.png)
 
 1. Click on the "**App Service plan/location"** then click "**Create New**"
 
     ![Create New Plan](images/11030-CreateNewPlan.png)
 
-1. Then in the "**App Service plan**" blade complete the properties as follows, then click "**OK**" 
+1. Then in the "**App Service plan**" blade complete the properties as follows, then click "**OK**"
 
     - App service plan - ***&lt;name&gt;plan***
     - Location - **Use the same location as the previous resources**
@@ -1199,7 +1204,7 @@ We'll start by creating the Azure App Service Plan and Web App in the portal.
 
 1. If you haven't setup your deployment credentials for your account subscription yet, you'll need to.  Click "**Setup connection**" and enter the credentials to use, and click "**OK**":
 
-    > **Note**: If you are not prompted for your deployment credentials, then you have likely already set them for your subscription in the past.  You can go ahead and finish creating the deployment source, the after you have created it, use the "**Deployment Credentials**" link along the left side of your Web App blade to get to the same settings shown here.  
+    > **Note**: If you are not prompted for your deployment credentials, then you have likely already set them for your subscription in the past.  You can go ahead and finish creating the deployment source, the after you have created it, use the "**Deployment Credentials**" link along the left side of your Web App blade to get to the same settings shown here.
 
     - Deployment user name - ***&lt;name&gt;user***
     - Password - **P@ssw0rd**
@@ -1211,23 +1216,23 @@ We'll start by creating the Azure App Service Plan and Web App in the portal.
 
     ![Deployment Source Confirmation](images/11080-DeploymentSourceOk.png)
 
-1. Click the "**Overview**" link along the left, hover of the "**Git clone url**, the click the "copy" icon that appears to copy it to your clipboard. 
+1. Click the "**Overview**" link along the left, hover of the "**Git clone url**, the click the "copy" icon that appears to copy it to your clipboard.
 
     ![Git Clone URL](images/11090-GitCloneUrl.png)
 
-1. Finally, document all the settings for your web app in the **[myresources.txt](./myresources.txt)** file. 
+1. Finally, document all the settings for your web app in the **[myresources.txt](./myresources.txt)** file.
 
     ![Document Web App](images/11100-WebAppDocumentation.png)
 
 ### Debug the Node.js Web Application Locally ###
 
-1. Open Visual Studio Code, and from the menu bar select "**File**" | "**Open Folder...**" and find the "**HOLs\WebApp** folder under where you extracted the lab files.  Then inside that folder in VS Code, select the "**config.json**" file. 
+1. Open Visual Studio Code, and from the menu bar select "**File**" | "**Open Folder...**" and find the "**HOLs\WebApp** folder under where you extracted the lab files.  Then inside that folder in VS Code, select the "**config.json**" file.
 
     ![config.json](images/11110-ConfigJson.png)
 
 1. Use the values you've saved to the **[myresources.txt](./myresources.txt)** file to paste the required values into the config.json file. You can close the config.json when you are done.  **IGNORE THE POWERBI... SETTINGS. WE'LL GET TO THOSE LATER**
 
-    > **Note**: The "**iotHubConnString** should be the one for your "**service**" SAS policy.  
+    > **Note**: The "**iotHubConnString** should be the one for your "**service**" SAS policy.
 
     ![Update config.json](images/11120-UpdateWebAppConfigJson.png)
 
@@ -1235,7 +1240,7 @@ We'll start by creating the Azure App Service Plan and Web App in the portal.
 
     ![Node.js debug environment](images/11140-NodeJsEnvironment.png)
 
-1. In the "**launch.json**" file that appears, modify the "**program** path to point to the "**server.js**" file.  Then save and close the "**launch.json**" file.  
+1. In the "**launch.json**" file that appears, modify the "**program** path to point to the "**server.js**" file.  Then save and close the "**launch.json**" file.
 
     ![Start with server.js](images/11150-StartWithServerjs.png)
 
@@ -1246,11 +1251,11 @@ We'll start by creating the Azure App Service Plan and Web App in the portal.
     npm install
     bower install
     ```
-1. Back in VS Code, on the Debug panel, click the green "**play**" button along the top to start debugging the web app. 
+1. Back in VS Code, on the Debug panel, click the green "**play**" button along the top to start debugging the web app.
 
     ![Debug](images/11160-Debug.png)
 
-1. In the Debug Console (if your's isn't visible press **Ctrl+Shift+Y**), you should see that the app is running on [http://localhost:3000](http://localhost:3000) 
+1. In the Debug Console (if your's isn't visible press **Ctrl+Shift+Y**), you should see that the app is running on [http://localhost:3000](http://localhost:3000)
 
     ![Listening on Port 3000](images/11170-ListeningOnPort3000.png)
 
@@ -1258,9 +1263,9 @@ We'll start by creating the Azure App Service Plan and Web App in the portal.
 
     - The "**Temperature History**" shows the 20 most recent readings.  That data is coming directly from the Azure SQL Database's "**dbo.RecentMeasurements**" view
 
-    - The "**Devices**" area displays a row for each device along with their latest sensor values.  That data comes from the Azure SQL Databases' "**dbo.Devices** view.  
+    - The "**Devices**" area displays a row for each device along with their latest sensor values.  That data comes from the Azure SQL Databases' "**dbo.Devices** view.
 
-    - The "**Chart**" section currently has a placeholder image promising that a chart is coming soon.  If you complete the [TIME PERMITTING - Display Temperature Data with Power BI Embedded](#PowerBIEmbedded) portion of the lab, you will make good on that promise. 
+    - The "**Chart**" section currently has a placeholder image promising that a chart is coming soon.  If you complete the [TIME PERMITTING - Display Temperature Data with Power BI Embedded](#PowerBIEmbedded) portion of the lab, you will make good on that promise.
 
     ![Web App Running Locally](images/11180-WebAppRunningLocally.png)
 
@@ -1268,16 +1273,15 @@ We'll start by creating the Azure App Service Plan and Web App in the portal.
 
     ![Stop Debugging](images/11190-StopDebugging.png)
 
-
 ### Deploying the Web App to Azure ###
 
-The last step is to get this web application running in Azure, not locally.  Earlier, when we configured the Web Application we set it up to deploy from a git repository.  To deploy we can simply push our web app code via git up to the Web App's repo.  Visual Studio Code makes that simple to do!.  
+The last step is to get this web application running in Azure, not locally.  Earlier, when we configured the Web Application we set it up to deploy from a git repository.  To deploy we can simply push our web app code via git up to the Web App's repo.  Visual Studio Code makes that simple to do!.
 
-1. In Visual Studio Code, click the "**git**" icon to open the "**git**" panel, and then click the "**Initialize git repository**" button.  
+1. In Visual Studio Code, click the "**git**" icon to open the "**git**" panel, and then click the "**Initialize git repository**" button.
 
     ![Initialize git repository](images/11200-InitLocalGitRepo.png)
 
-1. Type in a message (like "**Initial commit**) in the box at the top, and click the "**checkmark**" commit icon to commit the changes to the new repo. 
+1. Type in a message (like "**Initial commit**) in the box at the top, and click the "**checkmark**" commit icon to commit the changes to the new repo.
 
     ![Initial Commit](images/11210-InitialCommit.png)
 
@@ -1293,7 +1297,7 @@ The last step is to get this web application running in Azure, not locally.  Ear
     git remote add origin https://mic16user@mic16web.scm.azurewebsites.net:443/mic16web.git
     ```
 
-1. Then, back in Visual Studio Code,  on the "**git**" panel, click the "**...**" ellipsis menu at the top, then select "**Publish**", and confirm the publish when prompted. 
+1. Then, back in Visual Studio Code,  on the "**git**" panel, click the "**...**" ellipsis menu at the top, then select "**Publish**", and confirm the publish when prompted.
 
     ![Publish](images/11220-Publish.png)
 
@@ -1309,7 +1313,7 @@ The last step is to get this web application running in Azure, not locally.  Ear
 
 1. And finally, you should be able to open your site in Azure to verify it is working.
 
-    > **Note**: The URL to your site in azure should be ***http://&lt;name&gt;web.azurewebsites.net*** . For example **http://mic16web.azurewebsites.net** . You should have also documented this in your **[myresources.txt](./myresources.txt)** file.
+    > **Note**: The URL to your site in azure should be ***`http://<name>web.azurewebsites.net`*** . For example **`http://mic16web.azurewebsites.net`** . You should have also documented this in your **[myresources.txt](./myresources.txt)** file.
 
     ![Site Running in Azure](images/11260-SiteRunningInAzure.png)
 
@@ -1319,7 +1323,7 @@ ___
 Sending Messages from the Azure IoT Hub to the Intel Gateway
 ---
 
-All of the message flow so far has been from the device to the cloud (device-to-cloud messages). In this section, we'll see how to send messages from the cloud back down to the device (cloud-to-device messages). 
+All of the message flow so far has been from the device to the cloud (device-to-cloud messages). In this section, we'll see how to send messages from the cloud back down to the device (cloud-to-device messages).
 
 We'll configure our Intel NUC to turn on it's buzzer for one second if it receives a message from the Azure IoT Hub with the following format:
 
@@ -1329,15 +1333,16 @@ We'll configure our Intel NUC to turn on it's buzzer for one second if it receiv
     "message" : "some message"
 }
 ```
+
 ### Add the Buzzer Device and Code to the Intel NUC ###
 
 1. Attach the "**Buzzer**" to "**D3**" on the "**Grove Base Shield"** as shown below:
 
     ![Buzzer Attached](images/12010-BuzzerAttached.png)
 
-1. Copy the contents out of "**HOLs\Node-RED Flows\Flow 3 - 02 - Add Azure IoT Hub Node.json**" file into the clipboard. 
+1. Copy the contents out of "**HOLs\Node-RED Flows\Flow 3 - 02 - Add Azure IoT Hub Node.json**" file into the clipboard.
 
-1. Open the Intel NUCs Node-RED development environment in your browser (http://xxx.xxx.xxx.xxx:1880 where xxx.xxx.xxx.xxx is your NUC's IP Address),  from the "**Hamburger**" menu in the top right corner select "**Import**" | "**Clipboard**"
+1. Open the Intel NUCs Node-RED development environment in your browser (`http://your.nucs.ip.address:1880` where `your.nucs.ip.address is` your NUC's IP Address),  from the "**Hamburger**" menu in the top right corner select "**Import**" | "**Clipboard**"
 
     ![Import From Clipboard](images/12020-ImportFromClipboard.png)
 
@@ -1345,22 +1350,22 @@ We'll configure our Intel NUC to turn on it's buzzer for one second if it receiv
 
     ![Import Nodes](images/12030-ImportNodes.png)
 
-1. Then move your mouse to place the imported nodes where you want (if you hold the shift key while you move your mouse the nodes will snap to the grid), and then connect the output of the "**azureiothub**" node to the input of the "**To String**" node as shown below.  Click the "**Deploy**" button when you are done to deploy the changes..  
+1. Then move your mouse to place the imported nodes where you want (if you hold the shift key while you move your mouse the nodes will snap to the grid), and then connect the output of the "**azureiothub**" node to the input of the "**To String**" node as shown below.  Click the "**Deploy**" button when you are done to deploy the changes.
 
      The nodes being added do the following:
 
-    - The **To String** function converts the byte data returned by the "**azureiothub**" node into a string value. 
-    - The **json** node then deserializes that string into an object.  
-    - The "**msg.payload**" debug node displays the object to the **debug** panel. 
-    - The "**If Temp Alert** node checks the "type" property on the object to see if it is literally "temp" if it is, the subsequent tasks are allowed to run. 
-    - The "**Turn on Buzzer**" task does nothing more than create a payload with a value of 1 to cause the buzzer to turn on. 
+    - The **To String** function converts the byte data returned by the "**azureiothub**" node into a string value.
+    - The **json** node then deserializes that string into an object.
+    - The "**msg.payload**" debug node displays the object to the **debug** panel.
+    - The "**If Temp Alert** node checks the "type" property on the object to see if it is literally "temp" if it is, the subsequent tasks are allowed to run.
+    - The "**Turn on Buzzer**" task does nothing more than create a payload with a value of 1 to cause the buzzer to turn on.
     - The "**Grove Buzzer**" then looks at the payload coming in, and if it is a 1, id sounds the buzzer for a hard coded one second (1000000 microseconds).
-    - The "**Get the Message**" node extracts just the "message" property from the object and passes it to the "**Show the Message**" node. 
+    - The "**Get the Message**" node extracts just the "message" property from the object and passes it to the "**Show the Message**" node.
     - The "**Show the Message**" node displays the message text on the second row of the LCD panel and flashes the background of the panel red (rgb 255,0,0).
 
     ![Imported Nodes](images/12040-ImportedNodes.png)
 
-1. The Azure Web App we deployed in the previous task has a handy way to test the buzzer.  Open up the ***http://&lt;name&gt;web.azurewebsites.net*** web application in browser.  
+1. The Azure Web App we deployed in the previous task has a handy way to test the buzzer.  Open up the ***`http://<name>web.azurewebsites.net`*** web application in browser.
 
 1. Just to the left of each device under the "**Devices**" heading there is a small green button with a lightning bolt on it (![Test Buzzer Button](images/00000-TestBuzzerButton.png)).  Click that button next to the device where you have deployed the updated Node-RED code, and you should:
 
@@ -1375,7 +1380,7 @@ We'll configure our Intel NUC to turn on it's buzzer for one second if it receiv
 
     - Hear the buzzer sound
     - See the test message "***Buzzer Test***" displayed briefly on the LCD
-    - See the LCD background change to red briefly.  
+    - See the LCD background change to red briefly.
 
     ![Test Buzzer Button on Web Site](images/12050-TestBuzzerOnWebsite.png)
 
@@ -1383,9 +1388,9 @@ We'll configure our Intel NUC to turn on it's buzzer for one second if it receiv
 
 ### Create an Azure Function to Process the Event Hub Messages and Alert the Device ###
 
-Previously, we setup our ***&lt;name&gt;job*** Stream Analytics Job to forward messages coming in from the IoT Hub that had a temperature value over some threshold off to the ***&lt;name&gt;alerts*** event hub.  But we never did anyhing with those Event Hub alert messages.  Now we will. 
+Previously, we setup our ***&lt;name&gt;job*** Stream Analytics Job to forward messages coming in from the IoT Hub that had a temperature value over some threshold off to the ***&lt;name&gt;alerts*** event hub.  But we never did anyhing with those Event Hub alert messages.  Now we will.
 
-In this task, we'll create the **TempAlert** function and have it receive those alert messages from the event hub, and send a temp alert message back down to the device.    
+In this task, we'll create the **TempAlert** function and have it receive those alert messages from the event hub, and send a temp alert message back down to the device.
 
 1. Open the [Azure Port](https://portal.azure.com) in the browser, and close any blades open from previous steps.  Then click "**+ New**" | "**Compute**" | "**Function App**".
 
@@ -1402,17 +1407,16 @@ In this task, we'll create the **TempAlert** function and have it receive those 
 
     ![New Function App](images/12070-NewFunctionApp.png)
 
-1.  When the new Function App is deployed, and it's blade open's in the portal, click the "**+New Function**" button, and select "**EventHubTrigger - C#**"
+1. When the new Function App is deployed, and it's blade open's in the portal, click the "**+New Function**" button, and select "**EventHubTrigger - C#**"
 
     ![Event Hub Trigger C# Function](images/12080-NewCSharpEventHubTriggerFunction.png)
 
-1. **SCROLL DOWN** to continue configuring the new function.  
+1. **SCROLL DOWN** to continue configuring the new function.
     - Name - **TempAlert**
     - Event Hub Name - ***&lt;name&gt;alerts***
     - Event Hub connection - Click the "**new**" link
 
-    ![New Function Properties](images/12090-NewFunctionProperties.png)
-    
+    ![New Function Properties](images/12090-NewFunctionProperties.png
 1. On the "**Service Bus connection**" blade, click "**Add a connection string**" the configure the properties on the "**Add Service Bus connection**" blade as follows and click "**OK**":
 
     - Connection name - ***&lt;name&gt;ns***
@@ -1438,9 +1442,9 @@ In this task, we'll create the **TempAlert** function and have it receive those 
 
 1. In the "**Open**" dialog, navigate to the **HOLs/FunctionApp/TempAlert** folder under where you extracted the lab files, select the the following files, and click the "**Open**" button to upload them:
 
-    - "**project.json**" - This is a regular C# project.json file that defines the various nuget packages that are needed by the code in our function.  Because our function will be sending message to Azure IoT Hub devices, it needs to have the Azure IoT Hub SDKs available.  The project.json file defines those dependencies allows the Azure Function App platform to load them.  
-    - "**run.csx**" - This is a more robust block of function code that parses the "**myEventHubMessage**" sent in by the Event Hub Trigger, generates and Alert message, and then uses the Azure IoT Hub SDKs to send the message to the appropriate device based on the "deviceID" property of the incomnig message. 
-    - "**function.json**" - **DO NOT UPLOAD THE FUNCTION.JSON FILE**.  This file stores the trigger, input and output integrations, and we have already configured the integration for our function.  
+    - "**project.json**" - This is a regular C# project.json file that defines the various nuget packages that are needed by the code in our function.  Because our function will be sending message to Azure IoT Hub devices, it needs to have the Azure IoT Hub SDKs available.  The project.json file defines those dependencies allows the Azure Function App platform to load them.
+    - "**run.csx**" - This is a more robust block of function code that parses the "**myEventHubMessage**" sent in by the Event Hub Trigger, generates and Alert message, and then uses the Azure IoT Hub SDKs to send the message to the appropriate device based on the "deviceID" property of the incomnig message.
+    - "**function.json**" - **DO NOT UPLOAD THE FUNCTION.JSON FILE**.  This file stores the trigger, input and output integrations, and we have already configured the integration for our function.
 
     ![Upload Files](images/12140-UploadFiles.png)
 
@@ -1457,13 +1461,13 @@ In this task, we'll create the **TempAlert** function and have it receive those 
     ```c#
     static string connectionString = "<Your IoT Hub "service" SAS Policy Primary Connection String goes here>";
     ```
-    and replace `<your Your IoT Hub "service" SAS Policy Primary Connection String goes here>` with the "**IoT Hub "service" SAS Policy Primary Connection String**" value from the **[myresources.txt](./myresources.txt)** file.  
-    
+    and replace `<your Your IoT Hub "service" SAS Policy Primary Connection String goes here>` with the "**IoT Hub "service" SAS Policy Primary Connection String**" value from the **[myresources.txt](./myresources.txt)** file
     For example:
 
     ```c#
     static string connectionString = "HostName=mic16iot.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=wQF6dryjMwQ1mMEwDFfcgkSaSscFthHVVJeIfq6iVWQ=";
-    ``` 
+    ```
+
     Then click the "**Save**" button to save the changes.
 
     ![Paste 'service' policy connection string](images/12160-PasteServiceConnectionString.png)
@@ -1480,7 +1484,7 @@ In this task, we'll create the **TempAlert** function and have it receive those 
 
 1. To try it out:
 
-    > **Note**: If the sensor is already publishing values that exceeds the threshold value in the ***&lt;name&gt;job*** Stream Analytics Job Query (**40** by default), you should begin receive alerts immediately. This can become irritating if the threshold is set to low.  If desired, you can go back to your ***&lt;name&gt;job*** Stream Analytics Job Query definition and increase the threshold value.  
+    > **Note**: If the sensor is already publishing values that exceeds the threshold value in the ***&lt;name&gt;job*** Stream Analytics Job Query (**40** by default), you should begin receive alerts immediately. This can become irritating if the threshold is set to low.  If desired, you can go back to your ***&lt;name&gt;job*** Stream Analytics Job Query definition and increase the threshold value.
 
     - Warm your hands up by rubbing them vigoursly together, then pinch the Temperature sensor on both sides with your warm fingers and try to get the NUC to generate a reading of the threshold value (again, **40** by default)
 
@@ -1511,9 +1515,9 @@ ___
 TIME PERMITTING - Display Temperature Data with Power BI Embedded
 ---
 
-In this task, we'll walk through publishing a pre-created Power BI report into a Power BI collection and Workspace in your Azure Subscription.  You can learn more about Power BI Embedded here: <a target="_blank" href="https://azure.microsoft.com/en-us/services/power-bi-embedded/">https://azure.microsoft.com/en-us/services/power-bi-embedded/</a> 
+In this task, we'll walk through publishing a pre-created Power BI report into a Power BI collection and Workspace in your Azure Subscription.  You can learn more about Power BI Embedded here: <a target="_blank" href="https://azure.microsoft.com/en-us/services/power-bi-embedded/">azure.microsoft.com/en-us/services/power-bi-embedded/</a>
 
-1. You **DO NOT NEED** to edit the report provided, however, if you would like to see how it was authored, and your are on a Windows system, you can download "**Power BI Desktop**" from <a target="_blank" target="_blank" href="https://powerbi.microsoft.com/en-us/desktop/">https://powerbi.microsoft.com/en-us/desktop/</a>.  Once you have downloaded it, you can open the "**HOLs\PowerBI\TemperatureChart.pbix**" file to view how it was designed.  **REGARDLESS, DO NOT MAKE CHANGES TO THE REPORT AT THIS TIME!**
+1. You **DO NOT NEED** to edit the report provided, however, if you would like to see how it was authored, and your are on a Windows system, you can download "**Power BI Desktop**" from <a target="_blank" target="_blank" href="https://powerbi.microsoft.com/en-us/desktop/">powerbi.microsoft.com/en-us/desktop/</a>.  Once you have downloaded it, you can open the "**HOLs\PowerBI\TemperatureChart.pbix**" file to view how it was designed.  **REGARDLESS, DO NOT MAKE CHANGES TO THE REPORT AT THIS TIME!**
 
     ![Report in Power BI Desktop](images/13010-TemperatureChartReportInDesktop.png)
 
@@ -1551,7 +1555,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     ```
 1. Once it is installed, in the command prompt or terminal window, change into the "**HOLs\PowerBI**" folder, and run the following command and use the collection name and key you just pasted into the "**[myresources.txt](./myresources.txt)**" file to tell the powerbi how to connect to our workspace collection:
 
-    > **Note**: The `powerbi config` command creates a `.powerbirc` file in the directory where the command was executed.  It contains sensitive connection information about how to connect to to your Power BI Embedded Workspace Collection so be careful who you expose that file to.  
+    > **Note**: The `powerbi config` command creates a `.powerbirc` file in the directory where the command was executed.  It contains sensitive connection information about how to connect to to your Power BI Embedded Workspace Collection so be careful who you expose that file to.
 
     ```bash
     powerbi config -c <collectioName> -k <accessKey>
@@ -1564,19 +1568,19 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     Which returns this output.  The values shown here are stored in the ".powerbirc" file in the current directory:
 
-    ```
+    ```bash
     [ powerbi ] collection: mic16collection
     [ powerbi ] accessKey: BoeKHkxkB/JuHsXTRsgUSegrvNnMC97YgycKJYXKDY7q9v5nbSxpoJkfvMmvMr68CrAi1iQVv0KgCpjlVtLIxw==
     ```
 
-1.  Now, we can create a new "**Workspace**" workspaces are the containers that we upload reports into.  Use the following command:
+1. Now, we can create a new "**Workspace**" workspaces are the containers that we upload reports into.  Use the following command:
 
     ```bash
     powerbi create-workspace
     ```
     Which returns output similar to the following.
 
-    ```
+    ```bash
     [ powerbi ] Workspace created: 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
     ```
 
@@ -1587,14 +1591,14 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     ```
 
     For example
-    
+
     ```bash
     powerbi config -w 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
     ```
 
     Which returns
 
-    ```
+    ```bash
     [ powerbi ] collection: mic16collection
     [ powerbi ] accessKey: BoeKHkxkB/JuHsXTRsgUSegrvNnMC97YgycKJYXKDY7q9v5nbSxpoJkfvMmvMr68CrAi1iQVv0KgCpjlVtLIxw==
     [ powerbi ] workspace: 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
@@ -1604,23 +1608,23 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     ![Workspace ID Documented](images/13070-WorkspaceIdDocumented.png)
 
-1. Now we can upload our report (the TemperatureChart.pbix file) into our new workspace. 
+1. Now we can upload our report (the TemperatureChart.pbix file) into our new workspace.
 
-    > **Note**: These commands assume you are in the "**HOLs\PowerBI**" folder.  
-
-    ```bash
-    powerbi import -n <what to call the report> -f <local path the to your .pbix file> 
-    ```    
-
-    For example 
+    > **Note**: These commands assume you are in the "**HOLs\PowerBI**" folder.
 
     ```bash
-    powerbi import -n "TemperatureChart" -f "TemperatureChart.pbix" 
+    powerbi import -n <what to call the report> -f <local path the to your .pbix file>
+    ```
+
+    For example
+
+    ```bash
+    powerbi import -n "TemperatureChart" -f "TemperatureChart.pbix"
     ```
 
     Which returns something like:
 
-    ```
+    ```bash
     [ powerbi ] Importing TemperatureChart.pbix to workspace: 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
     [ powerbi ] File uploaded successfully
     [ powerbi ] Import ID: b3cd9de9-11e5-473c-9b55-0e569c89a756
@@ -1633,11 +1637,11 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     ```bash
     powerbi get-reports
-    ```    
+    ```
 
     Returns
 
-    ```
+    ```bash
     [ powerbi ] =========================================
     [ powerbi ] Gettings reports for Collection: 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
     [ powerbi ] =========================================
@@ -1652,7 +1656,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     Returns
 
-    ```
+    ```bash
     =========================================
     Gettings datasets for Collection: 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
     =========================================
@@ -1665,13 +1669,13 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     We need to create a connection string in the right format.  Here is the template for the connection string:
 
-    ```
+    ```bash
     "data source=<name>sql.database.windows.net;initial catalog=<name>db;persist security info=True;encrypt=True;trustservercertificate=False"
     ```
 
     Replace the ***&lt;name&gt;sql*** and ***&lt;name&gt;db*** values above with your own.  For example:
 
-    ```
+    ```bash
     "data source=mic16sql.database.windows.net;initial catalog=mic16db;persist security info=True;encrypt=True;trustservercertificate=False"
     ```
 
@@ -1690,9 +1694,9 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     ```
     Which returns something similar to:
 
-    > **Note**: Sometimes this fails.  If you get an error, double check your parameters, but even if they are correct, simply running the command a second or third time may work.      
+    > **Note**: Sometimes this fails.  If you get an error, double check your parameters, but even if they are correct, simply running the command a second or third time may work.
 
-    ```
+    ```bash
     [ powerbi ] Found dataset!
     [ powerbi ] Id: ed212c12-0335-414d-b0f1-d4e1be1268da
     [ powerbi ] Name: TemperatureChart
@@ -1714,7 +1718,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     [ powerbi ] Gateway ID:  8b37fcc6-be5a-47e3-a48d-9d9390b29338
     ```
 
-1.  Ok, last step is to actually embed the report into our web app.  Most of the code has already been written for us, we just need to make a few quick changes. To get started, open the "**HOLs\WebApp"** folder in "**Visual Studio Code**".  Use the values you've saved in the "**[myresources.txt](./myresources.txt)**" file to complete the "powerbi*" config settings in the config.json file:
+1. Ok, last step is to actually embed the report into our web app.  Most of the code has already been written for us, we just need to make a few quick changes. To get started, open the "**HOLs\WebApp"** folder in "**Visual Studio Code**".  Use the values you've saved in the "**[myresources.txt](./myresources.txt)**" file to complete the "powerbi*" config settings in the config.json file:
 
     ![Power BI Config Settings](images/13080-PowerBIConfigValues.png)
 
@@ -1745,20 +1749,20 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     ```javascript
     //Uncomment the following line of code to embed the Power BI report.
-    //$scope.embedReport();    
+    //$scope.embedReport();
     ```
 
     And uncomment the `$scope.embedReport();` statement:
 
     ```javascript
     //Uncomment the following line of code to embed the Power BI report.
-    $scope.embedReport();    
+    $scope.embedReport();
     ```
 
     ![Uncomment embedReport() call](images/13110-EmbedReportCallUncommented.png)
 
     This will cause some code to run when the page is loaded to embed the report into the `<div />` container we uncommented above.
-    
+
 1. The following information is just FYI, you don't need to do anything with this code:
 
     The embedReport() function we are calling above, calls into the backed node.js application hosted in server.js to retrieve a valid "**embed token**" for the eport.
@@ -1767,14 +1771,14 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     $scope.embedReport = function () {
         //Get just the very latest measurements from the node.js server back end
         $http.get('/api/powerbiembedconfig').success(function(config) {
-            
+
             if(config) {
                 var powerbiReport = angular.element( document.querySelector( '#powerbiReport' ) )[0];
                 powerbi.embed(powerbiReport,config);
-            } 
+            }
         });
-    }    
-    ```   
+    }
+    ```
 
     The `/api/powerbiembedconfig` route on the backed server in server.js uses the **<a target="_blank" href="https://www.npmjs.com/package/powerbi-api">powerbi-api</a>** node.js library to create a "**JSON Web Toke**" or "**JWT**" token that the embedded request uses to authenticate with the Power BI Embedded service.  The "**JWT**" token is signed by your Workspace Collection's Access Key which is known by the backend server, but not the front end web application:
 
@@ -1791,19 +1795,19 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
             // Get the other parameters from the variables we initialized
             // previously with values from the config.json file.
-            // Then generate a valid Power BI Report Embed token with the values.  
+            // Then generate a valid Power BI Report Embed token with the values.
             var token = powerbi.PowerBIToken.createReportEmbedToken(
-                powerbiCollectionName, 
-                powerbiWorkspaceId, 
-                powerbiReportId, 
-                username, 
-                roles, 
+                powerbiCollectionName,
+                powerbiWorkspaceId,
+                powerbiReportId,
+                username,
+                roles,
                 expiration);
             // And sign it with the provided Power Bi Access key
-            // Again, this value comes from the config.json file 
+            // Again, this value comes from the config.json file
             var jwt = token.generate(powerbiAccessKey);
 
-            // Create the required embed configuration for the 
+            // Create the required embed configuration for the
             // web client front end to use
             var embedConfig = {
                 type: 'report',
@@ -1816,8 +1820,8 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
             res.json(embedConfig);
         }
     );
-    ```        
-    
+    ```
+
 1. Regardless, we should be done.  Let's commit our changes into the git repo, and sync with the Azure Web App repo in Azure..
 
     In Visual Studio Code, click the "**git**" icon on the left, add a comment to the commit message box at the top, and click the "**checkmark**" icon to commit your changes:
@@ -1832,11 +1836,11 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     ![Verify Deployment](images/13140-VerifyTheDeploymentSucceeded.png)
 
-1. Then in your browser open the web site in azure (http://***&lt;name&gt;web.azurewebsites.net***) checkout the new report !
+1. Then in your browser open the web site in azure (`***http://<name>web.azurewebsites.net`***) checkout the new report !
 
     ![Embedded Report Visible](images/13150-EmbeddedReportVisibleInAzure.png)
 
-1. The page is set to refresh automatically every 30 seconds.  You should see that the report updates the data it displayes as well!  
+1. The page is set to refresh automatically every 30 seconds.  You should see that the report updates the data it displayes as well!
 
 ___
 
@@ -1846,9 +1850,9 @@ Cleaning Up
 
 Once you are done with the lab, unless you want to continue with these resources in Azure you can delete them.
 
-1.  In the browser, go to the [Azure Portal](https://portal.azure.com), and click on the "**Resource Groups**", select the "***&&&lt;name&gt;group*** and on the "**Overview**" page, review it's contents.  When you are ready, click the "**Delete**" button along the top.   
+1. In the browser, go to the [Azure Portal](https://portal.azure.com), and click on the "**Resource Groups**", select the "***&&&lt;name&gt;group*** and on the "**Overview**" page, review it's contents.  When you are ready, click the "**Delete**" button along the top.
 
-    > **Note**: There are a number of interesting things to check out on your resource group before you delete it.  Take a minute and check out the "**Resouce Costs**", "**Automation Script**" and "**Monitoring**" options. 
+    > **Note**: There are a number of interesting things to check out on your resource group before you delete it.  Take a minute and check out the "**Resouce Costs**", "**Automation Script**" and "**Monitoring**" options.
 
     ![Delete Resource Group](images/14010-ResourceGroupInformation.png)
 
@@ -1863,4 +1867,3 @@ Once you are done with the lab, unless you want to continue with these resources
     ![Unpin Tiles](images/14030-UnpinTiles.png)
 
 1. After deleting the resource group and all the resources that were provisioned in this lab, you won't have recurring charges or resource utilitization related to the work you did here.
-
