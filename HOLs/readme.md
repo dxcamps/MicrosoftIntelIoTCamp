@@ -22,6 +22,13 @@ In order to successfully complete this lab you will need:
 - Visual Studio Code. Visual Studio Code is a free, open source, cross platform development environment.  You can install it from **<a target="_blank" href="http://code.visualstudio.com">code.visualstudio.com</a>**
 - Git installed and in your system path - You can install Git from **<a target="_blank" href="https://git-scm.com/downloads">git-scm.com/downloads</a>**
 
+    You also need to have your git global config setup with the user and email.  To ensure the global config options, run the following commands from your command prompt or terminal window after installing git:
+
+    ```bash
+    git config --global user.name "Your Name"
+    git config --global user.email "Your Email"
+    ```
+
 Tasks
 ---
 
@@ -74,7 +81,13 @@ Getting Started with Grove IoT Commercial Developer Kit
 
 1. Press the power button on the IoT Gateway to boot it.  It will take about two minutes or so for the device to boot.  Once it has booted the default Node-RED flow on the gateway will run and display the Gateway's IP Address on the LCD panel attached to the Arduino 101.  ***The IP Address displayed is the IP Address of your Intel IoT Gateway NUC.  You will use this to attach to your gateway throughout the rest of this lab.***
 
-    > **Note**: If you do not see your IP address within about five minutes (make sure you give the NUC plenty of time to boot), you can try the following:<br/><br/>- Ensure that the network cable is connected properly and that it is connected to a network with Internet Access.  If you re-connect the cable wait at least one minute to see if the IP Address appears on the LCD.  The default flow only updates the display of the address once every minute.<br/>- If you still don't see an IP Address, you can try re-booting it by pressing the powerbutton until the light turns off, then turning it back on again.
+    <blockquote>
+        <strong>Note</strong>: If you do not see your IP address within about five minutes (make sure you give the NUC plenty of time to boot), you can try the following:
+        <ul>
+        <li>Ensure that the network cable is connected properly and that it is connected to a network with Internet Access.  If you re-connect the cable wait at least one minute to see if the IP Address appears on the LCD.  The default flow only updates the display of the address once every minute.</li>
+        <li>If you still don't see an IP Address, you can try re-booting it by pressing the powerbutton until the light turns off, then turning it back on again.</li>
+        </ul>
+    </blockquote>
 
     ![IP Address on LCD Panel](images/01090-IPAddressOnLCD.png)
 
