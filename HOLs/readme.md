@@ -342,9 +342,11 @@ We will create Node-RED flow to get data from temperature sensor and display it 
     - Watch for the debug messages to appear on the "**debug**" tab.
 
     <!-- markdownlint-disable MD028 -->
+
     > **Note**: If you can't see the entire debug message on the debug tab, you can drag the splitter bar between the "**Visual Editor**" and "**debug**" tab panels to expand the view, or you can scroll to the right on the "**debug**" tab using the horizontal scroll bar at the bottom of it.
 
     > **Note**: You can touch the temperature sensor (or blow on it) to see the value of the "**temp**" displayed change on the "**debug**" tab.
+
     <!-- markdownlint-enable MD028 -->
 
     ![Flow 3 Debug Messages](images/05110-Flow3DebugMessages.png)
@@ -751,8 +753,11 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
 1. In the "**Add New Packages**" window, in the search box, type "**cloud-azure**", then click the "**Install**" button next to the "**packagegroup-cloud-azure**" package.  Again, this takes a few minutes so be patient:
 
-    > **Note**: You can see what all is installed with the packagegroup-cloud-azure package here: <a target="_blank" href="https://github.com/intel-iot-devkit/meta-iot-cloud/blob/master/recipes-core/packagegroups/packagegroup-cloud-azure_0.9.bb">link</a> <br/>
-    Basically it is all of the node.js packages for the various Azure IoT Hub sdks.  It also includes a Node-RED node for working with Azure IoT Hubs (<a target="_blank" href="https://www.npmjs.com/package/node-red-contrib-azureiothubnode">link</a>).
+    <blockquote>
+      **Note**: You can see what all is installed with the packagegroup-cloud-azure package here: <a target="_blank" href="https://github.com/intel-iot-devkit/meta-iot-cloud/blob/master/recipes-core/packagegroups/packagegroup-cloud-azure_0.9.bb">link</a>
+       <br/>
+      Basically it is all of the node.js packages for the various Azure IoT Hub sdks.  It also includes a Node-RED node for working with Azure IoT Hubs (<a target="_blank" href="https://www.npmjs.com/package/node-red-contrib-azureiothubnode">link</a>).
+    </blockquote>
 
     ![Install packagegroup-cloud-azure](images/09060-InstallPackageGroupCloudAzure.png)
 
@@ -768,11 +773,11 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
 1. Now, open the Node-RED development environment in the browser (Remember you can just point your browser to port 1880 on your NUC, eg: `http://your.nucs.ip.address:1880` where `your.nucs.ip.address is` your NUC's IP Address).  In the list of nodes on the left, you should see a new "**cloud**" category, and within it the "**azureiothub**" node:
 
-    > **Note**: if the "**cloud**" category and "**azureiothubnode**" node don't appear, you may need to manually install the "**node-red-control-azureiothubnode**" package on the NUC.  If that is necessary, ssh into the NUC, and from the prompt run the following two commands:
-    <br/>
-    `npm install -g node-red-contrib-azureiothubnode`
-    <br/>
-    `systemctl restart node-red-experience`
+    <blockquote>
+      <strong>Note</strong>: if the "<strong>cloud</strong>" category and "<strong>azureiothubnode</strong>" node don't appear, you may need to manually install the "<strong>node-red-control-azureiothubnode</strong>" package on the NUC.  If that is necessary, ssh into the NUC, and from the prompt run the following two commands:<br/>
+      <pre><code class="lank-bash">npm install -g node-red-contrib-azureiothubnode</code></pre>
+      <pre><code class="lank-bash">systemctl restart node-red-experience</code></pre>
+    </blockquote>
 
     ![New azureiothubnode](images/09080-AzureIoTHubNode.png)
 
@@ -1119,13 +1124,14 @@ Great, now we have all the pieces that the ***&lt;name&gt;job*** Stream Analytic
 
 1. Back in the browser, replace the default syntax in the query with the code you just copied, then click the "**Save**" button along the top.
 
-    > **Note**: There are actually two queries here.  The first one queries all of the messages from the "**iothub**" intput and dumps them into the "**sqldb**" output.
-    <br/>
-    <br/>
-    The second query looks for messages coming in from the "**iothub**" input only where the "**temperature**" value is greater than **40** and then sends those messages into the "**alerts**" output.
-    <br/>
-    <br/>
-    You may decide to change the **40** threshold value to something more appropriate for the temperatures your sensor is reporting.  You want something that is higher than the average value, but low enough that you can reach it by forcefully heating up your temp sensor.
+    <blockquote>
+      <<strong>Note</strong>: There are actually two queries here.<br/>
+      <ul>
+        <li>The first one queries all of the messages from the "<strong>iothub</strong>" intput and dumps them into the "<strong>sqldb</strong>" output.</li>
+        <li>The second query looks for messages coming in from the "<strong>iothub</strong>" input only where the "<strong>temperature</strong>" value is greater than <strong>40</strong> and then sends those messages into the "<strong>alerts</strong>" output.</li>
+      </ul>
+      You may decide to change the <strong>40</strong> threshold value to something more appropriate for the temperatures your sensor is reporting.  You want something that is higher than the average value, but low enough that you can reach it by forcefully heating up your temp sensor.
+    </blockquote>
 
     ![Create Query](images/10380-CreateQuery.png)
 
@@ -1369,14 +1375,10 @@ We'll configure our Intel NUC to turn on it's buzzer for one second if it receiv
 
 1. Just to the left of each device under the "**Devices**" heading there is a small green button with a lightning bolt on it (![Test Buzzer Button](images/00000-TestBuzzerButton.png)).  Click that button next to the device where you have deployed the updated Node-RED code, and you should:
 
-    > **Note**: If the test doesn't function try restarting the Azure Web App (you can open the web app in the portal, and click the "**Restart**" or "**Stop**" and "**Start**" buttons along the top), as well as ssh'ing into your Intel NUC and issuing a shutdown / reboot command:
-    <br/>
-    <br/>
-    ```bash
-    shutdown 0 -raw
-    ```
-    <br/>
-    <br/>
+    <blockquote>
+        <strong>Note</strong>: If the test doesn't function try restarting the Azure Web App (you can open the web app in the portal, and click the "<strong>Restart</strong>" or "<strong>Stop</strong>" and "<strong>Start</strong>" buttons along the top), as well as ssh'ing into your Intel NUC and issuing a shutdown / reboot command:<br/>
+        <pre><code class="lang-bash">shutdown 0 -raw</code></pre>
+    </blockquote>
 
     - Hear the buzzer sound
     - See the test message "***Buzzer Test***" displayed briefly on the LCD
