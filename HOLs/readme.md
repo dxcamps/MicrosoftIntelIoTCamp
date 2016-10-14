@@ -14,12 +14,12 @@ Prerequisites
 
 In order to successfully complete this lab you will need:
 
-- Intel Grove Commercial IoT Developer Kit **<a href="https://www.seeedstudio.com/Grove-IoT-Commercial-Developer-Kit-p-2665.html">link</a>**
-- Arduino 101 **<a href="https://www.arduino.cc/en/Main/ArduinoBoard101">link</a>**
+- Intel Grove Commercial IoT Developer Kit **<a target="_blank" href="https://www.seeedstudio.com/Grove-IoT-Commercial-Developer-Kit-p-2665.html">link</a>**
+- Arduino 101 **<a target="_blank" href="https://www.arduino.cc/en/Main/ArduinoBoard101">link</a>**
 - A computer.  Windows, Mac OSx or Linux
 - An active Microsoft Azure Subscription.  If you do not have a current subscription, you can create one using the <a target="_blank" href="https://azure.microsoft.com/en-us/free/">free trial</a>
-- Node.js 4.x or later.  You can install Node.js from **<a href="https://nodejs.org/en/">https://nodejs.org/en/</a>**
-- Visual Studio Code. Visual Studio Code is a free, open source, cross platform development environment.  You can install it from **<a href="http://code.visualstudio.com">http://code.visualstudio.com</a>**
+- Node.js 4.x or later.  You can install Node.js from **<a target="_blank" href="https://nodejs.org/en/">https://nodejs.org/en/</a>**
+- Visual Studio Code. Visual Studio Code is a free, open source, cross platform development environment.  You can install it from **<a target="_blank" href="http://code.visualstudio.com">http://code.visualstudio.com</a>**
 - Git installed and in your system path - You can install Git from **<a target="_blank" href="https://git-scm.com/downloads">https://git-scm.com/downloads</a>**
 
 Tasks
@@ -126,7 +126,7 @@ The Developer Hub is a front end interface for the Gateway. It has 5 main functi
 
     - Easy access to the Node-RED development environment that has been pre-installed on the IoT Gateway.  We will use this extensively in this lab.
     - A way to register your gateway with the "Wind River Helix App Cloud".  We won't be using this feature as part of this lab.
-    - Access to the "LuCI" ( <a href="https://github.com/openwrt/luci/wiki">link</a> ) interface to configure administrative settings on your gateway.  **PLEASE DO NOT MAKE CHANGES USING THIS TOOL.**     
+    - Access to the "LuCI" ( <a target="_blank" href="https://github.com/openwrt/luci/wiki">link</a> ) interface to configure administrative settings on your gateway.  **PLEASE DO NOT MAKE CHANGES USING THIS TOOL.**     
     - The "Cloud Commander" web console, file manager, and editor.
 
     ![Administration](images/02040-Administration.png)
@@ -148,7 +148,7 @@ In order to perform advanced configuration of the Gateway either a monitor and k
 
     > **Note**: In the screen shots below, ***192.168.2.13*** is the IP Address of the IoT Gateway being connected to.  Replace that IP Address with the IP Address of your IoT Gateway.  That is the IP Address that should be displayed on the LCD Panel attached to your Arduino 101.
 
-    - Visit the <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTY download page</a>.
+    - Visit the <a target="_blank" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTY download page</a>.
     - Under the "For Windows on Intel x86" heading, click on the "putty.exe" link to download the latest release version to your computer. Or if you prefer to use an installer that includes all of the additional tools like PSCP and PSFTP click the putty-0.67-installer.exe link (or latest version).
 
     ![PuTTY Downloads](images/03010-PuttyDownload.png)
@@ -367,7 +367,7 @@ We will create Node-RED flow to get data from temperature sensor and display it 
 
     ![Current temp on the LCD](images/05140-TempOnLcd.png)
 
-1. If you are having problems with your flow, you can get a copy of a working version of the flow from the <a href="./Node-RED Flows/Flow 3 - 01 - Temperature on LCD.json">Node-RED Flows/Flow 3 - 01 - Temperature on LCD.json</a> file in the lab files.  To use it:
+1. If you are having problems with your flow, you can get a copy of a working version of the flow from the <a target="_blank" href="./Node-RED Flows/Flow 3 - 01 - Temperature on LCD.json">Node-RED Flows/Flow 3 - 01 - Temperature on LCD.json</a> file in the lab files.  To use it:
 
     ***YOU DO NOT NEED TO DO THESE STEPS UNLESS YOU ARE HAVING A PROBLEM AND WANT TO IMPORT WORKING CODE***
 
@@ -379,7 +379,7 @@ We will create Node-RED flow to get data from temperature sensor and display it 
 
         ![Select nodes have an orange border](images/05146-SelectedNodesOrangeBorder.png)
     
-    - Open the "**<a href="./Node-RED Flows/Flow 3 - 01 - Temperature on LCD.json">Node-RED Flows/Flow 3 - 01 - Temperature on LCD.json</a>**" file in the code editor of your choice, and copy it's contents. 
+    - Open the "**<a target="_blank" href="./Node-RED Flows/Flow 3 - 01 - Temperature on LCD.json">Node-RED Flows/Flow 3 - 01 - Temperature on LCD.json</a>**" file in the code editor of your choice, and copy it's contents. 
 
     - In the Node-RED editor, from the "Hamburger" button in the top right corner, select "**Import**" | "**Clipboard**"
 
@@ -405,13 +405,13 @@ The following diagram provides an overview of the architecture we will be implem
 
 ### Common Resource Group ###
 
-We will be placing all of the azure resources we provision in this lab into a single "**Resource Group**" (<a href="https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/#resource-groups">link</a>).  Resource groups are a core concept in the "**Azure Resource Manager**" (<a href="https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/#resource-groups">link</a>) technology used by the Azure platform.  Resource Groups allow you to keep all the resources related to a solution in a single organizational container.  This in invaluable when securing, deploying, and removing the resources.    
+We will be placing all of the azure resources we provision in this lab into a single "**Resource Group**" (<a target="_blank" href="https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/#resource-groups">link</a>).  Resource groups are a core concept in the "**Azure Resource Manager**" (<a target="_blank" href="https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/#resource-groups">link</a>) technology used by the Azure platform.  Resource Groups allow you to keep all the resources related to a solution in a single organizational container.  This in invaluable when securing, deploying, and removing the resources.    
 
 ### Common Location or "Region" ###
 
-We want to make sure to deploy all of the resources are deployed in the same Azure data center, or "**Region**" (<a href="https://azure.microsoft.com/en-us/regions/">link</a>). This will help to ensure that the resources have low latency connections to each other (for example, the web application can directly access the sql database), as well as keep our costs low by reducing the amount of data leaving a the data center and incurrent data egress charges.  
+We want to make sure to deploy all of the resources are deployed in the same Azure data center, or "**Region**" (<a target="_blank" href="https://azure.microsoft.com/en-us/regions/">link</a>). This will help to ensure that the resources have low latency connections to each other (for example, the web application can directly access the sql database), as well as keep our costs low by reducing the amount of data leaving a the data center and incurrent data egress charges.  
 
-That means that when need to select a region that supports all of the services we will use in our solution.  You can review the list of <a href="https://azure.microsoft.com/en-us/regions/services/">Products available by region</a> to verify that the services required by this lab are available in the region you want to use. The services used in this lab inclue:
+That means that when need to select a region that supports all of the services we will use in our solution.  You can review the list of <a target="_blank" href="https://azure.microsoft.com/en-us/regions/services/">Products available by region</a> to verify that the services required by this lab are available in the region you want to use. The services used in this lab inclue:
 
 - Azure IoT Hubs
 - Azure Stream Analytics
@@ -423,7 +423,7 @@ That means that when need to select a region that supports all of the services w
 - Azure PowerBI Embedded 
 
 <a name="locations"></a>
-At the time this is being written (October 2016), the following regions have all of the required services. **THIS LIST WILL GROW OVER TIME**. You are welcome to review the <a href="https://azure.microsoft.com/en-us/regions/services/">Products available by region</a> to see if any additional regions provide the resources needed.  Otherwise, simply pick the region from the list below that is closest to you, and ensure that you choose that region for each resource you deploy.   
+At the time this is being written (October 2016), the following regions have all of the required services. **THIS LIST WILL GROW OVER TIME**. You are welcome to review the <a target="_blank" href="https://azure.microsoft.com/en-us/regions/services/">Products available by region</a> to see if any additional regions provide the resources needed.  Otherwise, simply pick the region from the list below that is closest to you, and ensure that you choose that region for each resource you deploy.   
 
 - West US 
 - North Europe 
@@ -479,7 +479,7 @@ Creating an Azure IoT Hub
 
 In this task, we'll create the ***&lt;name&gt;iot*** Azure IoT Hub and since it's our first Azure resource, we'll create the ***&lt;name&gt;group*** resource group to put it in.  Make sure that you understand the information in the [Planning your Azure Resources](#PlanningAzure) section before continuing.
 
-1. Open the [Azure Portal](https://portal.azure.com) ([https://portal.azure.com](https://portal.azure.com)) and login to your subscription.  If you don't have a current Azure Subscription you can create a <a href="https://azure.microsoft.com/en-us/free/">free trial</a>.
+1. Open the [Azure Portal](https://portal.azure.com) ([https://portal.azure.com](https://portal.azure.com)) and login to your subscription.  If you don't have a current Azure Subscription you can create a <a target="_blank" href="https://azure.microsoft.com/en-us/free/">free trial</a>.
 
 1. Click the "**+ New**" button, then select "**Internet of Things**", and select "**Iot Hub**"
 
@@ -549,13 +549,13 @@ ___
 Creating an Azure IoT Hub Device Identity
 ---
 
-Now that we have our Azure IoT Hub created, we want to create an entry in the hub's device identity registry.  As "device identity" in the IoT Hub's device identity registry is basically a unique id, and access key that can be used by the actual device in the field (The Intel NUC and with Arduino 101 in our case) to connect to the IoT Hub.  The connection string for the device entry in the registry will be used by the actual device to securely connect to the IoT Hub and send and receive messages as that device.  You can learn more about Azure IoT Hub devices in the "**<a href="https://azure.microsoft.com/en-us/documentation/articles/iot-hub-devguide-identity-registry/">Manage device identities in IoT Hub</a>**" article online.  
+Now that we have our Azure IoT Hub created, we want to create an entry in the hub's device identity registry.  As "device identity" in the IoT Hub's device identity registry is basically a unique id, and access key that can be used by the actual device in the field (The Intel NUC and with Arduino 101 in our case) to connect to the IoT Hub.  The connection string for the device entry in the registry will be used by the actual device to securely connect to the IoT Hub and send and receive messages as that device.  You can learn more about Azure IoT Hub devices in the "**<a target="_blank" href="https://azure.microsoft.com/en-us/documentation/articles/iot-hub-devguide-identity-registry/">Manage device identities in IoT Hub</a>**" article online.  
 
-At the time this is being written, the Azure Portal does not allow you to provision device identities in the registry, although you can view existing ones.  In order to create our device identity, we will use a node.js command line interface for working with your Azure IoT Hubs called "**<a href="https://www.npmjs.com/package/iothub-explorer">iothub-explorer</a>**"
+At the time this is being written, the Azure Portal does not allow you to provision device identities in the registry, although you can view existing ones.  In order to create our device identity, we will use a node.js command line interface for working with your Azure IoT Hubs called "**<a target="_blank" href="https://www.npmjs.com/package/iothub-explorer">iothub-explorer</a>**"
 
-There is a graphical tool for Windows called "**Device Explorer**".  We won't document it's use here in this lab, but if you are on Windows and wish to try it can you can download it from here <a href="https://github.com/Azure/azure-iot-sdks/releases/latest>https://github.com/Azure/azure-iot-sdks/releases/latest</a> (look for the first "**SetupDeviceExplorer.msi**" link) and learn more about it here: <a href="https://github.com/Azure/azure-iot-sdks/blob/master/tools/DeviceExplorer/doc/how_to_use_device_explorer.md">How to use Device Explorer for IoT Hub devices</a>.
+There is a graphical tool for Windows called "**Device Explorer**".  We won't document it's use here in this lab, but if you are on Windows and wish to try it can you can download it from here <a target="_blank" href="https://github.com/Azure/azure-iot-sdks/releases/latest>https://github.com/Azure/azure-iot-sdks/releases/latest</a> (look for the first "**SetupDeviceExplorer.msi**" link) and learn more about it here: <a target="_blank" href="https://github.com/Azure/azure-iot-sdks/blob/master/tools/DeviceExplorer/doc/how_to_use_device_explorer.md">How to use Device Explorer for IoT Hub devices</a>.
 
-1. This task requires that you have Node.js 4.x or later installed.  If you don't have it installed already, you can install it from **<a href="https://nodejs.org/en/">https://nodejs.org/en/</a>**.  Make sure that Node is added to the path so you can access it from anywhere on the command line.  
+1. This task requires that you have Node.js 4.x or later installed.  If you don't have it installed already, you can install it from **<a target="_blank" href="https://nodejs.org/en/">https://nodejs.org/en/</a>**.  Make sure that Node is added to the path so you can access it from anywhere on the command line.  
 
 1. Open a command prompt, or terminal window, and install the "iothub-explorer" npm package globally as follows:
 
@@ -748,8 +748,8 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
 1. In the "**Add New Packages**" window, in the search box, type "**cloud-azure**", then click the "**Install**" button next to the "**packagegroup-cloud-azure**" package.  Again, this takes a few minutes so be patient:
 
-    > **Note**: You can see what all is installed with the packagegroup-cloud-azure package here: <a href="https://github.com/intel-iot-devkit/meta-iot-cloud/blob/master/recipes-core/packagegroups/packagegroup-cloud-azure_0.9.bb">link</a> <br/>
-    Basically it is all of the node.js packages for the various Azure IoT Hub sdks.  It also includes a Node-RED node for working with Azure IoT Hubs (<a href="https://www.npmjs.com/package/node-red-contrib-azureiothubnode">link</a>).  
+    > **Note**: You can see what all is installed with the packagegroup-cloud-azure package here: <a target="_blank" href="https://github.com/intel-iot-devkit/meta-iot-cloud/blob/master/recipes-core/packagegroups/packagegroup-cloud-azure_0.9.bb">link</a> <br/>
+    Basically it is all of the node.js packages for the various Azure IoT Hub sdks.  It also includes a Node-RED node for working with Azure IoT Hubs (<a target="_blank" href="https://www.npmjs.com/package/node-red-contrib-azureiothubnode">link</a>).  
 
     ![Install packagegroup-cloud-azure](images/09060-InstallPackageGroupCloudAzure.png)
 
@@ -916,7 +916,7 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     ![Document SQL](images/10085-DocumentSQL.png)
 
-1. Now that we have the database created, we need to create the database objects inside it.  To do that, we'll use Visual Studio Code, and the "vscode-mssql" extension.  Open Visual Studio Code (if you don't have it installed you can download it for free from <a href="http://code.visualstudio.com">code.visualstudio.com</a>) .  When Visual Studio Code is open, from the menu bar select "**File**" | "**Open Folder...**" menu item, and select the "**HOLs**" folder wherevery you extract the lab files to. 
+1. Now that we have the database created, we need to create the database objects inside it.  To do that, we'll use Visual Studio Code, and the "vscode-mssql" extension.  Open Visual Studio Code (if you don't have it installed you can download it for free from <a target="_blank" href="http://code.visualstudio.com">code.visualstudio.com</a>) .  When Visual Studio Code is open, from the menu bar select "**File**" | "**Open Folder...**" menu item, and select the "**HOLs**" folder wherevery you extract the lab files to. 
 
     ![HOLs Folder Open in VS Code](images/10090-HOLsFolderInCode.png)
 
@@ -1511,9 +1511,9 @@ ___
 TIME PERMITTING - Display Temperature Data with Power BI Embedded
 ---
 
-In this task, we'll walk through publishing a pre-created Power BI report into a Power BI collection and Workspace in your Azure Subscription.  You can learn more about Power BI Embedded here: <a href="https://azure.microsoft.com/en-us/services/power-bi-embedded/">https://azure.microsoft.com/en-us/services/power-bi-embedded/</a> 
+In this task, we'll walk through publishing a pre-created Power BI report into a Power BI collection and Workspace in your Azure Subscription.  You can learn more about Power BI Embedded here: <a target="_blank" href="https://azure.microsoft.com/en-us/services/power-bi-embedded/">https://azure.microsoft.com/en-us/services/power-bi-embedded/</a> 
 
-1. You **DO NOT NEED** to edit the report provided, however, if you would like to see how it was authored, and your are on a Windows system, you can download "**Power BI Desktop**" from <a href="https://powerbi.microsoft.com/en-us/desktop/">https://powerbi.microsoft.com/en-us/desktop/</a>.  Once you have downloaded it, you can open the "**HOLs\PowerBI\TemperatureChart.pbix**" file to view how it was designed.  **REGARDLESS, DO NOT MAKE CHANGES TO THE REPORT AT THIS TIME!**
+1. You **DO NOT NEED** to edit the report provided, however, if you would like to see how it was authored, and your are on a Windows system, you can download "**Power BI Desktop**" from <a target="_blank" target="_blank" href="https://powerbi.microsoft.com/en-us/desktop/">https://powerbi.microsoft.com/en-us/desktop/</a>.  Once you have downloaded it, you can open the "**HOLs\PowerBI\TemperatureChart.pbix**" file to view how it was designed.  **REGARDLESS, DO NOT MAKE CHANGES TO THE REPORT AT THIS TIME!**
 
     ![Report in Power BI Desktop](images/13010-TemperatureChartReportInDesktop.png)
 
@@ -1544,7 +1544,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     ![Document Collection](images/13060-DocumentCollectionNameAndKey.png)
 
-1. A "**Workspace Collection**" is just what it sounds like, it is a collection of one or more "**Workspace**" instances. To upload a report, it must go into a Workspace, but at the time this is being writting you can't create new Workspaces in the portal.  The rest of our interaction with the Power BI Embedded service will be via the "**powerbi-cli** npm package (<a href="https://www.npmjs.com/package/powerbi-cli">link</a>).  Open a command prompt or terminal window and issue the following npm command to install the "**powerbi-cli**" package globally:
+1. A "**Workspace Collection**" is just what it sounds like, it is a collection of one or more "**Workspace**" instances. To upload a report, it must go into a Workspace, but at the time this is being writting you can't create new Workspaces in the portal.  The rest of our interaction with the Power BI Embedded service will be via the "**powerbi-cli** npm package (<a target="_blank" href="https://www.npmjs.com/package/powerbi-cli">link</a>).  Open a command prompt or terminal window and issue the following npm command to install the "**powerbi-cli**" package globally:
 
     ```bash
     npm install -g powerbi-cli
@@ -1776,7 +1776,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     }    
     ```   
 
-    The `/api/powerbiembedconfig` route on the backed server in server.js uses the **<a href="https://www.npmjs.com/package/powerbi-api">powerbi-api</a>** node.js library to create a "**JSON Web Toke**" or "**JWT**" token that the embedded request uses to authenticate with the Power BI Embedded service.  The "**JWT**" token is signed by your Workspace Collection's Access Key which is known by the backend server, but not the front end web application:
+    The `/api/powerbiembedconfig` route on the backed server in server.js uses the **<a target="_blank" href="https://www.npmjs.com/package/powerbi-api">powerbi-api</a>** node.js library to create a "**JSON Web Toke**" or "**JWT**" token that the embedded request uses to authenticate with the Power BI Embedded service.  The "**JWT**" token is signed by your Workspace Collection's Access Key which is known by the backend server, but not the front end web application:
 
     ```javascript
     app.get('/api/powerbiembedconfig',
