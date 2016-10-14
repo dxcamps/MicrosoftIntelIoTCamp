@@ -12,14 +12,15 @@ In this lab, we will unbox and set up an Intel IoT Gateway and the Arduino 101 b
 Prerequisites
 ---
 
-In order to successfully complete this lab you will ned:
+In order to successfully complete this lab you will need:
 
 - Intel Grove Commercial IoT Developer Kit **<a href="https://www.seeedstudio.com/Grove-IoT-Commercial-Developer-Kit-p-2665.html">link</a>**
 - Arduino 101 **<a href="https://www.arduino.cc/en/Main/ArduinoBoard101">link</a>**
 - A computer.  Windows, Mac OSx or Linux
-- An active Microsoft Azure Subscription.  If you do not have a current subscription, you can create one using the [free trial](https://azure.microsoft.com/en-us/free/)
+- An active Microsoft Azure Subscription.  If you do not have a current subscription, you can create one using the <a target="_blank" href="https://azure.microsoft.com/en-us/free/">free trial</a>
 - Node.js 4.x or later.  You can install Node.js from **<a href="https://nodejs.org/en/">https://nodejs.org/en/</a>**
 - Visual Studio Code. Visual Studio Code is a free, open source, cross platform development environment.  You can install it from **<a href="http://code.visualstudio.com">http://code.visualstudio.com</a>**
+- Git installed and in your system path - You can install Git from **<a target="_blank" href="https://git-scm.com/downloads">https://git-scm.com/downloads</a>**
 
 Tasks
 ---
