@@ -1,7 +1,7 @@
 Use this file to keep track of the resources, ids, connection strings, access tokens, etc. for the various resources you are create throughout this lab.
 
 ========================================
-Naming Convention and Region 
+Naming Convention, Region & Group 
 ========================================
 
 Naming convention prefix:                   
@@ -28,7 +28,6 @@ IoT Hub "service" SAS Policy Primary Connection String:
 
 IoT Hub Device Name:
 <paste your IoT Hub device id / name here>
-
 
 IoT Hub Device Connection String:
 <paste your IoT Hub device's primary connection string here>

@@ -478,9 +478,33 @@ For the purposes of this lab examples, we'll use the "**mic16**" prefix, short f
 
 ### Documenting Your Choices ###
 
-In the same folder as this readme file where you extract the lab files for this lab there is a "**[myresources.txt](./myresources.txt)**" text file.  You can open that file in the text editor of your choice, and record the choices you make here for your ***&lt;name&gt;*** name prefix and for the region you wish to use.
+We'll document the choices, names, connection strings, keys, etc. for the resources we create into a text file called "**[myresources.txt](./myresources.txt)**".  This file is in the root of the "**HOLs/**" folder wherever you copied or extracted the lab files for this lab to.  By documenting key pieces of information here it will make it much easier to retrieve them later.  You often need a connection string, or key for a resource long after you created it.  By recording the values here it keeps you from having to navigate back through the **Azure Portal** everytime you need to retrieve a value.
 
-![Documenting Your Choices](images/06010-DocumentingYourChoices.png)
+You could really edit "**myresources.txt**" with any text editor, but we'll be using **Visual Studio Code** for a number of tasks throughout this lab, so we'll take the opportunity here to get it open:
+
+1. Open Visual Studio Code (if you don't have it installed you can download it for free for any platofrm from <a target="_blank" href="http://code.visualstudio.com">code.visualstudio.com</a>).
+
+1. In the "Explorer" panel, click on the "**myresources.txt**" file to open it. In the file, you can see numerous placeholders for information you will be collecting throughout this lab:
+
+    ![Documenting Your Choices](images/06010-DocumentingYourChoices.png)
+
+    > **Note**: You may notice that the colors used by your instance of "**Visual Studio Code**" don't match the colors shown in the screenshots in this documentation.  The screenshots here were taken with **Visual Studio Code**'s "**Color Theme**" set to "**Light+ (default light)**".  If you want to change yours to match (not required), from the "**Visual Studio Code**" menu bar select "**File**" | "**Preferences**" | "**Color Theme**", then in the command pallete drop down, select "**Light+ (default light)**".
+
+    ![Light Color Theme](images/06015-DefaultLigtColorTheme.png)
+
+1. Take the time now to update the **myresource.txt** file with appropriate values for the:
+
+    > **Note**: when replacing placeholders throughout the lab, make sure to remove the **`<`** and **`>`** symbols at the ends of the placeholder as well.
+
+    - Naming convetion prefix
+    - Region (data center)
+    - Resource Group Name
+
+    ![Naming Convetion, Region & Group Section](images/06020-ConvetionRegionAndGroupSection.png)
+
+    For example, here's the section with the "**mic16**" prefix, and "**West US**" region selected:
+
+    ![Naming Convention, Region & Grou Documented](images/06030-ConventionRegionAndGroupDocumented.png)
 
 ___
 
@@ -530,7 +554,7 @@ In this task, we'll create the ***&lt;name&gt;iot*** Azure IoT Hub and since it'
 
     ![iothubowner SAS Policy](images/07060-IoTHubOwnerPolicy.png)
 
-1. Then paste it into the "**[myresources.txt](./myresources.txt)**" file so you can retrieve it easily later.  Go ahead and document your Azure IoT Hub name while you're there.
+1. Update the the "**[myresources.txt](./myresources.txt)**" file with the "***&lt;name&gt;iot***" iot hub name, and "**iothubowner**" connection string so you can retrieve them easily later.
 
     ![Document iothubowner Connection String](images/07070-DocumentIoTHubOwnerConnectionString.png)
 
@@ -560,7 +584,7 @@ ___
 Creating an Azure IoT Hub Device Identity
 ---
 
-Now that we have our Azure IoT Hub created, we want to create an entry in the hub's device identity registry.  As "device identity" in the IoT Hub's device identity registry is basically a unique id, and access key that can be used by the actual device in the field (The Intel NUC and with Arduino 101 in our case) to connect to the IoT Hub.  The connection string for the device entry in the registry will be used by the actual device to securely connect to the IoT Hub and send and receive messages as that device.  You can learn more about Azure IoT Hub devices in the "**<a target="_blank" href="https://azure.microsoft.com/en-us/documentation/articles/iot-hub-devguide-identity-registry/">Manage device identities in IoT Hub</a>**" article online.
+Now that we have our Azure IoT Hub created, we want to create an entry in the hub's device identity registry.  A "device identity" in the IoT Hub's device identity registry is basically a unique id and access key that can be used by the actual device in the field (The Intel NUC and with Arduino 101 in our case) to connect to the IoT Hub.  The connection string for the device entry in the registry will be used by the actual device to securely connect to the IoT Hub and send and receive messages as that device.  You can learn more about Azure IoT Hub devices in the "**<a target="_blank" href="https://azure.microsoft.com/en-us/documentation/articles/iot-hub-devguide-identity-registry/">Manage device identities in IoT Hub</a>**" article online.
 
 At the time this is being written, the Azure Portal does not allow you to provision device identities in the registry, although you can view existing ones.  In order to create our device identity, we will use a node.js command line interface for working with your Azure IoT Hubs called "**<a target="_blank" href="https://www.npmjs.com/package/iothub-explorer">iothub-explorer</a>**"
 
@@ -633,10 +657,10 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
     Use the --connection-string option to generate a connection string for the device(s).
     Add the --raw option to any command (except help) to minimize output and format results as JSON.
     ```
-1. Note the `iothub-explorer login` option.  This allows you to etner your IoT Hub connection string once, and not have to re-supply the connection string for every command during the "session".  The "session" lasts for one hour by default. To login, we'll need the "iothubowner" SAS policy connection string we copied int the "**[myresources.txt](./myresources.txt)**" file previously.  Retrieve that string from the file, and use it to login to your Azure IoT Hub with iothub-explorer as follows:
+1. Note the `iothub-explorer login` option.  This allows you to enter your IoT Hub connection string once, and not have to re-supply the connection string for every command during the "session".  The "session" lasts for one hour by default. To login, we'll need the "iothubowner" SAS policy connection string we copied int the "**[myresources.txt](./myresources.txt)**" file previously.  Retrieve that string from the file, and use it to login to your Azure IoT Hub with iothub-explorer as follows:
 
     ```bash
-    iothub-explorer login "<paste your iothub owner connection string here>"
+    iothub-explorer login "<paste your IoT Hub 'iothubowner' SAS Policy Primary Connection String here>"
     ```
     For example:
 
@@ -692,7 +716,7 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
     -
     connectionString: HostName=mic16iot.azure-devices.net;DeviceId=mic16IntelIoTGateway;SharedAccessKey=q9D0X2vXNsQ5LET3TlXx+FpHZ1SP6pQ9+69+hudCIZk=
     ```
-1. Copy the connection string for the new device from the command output, and past it along with your device id into the "**[myresources.txt](./myresources.txt)**" file:
+1. Copy the connection string for the new device from the command output, and document it along with your device id in the "**[myresources.txt](./myresources.txt)**" file:
 
     ![Document Device Identity](images/08030-DocumentDeviceIdentity.png)
 
@@ -702,6 +726,11 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
     iothub-explorer list --connection-string
     ```
 
+1. Or, you can retrieve the details (including the connection string) of a specific device with:
+
+    ```text
+    iothub-explorer get <deviceid> --connection-string
+    ```
 ___
 
 <a name="PublishToIoTHub"></a>
@@ -762,7 +791,7 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
     <blockquote>
       **Note**: You can see what all is installed with the packagegroup-cloud-azure package here: <a target="_blank" href="https://github.com/intel-iot-devkit/meta-iot-cloud/blob/master/recipes-core/packagegroups/packagegroup-cloud-azure_0.9.bb">link</a>
        <br/>
-      Basically it is all of the node.js packages for the various Azure IoT Hub sdks.  It also includes a Node-RED node for working with Azure IoT Hubs (<a target="_blank" href="https://www.npmjs.com/package/node-red-contrib-azureiothubnode">link</a>).
+      Basically it is all of the npm packages for the various Azure IoT Hub sdks.  It also includes a Node-RED node for working with Azure IoT Hubs (<a target="_blank" href="https://www.npmjs.com/package/node-red-contrib-azureiothubnode">link</a>).
     </blockquote>
 
     ![Install packagegroup-cloud-azure](images/09060-InstallPackageGroupCloudAzure.png)
@@ -816,13 +845,13 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
     - Use the device id you generated in place of the ***&lt;name&gt;IntelIoTGateway*** device id
 
     ```bash
-    iothub-explorer "<your iothubowner SAS policy connection string>" monitor-events <name>IntelIoTGateway
+    iothub-explorer "<IoT Hub 'iothubowner' SAS Policy Primary Connection String>" monitor-events <name>IntelIoTGateway
     ```
 
     For example:
 
     ```bash
-    iothub-explorer "HostName=mic16iot.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=MuIeI2BpfykWD+g=" monitor-events mic16IntelIoTGateway
+    iothub-explorer "HostName=mic16iot.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=MuIeI2Bpp4lm6knbNiXX4J1V+UivTov/ebfIfykWD+g=" monitor-events mic16IntelIoTGateway
     ```
 
     And you should see output similar to this:
@@ -855,7 +884,7 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
 1. If you are feeling adventurous, trade iothubowner connection strings and device IDs with a neighbor in the lab and verify that you can monitor each other's devices.
 
-1. One last comment, we are using the "iothubowner" connection string to monitor the events.  You could actually use a less privileged policy, like the "service" sas policy we copied the connection string for earlier.  Go ahead and try monitoring events with the "service" policy connection string you pasted into the [myresources.txt](./myresources.txt) file.
+1. One last comment, we are using the "**iothubowner**" connection string to monitor the events.  You could actually use a less privileged policy, like the "**service**" sas policy  we copied the connection string for earlier.  Go ahead and try monitoring events with the **IoT Hub "service" SAS Policy Primary Connection String** policy connection string you pasted into the [myresources.txt](./myresources.txt) file.  It should work just fine because that SAS policy has permissions to read messages from the IoT Hub.
 
 ___
 
@@ -931,11 +960,13 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     ![Document SQL](images/10085-DocumentSQL.png)
 
-1. Now that we have the database created, we need to create the database objects inside it.  To do that, we'll use Visual Studio Code, and the "vscode-mssql" extension.  Open Visual Studio Code (if you don't have it installed you can download it for free from <a target="_blank" href="http://code.visualstudio.com">code.visualstudio.com</a>) .  When Visual Studio Code is open, from the menu bar select "**File**" | "**Open Folder...**" menu item, and select the "**HOLs**" folder wherevery you extract the lab files to.
+1. Now that we have the database created, we need to create the database objects inside it.  To do that, we'll use Visual Studio Code, and the "vscode-mssql" extension.  Ensure "**Visual Studio Code**" is open to the "**HOLs/**" as instructed previously.
 
     ![HOLs Folder Open in VS Code](images/10090-HOLsFolderInCode.png)
 
 1. Then click the icon to open the "**Extensions**" panel, and in the search box at the top type **vscode-mssql**, and in the search results, click the "**Install**" button for the "**vscode-mssql** extension
+
+    > **Note**: Extensions provide a powerful way to expand the capabilities of Visual Studio Code.  There is a rich ecosystem of extensions developed by Microsoft as well as a worldwide community of developers that you can use in "**Visual Studio Code**".  The "**vscode-mssql**" extension we are installing here allows you to connect to your "**Azure SQL Database**" from with "**Visual Studio Code**" and execute SQL statements.
 
     ![Install the vscode-mssql Extension](images/10100-InstallVsCodeMssql.png)
 
@@ -949,9 +980,15 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     ![Open Workspace Settings](images/10130-OpenWorkspaceSettings.png)
 
-1. Two files will open: **Default Settings** and **settings.json**.  The "**Default Settings**" are just there to show you what the defaults, we can ignore them. Edit the contents of the "**settings.json**" file with the appropriate details for the Azure SQL Server and Azure SQL Database you just created  Save your changes and close the "**Default Settings" and "settings.json**" files when you are done.
+1. Two files will open: **Default Settings** and **settings.json**.  The "**Default Settings**" are just there to show you what the defaults, we can ignore them, infact you can close the "**Default Settings**" tab is you wish.  Locate the connection properties for the SQL Server connection in the file:
 
     ![Connection Properties](images/10140-SQLConnectionProperties.png)
+
+    And replace them with the appropriate values from your **[myresources.txt](myresources.txt)** file.  For example:
+
+    ![Completed SQL Connection Properties](images/10145-CompletedSQLConnectionProperties.png)
+
+    Save and close the **settings.json** file when you are done.
 
 1. Click on the icon for the "**Explorer**" panel, select select the "**SQL Database Scripts\Create SQL Database Objects.sql**" file.  This script creates the following objects:
 
