@@ -1,39 +1,67 @@
 [
     {
-        "id": "f1683b79.73d458",
-        "type": "json",
-        "z": "9efe41bf.34aa9",
-        "name": "",
-        "x": 435,
-        "y": 345,
-        "wires": [
-            [
-                "fa75b334.33dc9",
-                "93d9cd36.27648",
-                "ada59e78.19e97"
-            ]
-        ]
-    },
-    {
-        "id": "c92f7c97.8ee61",
+        "id": "620468b8.5bbd38",
         "type": "function",
-        "z": "9efe41bf.34aa9",
+        "z": "e6060ba3.1c8608",
         "name": "To String",
         "func": "msg.payload = String.fromCharCode.apply(null, new Uint16Array(msg.payload));\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 285,
-        "y": 345,
+        "x": 160,
+        "y": 400,
         "wires": [
             [
-                "f1683b79.73d458"
+                "46d0d84d.3489a8"
             ]
         ]
     },
     {
-        "id": "93d9cd36.27648",
+        "id": "46d0d84d.3489a8",
+        "type": "json",
+        "z": "e6060ba3.1c8608",
+        "name": "",
+        "x": 310,
+        "y": 400,
+        "wires": [
+            [
+                "7a526de7.f1dd14",
+                "88b54d32.90f8",
+                "8d65a1b4.e01e2"
+            ]
+        ]
+    },
+    {
+        "id": "7a526de7.f1dd14",
+        "type": "debug",
+        "z": "e6060ba3.1c8608",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 490,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "8d65a1b4.e01e2",
+        "type": "function",
+        "z": "e6060ba3.1c8608",
+        "name": "Get the Message",
+        "func": "msg.payload = msg.payload.message\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 495,
+        "y": 513,
+        "wires": [
+            [
+                "d268431f.fab68"
+            ]
+        ]
+    },
+    {
+        "id": "88b54d32.90f8",
         "type": "switch",
-        "z": "9efe41bf.34aa9",
+        "z": "e6060ba3.1c8608",
         "name": "If Temp Alert",
         "property": "payload.type",
         "propertyType": "msg",
@@ -46,74 +74,46 @@
         ],
         "checkall": "false",
         "outputs": 1,
-        "x": 191,
-        "y": 419,
+        "x": 137,
+        "y": 500,
         "wires": [
             [
-                "d3e6423f.596ab"
+                "77804d3c.37d0c4"
             ]
         ]
     },
     {
-        "id": "fa75b334.33dc9",
-        "type": "debug",
-        "z": "9efe41bf.34aa9",
-        "name": "",
-        "active": true,
-        "console": "false",
-        "complete": "payload",
-        "x": 375,
-        "y": 465,
-        "wires": []
-    },
-    {
-        "id": "d3e6423f.596ab",
+        "id": "77804d3c.37d0c4",
         "type": "function",
-        "z": "9efe41bf.34aa9",
+        "z": "e6060ba3.1c8608",
         "name": "Turn on Buzzer",
         "func": "msg.payload = 1;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 190,
-        "y": 483,
+        "x": 147,
+        "y": 560,
         "wires": [
             [
-                "4950af37.a2cf6"
+                "f9aa061a.e1f8a8"
             ]
         ]
     },
     {
-        "id": "ada59e78.19e97",
-        "type": "function",
-        "z": "9efe41bf.34aa9",
-        "name": "Get the Message",
-        "func": "msg.payload = msg.payload.message\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 426,
-        "y": 548,
-        "wires": [
-            [
-                "e87c43b2.e9f54"
-            ]
-        ]
-    },
-    {
-        "id": "4950af37.a2cf6",
+        "id": "f9aa061a.e1f8a8",
         "type": "UPM-Grove-Buzzer",
-        "z": "9efe41bf.34aa9",
+        "z": "e6060ba3.1c8608",
         "name": "",
         "platform": "512",
         "volume": "0.125",
         "pin": "3",
-        "x": 199,
-        "y": 557,
+        "x": 145,
+        "y": 618,
         "wires": []
     },
     {
-        "id": "e87c43b2.e9f54",
+        "id": "d268431f.fab68",
         "type": "upm-grove-rgb-lcd",
-        "z": "9efe41bf.34aa9",
+        "z": "e6060ba3.1c8608",
         "name": "Show the Message",
         "platform": "512",
         "r": 255,
@@ -121,8 +121,8 @@
         "b": 0,
         "row": "1",
         "column": 0,
-        "x": 425,
-        "y": 627,
+        "x": 497,
+        "y": 620,
         "wires": []
     }
 ]

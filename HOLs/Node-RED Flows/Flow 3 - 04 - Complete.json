@@ -1,84 +1,84 @@
 [
     {
-        "id": "f94b0ea1.a2eb5",
+        "id": "9d4d97c7.d63528",
         "type": "upm-grove-temperature",
-        "z": "ed9f6c5e.d1a",
+        "z": "e6060ba3.1c8608",
         "name": "",
         "platform": "512",
         "unit": "C",
         "pin": "1",
         "interval": "10000",
-        "x": 118,
-        "y": 149,
+        "x": 126,
+        "y": 119,
         "wires": [
             [
-                "dcefa135.fae0e"
+                "34298f7e.e4fac"
             ]
         ]
     },
     {
-        "id": "dcefa135.fae0e",
+        "id": "34298f7e.e4fac",
         "type": "function",
-        "z": "ed9f6c5e.d1a",
+        "z": "e6060ba3.1c8608",
         "name": "Data Conversion",
         "func": "msg.payload = msg.payload * 3.3 / 5\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 338,
-        "y": 149,
+        "x": 346,
+        "y": 119,
         "wires": [
             [
-                "f55709e7.7cd1b8",
-                "6b01e55a.c6f81c"
+                "2def18a9.bbcdb8",
+                "27aa15f6.51b8ca"
             ]
         ]
     },
     {
-        "id": "f55709e7.7cd1b8",
+        "id": "2def18a9.bbcdb8",
         "type": "function",
-        "z": "ed9f6c5e.d1a",
+        "z": "e6060ba3.1c8608",
         "name": "Create Payload",
-        "func": "var gateway = \"PASTE YOUR <name>IntelIoTGateway DEVICE ID HERE\";\nreturn {\n    payload: {\n        deviceID: gateway,\n        timestamp: new Date().toISOString(),\n        temperature: msg.payload\n    }\n};",
+        "func": "var gateway = \"PASTE YOUR IOT HUB DEVICE NAME HERE\";\nreturn {\n    payload: {\n        deviceID: gateway,\n        timestamp: new Date().toISOString(),\n        temperature: msg.payload\n    }\n};",
         "outputs": 1,
         "noerr": 0,
-        "x": 148,
-        "y": 229,
+        "x": 156,
+        "y": 199,
         "wires": [
             [
-                "dd060a97.1c2e48"
+                "ccd4d8d.37ce228"
             ]
         ]
     },
     {
-        "id": "dd060a97.1c2e48",
+        "id": "ccd4d8d.37ce228",
         "type": "json",
-        "z": "ed9f6c5e.d1a",
+        "z": "e6060ba3.1c8608",
         "name": "",
-        "x": 298,
-        "y": 229,
+        "x": 306,
+        "y": 199,
         "wires": [
             [
-                "fd53ca57.eec0b8",
-                "ddf26474.a30fb8"
+                "617d0aed.1e1324",
+                "89896fc4.e221f"
             ]
         ]
     },
     {
-        "id": "fd53ca57.eec0b8",
+        "id": "617d0aed.1e1324",
         "type": "debug",
-        "z": "ed9f6c5e.d1a",
+        "z": "e6060ba3.1c8608",
         "name": "",
-        "active": false,
+        "active": true,
         "console": "false",
         "complete": "false",
-        "x": 438,
-        "y": 229,
+        "x": 506,
+        "y": 199,
         "wires": []
     },
     {
-        "id": "6b01e55a.c6f81c",
+        "id": "27aa15f6.51b8ca",
         "type": "upm-grove-rgb-lcd",
-        "z": "ed9f6c5e.d1a",
+        "z": "e6060ba3.1c8608",
         "name": "Show the Temperature",
         "platform": "512",
         "r": 0,
@@ -86,59 +86,87 @@
         "b": "0",
         "row": "1",
         "column": 0,
-        "x": 376,
-        "y": 63,
+        "x": 386,
+        "y": 39,
         "wires": []
     },
     {
-        "id": "ddf26474.a30fb8",
+        "id": "89896fc4.e221f",
         "type": "azureiothub",
-        "z": "ed9f6c5e.d1a",
+        "z": "e6060ba3.1c8608",
         "name": "Azure IoT Hub",
         "protocol": "amqp",
-        "x": 120,
-        "y": 320,
+        "x": 316,
+        "y": 299,
         "wires": [
             [
-                "4f98a969.675df8"
+                "620468b8.5bbd38"
             ]
         ]
     },
     {
-        "id": "a43f9d3b.c24d",
-        "type": "json",
-        "z": "ed9f6c5e.d1a",
-        "name": "",
-        "x": 450,
-        "y": 320,
-        "wires": [
-            [
-                "4a0a1743.3ed1c8",
-                "efc20fec.d10e7",
-                "1020cdb3.f543a2"
-            ]
-        ]
-    },
-    {
-        "id": "4f98a969.675df8",
+        "id": "620468b8.5bbd38",
         "type": "function",
-        "z": "ed9f6c5e.d1a",
+        "z": "e6060ba3.1c8608",
         "name": "To String",
         "func": "msg.payload = String.fromCharCode.apply(null, new Uint16Array(msg.payload));\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 300,
-        "y": 320,
+        "x": 160,
+        "y": 400,
         "wires": [
             [
-                "a43f9d3b.c24d"
+                "46d0d84d.3489a8"
             ]
         ]
     },
     {
-        "id": "4a0a1743.3ed1c8",
+        "id": "46d0d84d.3489a8",
+        "type": "json",
+        "z": "e6060ba3.1c8608",
+        "name": "",
+        "x": 310,
+        "y": 400,
+        "wires": [
+            [
+                "7a526de7.f1dd14",
+                "88b54d32.90f8",
+                "8d65a1b4.e01e2"
+            ]
+        ]
+    },
+    {
+        "id": "7a526de7.f1dd14",
+        "type": "debug",
+        "z": "e6060ba3.1c8608",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 490,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "8d65a1b4.e01e2",
+        "type": "function",
+        "z": "e6060ba3.1c8608",
+        "name": "Get the Message",
+        "func": "msg.payload = msg.payload.message\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 495,
+        "y": 513,
+        "wires": [
+            [
+                "d268431f.fab68"
+            ]
+        ]
+    },
+    {
+        "id": "88b54d32.90f8",
         "type": "switch",
-        "z": "ed9f6c5e.d1a",
+        "z": "e6060ba3.1c8608",
         "name": "If Temp Alert",
         "property": "payload.type",
         "propertyType": "msg",
@@ -151,83 +179,55 @@
         ],
         "checkall": "false",
         "outputs": 1,
-        "x": 206,
-        "y": 394,
+        "x": 137,
+        "y": 500,
         "wires": [
             [
-                "45d430ff.db52e"
+                "77804d3c.37d0c4"
             ]
         ]
     },
     {
-        "id": "1020cdb3.f543a2",
-        "type": "debug",
-        "z": "ed9f6c5e.d1a",
-        "name": "",
-        "active": true,
-        "console": "false",
-        "complete": "payload",
-        "x": 390,
-        "y": 440,
-        "wires": []
-    },
-    {
-        "id": "45d430ff.db52e",
+        "id": "77804d3c.37d0c4",
         "type": "function",
-        "z": "ed9f6c5e.d1a",
+        "z": "e6060ba3.1c8608",
         "name": "Turn on Buzzer",
         "func": "msg.payload = 1;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 205,
-        "y": 458,
+        "x": 147,
+        "y": 560,
         "wires": [
             [
-                "45e6e757.d26de8"
+                "f9aa061a.e1f8a8"
             ]
         ]
     },
     {
-        "id": "efc20fec.d10e7",
-        "type": "function",
-        "z": "ed9f6c5e.d1a",
-        "name": "Get the Message",
-        "func": "msg.payload = msg.payload.message\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 441,
-        "y": 523,
-        "wires": [
-            [
-                "1ad5796c.fb55f7"
-            ]
-        ]
-    },
-    {
-        "id": "45e6e757.d26de8",
+        "id": "f9aa061a.e1f8a8",
         "type": "UPM-Grove-Buzzer",
-        "z": "ed9f6c5e.d1a",
+        "z": "e6060ba3.1c8608",
         "name": "",
         "platform": "512",
         "volume": "0.125",
         "pin": "3",
-        "x": 214,
-        "y": 532,
+        "x": 145,
+        "y": 618,
         "wires": []
     },
     {
-        "id": "1ad5796c.fb55f7",
+        "id": "d268431f.fab68",
         "type": "upm-grove-rgb-lcd",
-        "z": "ed9f6c5e.d1a",
+        "z": "e6060ba3.1c8608",
         "name": "Show the Message",
         "platform": "512",
-        "r": "255",
+        "r": 255,
         "g": 0,
-        "b": "0",
+        "b": 0,
         "row": "1",
         "column": 0,
-        "x": 440,
-        "y": 602,
+        "x": 497,
+        "y": 620,
         "wires": []
     }
 ]

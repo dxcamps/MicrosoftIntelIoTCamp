@@ -1,84 +1,84 @@
 [
     {
-        "id": "4a6273ba.b5204c",
+        "id": "9d4d97c7.d63528",
         "type": "upm-grove-temperature",
-        "z": "338f8bfe.551354",
+        "z": "e6060ba3.1c8608",
         "name": "",
         "platform": "512",
         "unit": "C",
         "pin": "1",
         "interval": "10000",
-        "x": 128,
-        "y": 123,
+        "x": 130,
+        "y": 160,
         "wires": [
             [
-                "93596ed5.59853"
+                "34298f7e.e4fac"
             ]
         ]
     },
     {
-        "id": "93596ed5.59853",
+        "id": "34298f7e.e4fac",
         "type": "function",
-        "z": "338f8bfe.551354",
+        "z": "e6060ba3.1c8608",
         "name": "Data Conversion",
         "func": "msg.payload = msg.payload * 3.3 / 5\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 348,
-        "y": 123,
+        "x": 350,
+        "y": 160,
         "wires": [
             [
-                "757777ac.e17dd8",
-                "f512d8a3.b05f98"
+                "2def18a9.bbcdb8",
+                "27aa15f6.51b8ca"
             ]
         ]
     },
     {
-        "id": "757777ac.e17dd8",
+        "id": "2def18a9.bbcdb8",
         "type": "function",
-        "z": "338f8bfe.551354",
+        "z": "e6060ba3.1c8608",
         "name": "Create Payload",
-        "func": "var gateway = \"PASTE YOUR <name>IntelIoTGateway DEVICE ID HERE\";\nreturn {\n    payload: {\n        deviceID: gateway,\n        timestamp: new Date().toISOString(),\n        temperature: msg.payload\n    }\n};",
+        "func": "var gateway = \"PASTE YOUR IOT HUB DEVICE NAME HERE\";\nreturn {\n    payload: {\n        deviceID: gateway,\n        timestamp: new Date().toISOString(),\n        temperature: msg.payload\n    }\n};",
         "outputs": 1,
         "noerr": 0,
-        "x": 158,
-        "y": 203,
+        "x": 160,
+        "y": 240,
         "wires": [
             [
-                "4ac239ae.e98bc8"
+                "ccd4d8d.37ce228"
             ]
         ]
     },
     {
-        "id": "4ac239ae.e98bc8",
+        "id": "ccd4d8d.37ce228",
         "type": "json",
-        "z": "338f8bfe.551354",
+        "z": "e6060ba3.1c8608",
         "name": "",
-        "x": 308,
-        "y": 203,
+        "x": 310,
+        "y": 240,
         "wires": [
             [
-                "8695679c.ddb348",
-                "25ee066a.9af14a"
+                "617d0aed.1e1324",
+                "89896fc4.e221f"
             ]
         ]
     },
     {
-        "id": "8695679c.ddb348",
+        "id": "617d0aed.1e1324",
         "type": "debug",
-        "z": "338f8bfe.551354",
+        "z": "e6060ba3.1c8608",
         "name": "",
-        "active": false,
+        "active": true,
         "console": "false",
         "complete": "false",
-        "x": 448,
-        "y": 203,
+        "x": 510,
+        "y": 240,
         "wires": []
     },
     {
-        "id": "f512d8a3.b05f98",
+        "id": "27aa15f6.51b8ca",
         "type": "upm-grove-rgb-lcd",
-        "z": "338f8bfe.551354",
+        "z": "e6060ba3.1c8608",
         "name": "Show the Temperature",
         "platform": "512",
         "r": 0,
@@ -86,18 +86,18 @@
         "b": "0",
         "row": "1",
         "column": 0,
-        "x": 386,
-        "y": 37,
+        "x": 390,
+        "y": 80,
         "wires": []
     },
     {
-        "id": "25ee066a.9af14a",
+        "id": "89896fc4.e221f",
         "type": "azureiothub",
-        "z": "338f8bfe.551354",
+        "z": "e6060ba3.1c8608",
         "name": "Azure IoT Hub",
         "protocol": "amqp",
-        "x": 130,
-        "y": 294,
+        "x": 320,
+        "y": 340,
         "wires": [
             []
         ]

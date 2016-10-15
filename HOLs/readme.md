@@ -9,7 +9,7 @@ In this lab, we will unbox and set up an Intel IoT Gateway and the Arduino 101 b
 
 ![Lab Architecture](images/00000-LabArchitecture.jpg)
 
-<a name="PrePrerequisites></a>
+<a name="PrePrerequisites"></a>
 Prerequisites
 ---
 
@@ -807,7 +807,7 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
     systemctl restart node-red-experience
     ```
 
-1. Now, open the Node-RED development environment in the browser (Remember you can just point your browser to port 1880 on your NUC, eg: `http://your.nucs.ip.address:1880` where `your.nucs.ip.address is` your NUC's IP Address).  In the list of nodes on the left, you should see a new "**cloud**" category, and within it the "**azureiothub**" node:
+1. Now, open the Node-RED development environment in the browser (Remember you can just point your browser to port 1880 on your NUC, eg: `http://your.nucs.ip.address:1880` where `your.nucs.ip.address is` your NUC's IP Address).  If you already had it open, make sure to refresh it.  In the list of nodes on the left, you should see a new "**cloud**" category, and within it the "**azureiothub**" node:
 
     <blockquote>
       <strong>Note</strong>: if the "<strong>cloud</strong>" category and "<strong>azureiothubnode</strong>" node don't appear, you may need to manually install the "<strong>node-red-control-azureiothubnode</strong>" package on the NUC.  If that is necessary, ssh into the NUC, and from the prompt run the following two commands:<br/>
@@ -1425,6 +1425,10 @@ We'll configure our Intel NUC to turn on it's buzzer for one second if it receiv
     - The "**Show the Message**" node displays the message text on the second row of the LCD panel and flashes the background of the panel red (rgb 255,0,0).
 
     ![Imported Nodes](images/12040-ImportedNodes.png)
+
+1. Just to clarify, the "azureiothub" node in Node-RED behaves a little differently than other nodes.  It doesn't take data in from the left, process it, and pass it out on the right.  Instead whatever comes IN to it from the left is SENT to the Azure IoT Hub.  If however the node RECEIVES a message FROM the IoT Hub, it sends it OUT on the right.  So the nodes that are "**before**" (from a flow perspective) the "**azureiothub**" node are dealing with ***sending device-to-cloud messages***, while the nodes "**after**" it deal with ***receiving cloud-to-device messages***.
+
+    ![Node Roles](images/12045-NodePurposes.png)
 
 1. The Azure Web App we deployed in the previous task has a handy way to test the buzzer.  Open up the ***`http://<name>web.azurewebsites.net`*** web application in browser.
 

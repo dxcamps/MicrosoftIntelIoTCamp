@@ -1,83 +1,83 @@
 [
     {
-        "id": "41bdb548.d4618c",
+        "id": "9d4d97c7.d63528",
         "type": "upm-grove-temperature",
-        "z": "ed9f6c5e.d1a",
+        "z": "e6060ba3.1c8608",
         "name": "",
         "platform": "512",
         "unit": "C",
         "pin": "1",
         "interval": "10000",
-        "x": 107,
-        "y": 139,
+        "x": 130,
+        "y": 160,
         "wires": [
             [
-                "e618eaf3.88acc8"
+                "34298f7e.e4fac"
             ]
         ]
     },
     {
-        "id": "e618eaf3.88acc8",
+        "id": "34298f7e.e4fac",
         "type": "function",
-        "z": "ed9f6c5e.d1a",
+        "z": "e6060ba3.1c8608",
         "name": "Data Conversion",
         "func": "msg.payload = msg.payload * 3.3 / 5\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 327,
-        "y": 139,
+        "x": 350,
+        "y": 160,
         "wires": [
             [
-                "a2baac08.e33db",
-                "30723bdc.8c2424"
+                "2def18a9.bbcdb8",
+                "27aa15f6.51b8ca"
             ]
         ]
     },
     {
-        "id": "a2baac08.e33db",
+        "id": "2def18a9.bbcdb8",
         "type": "function",
-        "z": "ed9f6c5e.d1a",
+        "z": "e6060ba3.1c8608",
         "name": "Create Payload",
-        "func": "var gateway = \"PUT YOUR AZURE IOT HUB DEVICE'S DEVICE ID HERE\";\nreturn {\n    payload: {\n        deviceID: gateway,\n        timestamp: new Date().toISOString(),\n        temperature: msg.payload\n    }\n};",
+        "func": "var gateway = \"IntelIoTGateway\";\nreturn {\n    payload: {\n        deviceID: gateway,\n        timestamp: new Date().toISOString(),\n        temperature: msg.payload\n    }\n};",
         "outputs": 1,
         "noerr": 0,
-        "x": 137,
-        "y": 219,
+        "x": 160,
+        "y": 240,
         "wires": [
             [
-                "8f0d20ce.7c348"
+                "ccd4d8d.37ce228"
             ]
         ]
     },
     {
-        "id": "8f0d20ce.7c348",
+        "id": "ccd4d8d.37ce228",
         "type": "json",
-        "z": "ed9f6c5e.d1a",
+        "z": "e6060ba3.1c8608",
         "name": "",
-        "x": 287,
-        "y": 219,
+        "x": 310,
+        "y": 240,
         "wires": [
             [
-                "eb82d9f9.59faf8"
+                "617d0aed.1e1324"
             ]
         ]
     },
     {
-        "id": "eb82d9f9.59faf8",
+        "id": "617d0aed.1e1324",
         "type": "debug",
-        "z": "ed9f6c5e.d1a",
+        "z": "e6060ba3.1c8608",
         "name": "",
-        "active": false,
+        "active": true,
         "console": "false",
         "complete": "false",
-        "x": 427,
-        "y": 219,
+        "x": 510,
+        "y": 240,
         "wires": []
     },
     {
-        "id": "30723bdc.8c2424",
+        "id": "27aa15f6.51b8ca",
         "type": "upm-grove-rgb-lcd",
-        "z": "ed9f6c5e.d1a",
+        "z": "e6060ba3.1c8608",
         "name": "Show the Temperature",
         "platform": "512",
         "r": 0,
@@ -85,8 +85,8 @@
         "b": "0",
         "row": "1",
         "column": 0,
-        "x": 365,
-        "y": 53,
+        "x": 390,
+        "y": 80,
         "wires": []
     }
 ]
