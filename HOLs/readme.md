@@ -9,6 +9,7 @@ In this lab, we will unbox and set up an Intel IoT Gateway and the Arduino 101 b
 
 ![Lab Architecture](images/00000-LabArchitecture.jpg)
 
+<a name="PrePrerequisites></a>
 Prerequisites
 ---
 
@@ -24,7 +25,7 @@ In order to successfully complete this lab you will need:
 
     You also need to have your git global config setup with the user and email.  To ensure the global config options, run the following commands from your command prompt or terminal window after installing git:
 
-    ```bash
+    ```text
     git config --global user.name "Your Name"
     git config --global user.email "Your Email"
     ```
@@ -596,7 +597,7 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
 
     > **Note**: **MAKE SURE TO USE THE -g OPTION TO INSTALL THE PACKAGE GLOBALLY**
 
-    ```bash
+    ```text
     npm install -g iothub-explorer
     ```
 
@@ -618,7 +619,7 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
 
 1. Now that we have iothub-explorer installed, we can use it to interact with our Azure IoT Hub.  At your command window or terminal prompt, enter:
 
-    ```bash
+    ```text
     iothub-explorer
     ```
     It will display it's usage details:
@@ -659,12 +660,12 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
     ```
 1. Note the `iothub-explorer login` option.  This allows you to enter your IoT Hub connection string once, and not have to re-supply the connection string for every command during the "session".  The "session" lasts for one hour by default. To login, we'll need the "iothubowner" SAS policy connection string we copied int the "**[myresources.txt](./myresources.txt)**" file previously.  Retrieve that string from the file, and use it to login to your Azure IoT Hub with iothub-explorer as follows:
 
-    ```bash
+    ```text
     iothub-explorer login "<paste your IoT Hub 'iothubowner' SAS Policy Primary Connection String here>"
     ```
     For example:
 
-    ```bash
+    ```text
     iothub-explorer login "HostName=mic16iot.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=MuIeI2Bpp4lm6knbNiXX4J1V+UivTov/ebfIfykWD+g="
     ```
 
@@ -682,12 +683,12 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
 
 1. Create the new device identity using the "**iothub-explorer create**" command.  The "**--connection-string**" option at the end asks to utility to return the primary connection string for the device to use to connect to the Azure IoT Hub:
 
-    ```bash
+    ```text
     iothub-explorer create <name>IntelIoTGateway --connection-string
     ```
     For example:
 
-    ```bash
+    ```text
     iothub-explorer create mic16IntelIoTGateway --connection-string
     ```
     With this result:
@@ -743,7 +744,7 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
     The command will not return any result unless there was a problem.
 
-    ```bash
+    ```text
     rpm --import http://iotdk.intel.com/misc/iot_pub.key
     ```
 
@@ -751,7 +752,7 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
     You will see a number of "***WARN unmet dependency***" messages appear.  ***You can safely ignore these***.
 
-    ```bash
+    ```text
     npm install node-red-contrib-os -g
     ```
 
@@ -802,7 +803,7 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
 1. Back in your ssh connection, run the following command to restart the Node-RED environment on the NUC.  This is necessary because the package that we just installed updated the resources available to Node-RED so it needs to be re-initialized:
 
-    ```bash
+    ```text
     systemctl restart node-red-experience
     ```
 
@@ -844,13 +845,13 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
     - Use the device id you generated in place of the ***&lt;name&gt;IntelIoTGateway*** device id
 
-    ```bash
+    ```text
     iothub-explorer "<IoT Hub 'iothubowner' SAS Policy Primary Connection String>" monitor-events <name>IntelIoTGateway
     ```
 
     For example:
 
-    ```bash
+    ```text
     iothub-explorer "HostName=mic16iot.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=MuIeI2Bpp4lm6knbNiXX4J1V+UivTov/ebfIfykWD+g=" monitor-events mic16IntelIoTGateway
     ```
 
@@ -1072,7 +1073,7 @@ Next up is the ***&lt;name&gt;alerts*** Event Hub that the ***&lt;name&gt;job***
 
     ![Copy the RootManageSharedAccess Key](images/10263-RootManagedSharedAccessKey.png)
 
-1. Take a minute to document your Event Nub Namespace and Event Hub names:
+1. Take a minute to document your Event Hub Namespace and Event Hub names:
 
     ![Document Event Hub](images/10265-DocumentEventHub.png)
 
@@ -1194,13 +1195,9 @@ Great, now we have all the pieces that the ***&lt;name&gt;job*** Stream Analytic
 
     ![Job Started](images/10400-JobStarted.png)
 
-1. At this point, we should have data being forwarded into our SQL Database.  We can verify that using Visual Studio Code.  In Code, open the "**SQL Database Scripts\Create SQL Database Objects.sql**" file we used before, and hightlight the query:
+1. At this point, we should have data being forwarded into our SQL Database.  We can verify that using Visual Studio Code.  In Code, open the "**SQL Database Scripts\Query Measurement Data.sql**" file.  Make sure the file is active by clicking into it, and then execute the entire query by pressing **Ctrl+Shift+E**.  You should see the results of the three queries show up on the "**MSSQL Output**" tab.  You can use the "**Results** drop down to see the results of each of the three queries.
 
-    ```sql
-    select * from dbo.Measurement;
-    ```
-
-1. And press **Ctrl-Shift-E** (Or pull up the command palette and enter "**>MSSQL: Run T-SQL Query**") to execute it.  You should see multiple rows of your device data showing up io the "**MSSQL Output**" tab.
+    > **Note**: You need to be connected to the SQL Server already.  If you aren't, press **Ctrl+Shift+C**, select your SQL Connection and press enter.  Also make sure that your cursor is INSIDE the "**Query Measurement Data.sql**" file in the editor or the **Ctrl+Shift+C** and **Ctrl+Shift+E** do different things (open a command prompt, and open the explorer panel respectively).
 
     ![SQL Data](images/10410-SQLData.png)
 
@@ -1275,30 +1272,45 @@ We'll start by creating the Azure App Service Plan and Web App in the portal.
 
 ### Debug the Node.js Web Application Locally ###
 
-1. Open Visual Studio Code, and from the menu bar select "**File**" | "**Open Folder...**" and find the "**HOLs\WebApp** folder under where you extracted the lab files.  Then inside that folder in VS Code, select the "**config.json**" file.
+**YOU NEED TO OPEN A SEPARATE COPY OF VISUAL STUDIO CODE FOR THIS SECTION.  YOU SHOULD LEAVE THE EXISTING INSTANCE OF VISUAL STUDIO CODE OPEN SO YOU CAN EASILY GET TO THE MYRESOURCES.TXT FILE, BUT MAKE SURE THAT THE FOLLOWING STEPS DONE USING A SEPARATE INSTANCE OF VISUAL STUDIO CODE THAT IS POINTING AT THE **HOLs/WebApp** FOLDER DIRECTLY.**
+
+The reason for this is that we are going to be using the Node.js Debugging and Git Integration capabilities of Visual Studio Code in this task to help us debug and deploy our Node.js Web Application.  These are awesome features built-in to Visual Studio Code, but they require that the "root" folder code is pointing at is both the root the application you wish to debug as well as the root of the git repository you want to manage.  For that reason, we need to open the **"HOLs/WebApp** folder directly in Visual Studio Code for these steps to work.
+
+1. Open a new instance of Visual Studio Code. If you already have Visual Studio Code open, from the menu bar, select "**File**" | "**New Window**"
+
+1. From the menu bar select "**File**" | "**Open Folder...**" and find the "**HOLs\WebApp** folder under where you extracted the lab files.  Then inside that folder in VS Code, select the "**config.json**" file.
 
     ![config.json](images/11110-ConfigJson.png)
 
-1. Use the values you've saved to the **[myresources.txt](./myresources.txt)** file to paste the required values into the config.json file. You can close the config.json when you are done.  **IGNORE THE POWERBI... SETTINGS. WE'LL GET TO THOSE LATER**
+1. Use the values you've saved to the **[myresources.txt](./myresources.txt)** (they **myresources.txt** file file should still be accessible in the original instance of visual studio code) to paste the required values into the config.json file. You can close the config.json when you are done.  **IGNORE THE POWERBI... SETTINGS. WE'LL GET TO THOSE LATER**
 
     > **Note**: The "**iotHubConnString** should be the one for your "**service**" SAS policy.
 
     ![Update config.json](images/11120-UpdateWebAppConfigJson.png)
 
-1. Next, click on the "**Debug**" icon along the left, then click the "**gear**" icon along the top to configure the debugger, and select "**Node.js**" as the environment
+1. Next, click on the "**Debug**" icon along the left, then click the "**gear**" icon along the top to configure the debugger:
+
+    ![New Debug Config](images/11125-NewDebugConfig.png)
+
+1. When prompted, select "**Node.js**" as the environment
+
+    > **Note**: If you are see an option for the "**Node.js v6.3+ (Experimental)**" **DO NOT** select it.
 
     ![Node.js debug environment](images/11140-NodeJsEnvironment.png)
 
 1. In the "**launch.json**" file that appears, modify the "**program** path to point to the "**server.js**" file.  Then save and close the "**launch.json**" file.
 
+    > **Note**: This tells the debugger to start with the **server.js** file in the root of our web application's folder.
+
     ![Start with server.js](images/11150-StartWithServerjs.png)
 
 1. In Open a command prompt or terminal window, and change into the "**HOLs\WebApp** path.  From there, run the following commands:
 
-    ```bash
+    > **Note:** Bower requires that **git** is installed and configured.  Refer to the **[Prerequisites](#Prerequisites)** section for installation links and configuration steps.
+
+    ```text
     npm install -g bower
     npm install
-    bower install
     ```
 1. Back in VS Code, on the Debug panel, click the green "**play**" button along the top to start debugging the web app.
 
@@ -1336,13 +1348,13 @@ The last step is to get this web application running in Azure, not locally.  Ear
 
 1. Refer to the Azure Web App Resources information you recently save in the **[myresources.txt](./myresources.txt)** file. Copy the "**Git Clone URL** value to your clipboard.  Next, open a command prompt or terminal window,  navigate to the "**HOLs\WebApp**" directory. and issue the following command at the prompt:
 
-    ```bash
+    ```text
     git remote add origin <<your git clone url>>
     ```
 
     for example:
 
-    ```bash
+    ```text
     git remote add origin https://mic16user@mic16web.scm.azurewebsites.net:443/mic16web.git
     ```
 
@@ -1595,55 +1607,55 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
 1. A "**Workspace Collection**" is just what it sounds like, it is a collection of one or more "**Workspace**" instances. To upload a report, it must go into a Workspace, but at the time this is being writting you can't create new Workspaces in the portal.  The rest of our interaction with the Power BI Embedded service will be via the "**powerbi-cli** npm package (<a target="_blank" href="https://www.npmjs.com/package/powerbi-cli">link</a>).  Open a command prompt or terminal window and issue the following npm command to install the "**powerbi-cli**" package globally:
 
-    ```bash
+    ```text
     npm install -g powerbi-cli
     ```
 1. Once it is installed, in the command prompt or terminal window, change into the "**HOLs\PowerBI**" folder, and run the following command and use the collection name and key you just pasted into the "**[myresources.txt](./myresources.txt)**" file to tell the powerbi how to connect to our workspace collection:
 
     > **Note**: The `powerbi config` command creates a `.powerbirc` file in the directory where the command was executed.  It contains sensitive connection information about how to connect to to your Power BI Embedded Workspace Collection so be careful who you expose that file to.
 
-    ```bash
+    ```text
     powerbi config -c <collectioName> -k <accessKey>
     ```
     For example:
 
-    ```bash
+    ```text
     powerbi config -c mic16collection -k "BoeKHkxkB/JuHsXTRsgUSegrvNnMC97YgycKJYXKDY7q9v5nbSxpoJkfvMmvMr68CrAi1iQVv0KgCpjlVtLIxw=="
     ```
 
     Which returns this output.  The values shown here are stored in the ".powerbirc" file in the current directory:
 
-    ```bash
+    ```text
     [ powerbi ] collection: mic16collection
     [ powerbi ] accessKey: BoeKHkxkB/JuHsXTRsgUSegrvNnMC97YgycKJYXKDY7q9v5nbSxpoJkfvMmvMr68CrAi1iQVv0KgCpjlVtLIxw==
     ```
 
 1. Now, we can create a new "**Workspace**" workspaces are the containers that we upload reports into.  Use the following command:
 
-    ```bash
+    ```text
     powerbi create-workspace
     ```
     Which returns output similar to the following.
 
-    ```bash
+    ```text
     [ powerbi ] Workspace created: 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
     ```
 
     Then save the new Workspace Id to the config so you don't have to enter it each time:
 
-    ```bash
+    ```text
     powerbi config -w <workspaceId>
     ```
 
     For example
 
-    ```bash
+    ```text
     powerbi config -w 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
     ```
 
     Which returns
 
-    ```bash
+    ```text
     [ powerbi ] collection: mic16collection
     [ powerbi ] accessKey: BoeKHkxkB/JuHsXTRsgUSegrvNnMC97YgycKJYXKDY7q9v5nbSxpoJkfvMmvMr68CrAi1iQVv0KgCpjlVtLIxw==
     [ powerbi ] workspace: 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
@@ -1657,19 +1669,19 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     > **Note**: These commands assume you are in the "**HOLs\PowerBI**" folder.
 
-    ```bash
+    ```text
     powerbi import -n <what to call the report> -f <local path the to your .pbix file>
     ```
 
     For example
 
-    ```bash
+    ```text
     powerbi import -n "TemperatureChart" -f "TemperatureChart.pbix"
     ```
 
     Which returns something like:
 
-    ```bash
+    ```text
     [ powerbi ] Importing TemperatureChart.pbix to workspace: 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
     [ powerbi ] File uploaded successfully
     [ powerbi ] Import ID: b3cd9de9-11e5-473c-9b55-0e569c89a756
@@ -1680,13 +1692,13 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
 1. Next, we'll retrieve the unique IDs for the report, and the dataset in it:
 
-    ```bash
+    ```text
     powerbi get-reports
     ```
 
     Returns
 
-    ```bash
+    ```text
     [ powerbi ] =========================================
     [ powerbi ] Gettings reports for Collection: 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
     [ powerbi ] =========================================
@@ -1695,53 +1707,56 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     And
 
-    ```bash
+    ```text
     powerbi get-datasets
     ```
 
     Returns
 
-    ```bash
+    ```text
     =========================================
     Gettings datasets for Collection: 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
     =========================================
     ID: ed212c12-0335-414d-b0f1-d4e1be1268da | Name: TemperatureChart
     ```
 
-    Copy the report and Data set IDs returned from the last two statements and past them into the "**[myresources.txt](./myresources.txt)**" file.
+1. Copy the report and Data set IDs returned from the last two statements and past them into the "**[myresources.txt](./myresources.txt)**" file.
+
+    ![Document Report and Dataset IDs](images/13073-DocumentReportAndDataset.png)
 
 1. The last step on the report side is to update the connection information for the Dataset in the report to point to our Azure SQL Database, on our Azure SQL Server with our login credentials.
 
     We need to create a connection string in the right format.  Here is the template for the connection string:
 
-    ```bash
+    ```text
     "data source=<name>sql.database.windows.net;initial catalog=<name>db;persist security info=True;encrypt=True;trustservercertificate=False"
     ```
 
     Replace the ***&lt;name&gt;sql*** and ***&lt;name&gt;db*** values above with your own.  For example:
 
-    ```bash
+    ```text
     "data source=mic16sql.database.windows.net;initial catalog=mic16db;persist security info=True;encrypt=True;trustservercertificate=False"
     ```
+1. Copy the connection string and paste it into the "**[myresources.txt](./myresources.txt)**" file:
 
-    Copy the connection string and paste it into the "**[myresources.txt](./myresources.txt)**" file:
+    ![Document Connection String](images/13075-DocumentConnectionString.png)
 
-    Then use the values for our Dataset ID, SQL Login Name and Password, and the Connection String from above to complete the following statement:
+1. Next, use the values for our Dataset ID, SQL Login Name and Password, and the Connection String from above to complete the following statement:
 
-    ```bash
+    ```text
     powerbi update-connection --dataset "<Dataset ID>" --username <your sql login> --password "<your sql password" --connectionString "<your conneciton string>"
     ```
 
     For example:
 
-    ```bash
+    ```text
     powerbi update-connection --dataset "ed212c12-0335-414d-b0f1-d4e1be1268da" --username sqladmin --password "P@ssw0rd" --connectionString "data source=mic16sql.database.windows.net;initial catalog=mic16db;persist security info=True;encrypt=True;trustservercertificate=False"
     ```
     Which returns something similar to:
 
     > **Note**: Sometimes this fails.  If you get an error, double check your parameters, but even if they are correct, simply running the command a second or third time may work.
 
-    ```bash
+    ```text
     [ powerbi ] Found dataset!
     [ powerbi ] Id: ed212c12-0335-414d-b0f1-d4e1be1268da
     [ powerbi ] Name: TemperatureChart
@@ -1769,26 +1784,26 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     For Example:
 
-1. Next, open the "**public/index.html**" file and locate the following code
+    ![Power BI Config Completed](images/13085-PowerBIConfigCompleted.png)
 
-    > **Note**: The div that will contain our embedded report has been commented out, and a place holder `<img/>` is being displayed instead.  We need to switch that around so the `<img/>` is commented out, and the `<div..></div>` is availabe.
+1. Next, open the "**public/index.html**" file and locate the code as shown below. The div that will contain our embedded report has been commented out, and a place holder `<img/>` is being displayed instead.  We need to switch that around so the `<img/>` is commented out, and the `<div..></div>` is availabe.
 
-        ```html
-        <img src="images/chartplaceholder.png" style="width:455px;height:380px;border:none;" />
-        <!--
-        <div id="powerbiReport" powerbi-type="report" style="height:380px;"></div>
-        -->
-        ```
-        ![Commented out DIV](images/13090-CommentedOutDiv.png)
+    ```html
+    <img src="images/chartplaceholder.png" style="width:455px;height:380px;border:none;" />
+    <!--
+    <div id="powerbiReport" powerbi-type="report" style="height:380px;"></div>
+    -->
+    ```
+    and switch them around so the `<img.../>` tag is commented out, and the `<div...></div>` tag isn't
 
-        and switch them around so the `<img.../>` tag is commented out, and the `<div...></div>` tag isn't
+    ```html
+    <!--
+    <img src="images/chartplaceholder.png" style="width:455px;height:380px;border:none;" />
+    -->
+    <div id="powerbiReport" powerbi-type="report" style="height:380px;"></div>
+    ```
 
-        ```html
-        <!--
-        <img src="images/chartplaceholder.png" style="width:455px;height:380px;border:none;" />
-        -->
-        <div id="powerbiReport" powerbi-type="report" style="height:380px;"></div>
-        ```
+    ![Commented Out Image](images/13095-CommentedOutImg.png)
 
 1. Next, near the bottom of the "**public\index.html**" file locate the following code:
 

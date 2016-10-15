@@ -1,3 +1,6 @@
+-- SELECT ALL messages 
+-- FROM the iot hub and put them
+-- INTO the sql database
 SELECT
     deviceID,
     [timestamp] as [timestamp],
@@ -7,6 +10,10 @@ INTO
 FROM
     iothub
 
+-- SELECT ONLY messages
+-- WHERE the temperature is > 40
+-- FROM the iot hub and put them 
+-- INTO the alerts event hub
 SELECT
     deviceID,
     [timestamp] as [timestamp],

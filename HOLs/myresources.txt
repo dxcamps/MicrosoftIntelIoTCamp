@@ -81,8 +81,7 @@ Web App Name:
 <paste your Azure Web App Name here>
 
 Web App URL (You can copy this from the overview page of your Azure Web App):
-http://<paste your Azure Web App Name here>
-.azurewebsites.net
+http://<paste your Azure Web App Name here>.azurewebsites.net
 
 Git Clone URL (You can copy this from the overview page of your Azure Web App):
 <paste your Azure Web App Git Clone URL here>
