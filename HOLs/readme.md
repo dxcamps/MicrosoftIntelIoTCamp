@@ -1,4 +1,4 @@
-<!-- markdownlint-disable MD003 MD033 MD002 -->
+<!-- markdownlint-disable MD002 MD003 MD033 MD034 -->
 Intel IoT Gateway, Arduino 101 and Microsoft Azure Hands-On-Lab
 ===
 
@@ -105,7 +105,7 @@ Getting Started with Grove IoT Commercial Developer Kit
 
     ![License Agreement](images/01120-Eula.png)
 
-1. Once you have successfully logged in, you should see the "**IoT Gateway Developer Hub**".
+1. Once you have successfully logged in, you should see the "**IoT Gateway Developer Hub**" (a.k.a. "**Dev Hub**").
 
     ![IoT Gateway Developer Hub](images/01130-IoTGatewayDeveloperHub.png)
 ___
@@ -122,7 +122,7 @@ The Developer Hub is a front end interface for the Gateway. It has 5 main functi
 - Administer the Gateway – update OS, configure network setting
 - Access documentation
 
-1. The "**Sensors**" page can be used to monitor the sensor data that is being published to the dashboard.  By default the gateway is configured to display the value of the rotary angle sensor (knob) attached to the Arduino 101.  You can twisth the knob to see the values change in the Device and Sensor Information panel on this page.
+1. The "**Sensors**" page can be used to monitor the sensor data that is being published to the dashboard.  By default the gateway is configured to display the value of the rotary angle sensor (knob) attached to the Arduino 101.  You can twist the knob to see the values change in the Device and Sensor Information panel on this page.
 
     ![Sensor Dashboard](images/02010-Sensors.png)
 
@@ -136,18 +136,18 @@ The Developer Hub is a front end interface for the Gateway. It has 5 main functi
 
     ![Packages](images/02030-Packages.png)
 
-1. The "Administration" page provides easy access to a number of tools.  The tools most applicable to this lab are the "Quick Tools":
+1. The "**Administration**" page provides easy access to a number of tools.  The tools most applicable to this lab are the "Quick Tools":
 
     > **Note**: **PLEASE DO NOT INSTALL OS UPDATES OR UPGRADE TO PRO AT THIS TIME**.  While these options may be desirable they will take too long for the time frame of this lab as well as have a negative impact on the available bandwidth at the event.  Please refrain from updating your IoT Gateway while at an IoT Camp event.  You are welcome to perform the updates back on your own network.
 
-    - Easy access to the Node-RED development environment that has been pre-installed on the IoT Gateway.  We will use this extensively in this lab.
-    - A way to register your gateway with the "Wind River Helix App Cloud".  We won't be using this feature as part of this lab.
-    - Access to the "LuCI" ( <a target="_blank" href="https://github.com/openwrt/luci/wiki">link</a> ) interface to configure administrative settings on your gateway.  **PLEASE DO NOT MAKE CHANGES USING THIS TOOL.**
-    - The "Cloud Commander" web console, file manager, and editor.
+    - Easy access to the "**Node-RED**" (<a target="_blank" href="http://nodered.org/">link</a>) development environment that has been pre-installed on the IoT Gateway.  We will use this extensively in this lab.
+    - A way to register your gateway with the "**Wind River Helix App Cloud**".  We won't be using this feature as part of this lab.
+    - Access to the "**LuCI**" ( <a target="_blank" href="https://github.com/openwrt/luci/wiki">link</a> ) interface to configure administrative settings on your gateway.  **PLEASE DO NOT MAKE CHANGES USING THIS TOOL.**
+    - The "**Cloud Commander**" web console, file manager, and editor.
 
     ![Administration](images/02040-Administration.png)
 
-1. The "Documentation" page provides a wealth of documentation, community, and source code resources.
+1. The "**Documentation**" page provides a wealth of documentation, community, and source code resources.
 
     ![Documentation](images/02050-Documentation.png)
 
@@ -164,7 +164,7 @@ In order to perform advanced configuration of the Gateway either a monitor and k
     > **Note**: In the screen shots below, ***192.168.2.13*** is the IP Address of the IoT Gateway being connected to.  Replace that IP Address with the IP Address of your IoT Gateway.  That is the IP Address that should be displayed on the LCD Panel attached to your Arduino 101.
 
     - Visit the <a target="_blank" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTY download page</a>.
-    - Under the "For Windows on Intel x86" heading, click on the "putty.exe" link to download the latest release version to your computer. Or if you prefer to use an installer that includes all of the additional tools like PSCP and PSFTP click the putty-0.67-installer.exe link (or latest version).
+    - Under the "**For Windows on Intel x86**" heading, click on the "**putty.exe**" link to download the latest release version to your computer. Or if you prefer to use an installer that includes all of the additional tools like PSCP and PSFTP click the "**putty-0.67-installer.exe**" link (or latest version).
 
     ![PuTTY Downloads](images/03010-PuttyDownload.png)
 
@@ -177,16 +177,18 @@ In order to perform advanced configuration of the Gateway either a monitor and k
 
     ![PuTTY Security Alert](images/03030-PuTTYSecurityAlert.png)
 
-    - You can login with the username **root** and the password **root**.
+    - You can login with:
+        - User Name: **root**
+        - Password:  **root**.
 
     ![Login as root](images/03040-LoginAsRoot.png)
 
 1. For Mac OSx and Linux users
 
     - Open a terminal Window
-    - At the prompt, type the follwing command.  Replace `<<IP Address>>` with the IP Address of your IoT Gateway:
+    - At the prompt, type the follwing command.  Replace `your.nucs.ip.address` with the IP Address of your IoT Gateway:
 
-        `ssh root@<<IP Address>>`
+        `ssh root@your.nucs.ip.address`
 
     - Enter ***root*** as the password
 
@@ -201,14 +203,14 @@ In this exercise, you will use the Node-RED development environment pre-installe
 1. To open the Node-RED development environment on your IoT Gateway:
 
     - In your browser, navigate to `http://your.nucs.ip.address` where `your.nucs.ip.address is` your gateway's IP Address.
-    - Click the "Administration" link
-    - Click the "Launch" button under the "Node-RED" icon.
+    - Click the "**Administration**" link
+    - Click the "**Launch**" button under the "**Node-RED**" icon.
 
     ![Launch Node-RED](images/04010-LaunchNodeRed.png)
 
-    > **Note**: Accessing the Node-RED environment from the Administration page leaves the IoT Gateway links, etc. still visible at the top of the page and can cause some difficulty with the Node-RED environemtn.  If you prefer to access the Node-RED environment directly, you can do so by navigating to port **1880** on your gateway using **`http://your.nucs.ip.address:1880`** . Again, replace your.nucs.ip.address with your gateway's IP Address.
+    > **Note**: Accessing the Node-RED environment from the Administration page leaves the IoT Gateway links, etc. still visible at the top of the page and can cause some difficulty with the Node-RED environment.  If you prefer to access the Node-RED environment directly, you can do so by navigating to port **1880** on your gateway using **`http://your.nucs.ip.address:1880`** . Again, replace your.nucs.ip.address with your gateway's IP Address.
 
-1. The Node-RED environment will show the default "Flow 1" workflow that is responsible for retrieving your gateway's IP Address and displaying it on the LCD panel as well as reading the value from the rotary angle sensor and displaying it in the charts on the IoT Gateway web portal.  Leave this flow as is for now.
+1. The Node-RED environment will show the default "**Flow 1**" workflow that is responsible for retrieving your gateway's IP Address and displaying it on the LCD panel as well as reading the value from the rotary angle sensor, changing the background color of the RGB LCD based on the sensor value, and displaying it in the charts on the IoT Gateway web portal.  Leave this flow as is for now.
 
     ![Node-RED Environment](images/04020-NodeREDEnvironment.png)
 
@@ -216,7 +218,7 @@ In this exercise, you will use the Node-RED development environment pre-installe
 
     ![Node-RED Environment Layout](images/04030-NodeRedEnvironmentLayout.png)
 
-1. To create a new flow, click the "**+**" button to the right of the "Flow 1" tab along the top of the Visual Editor.  A new flow, named "Flow 2" will open on a new tab.
+1. To create a new flow, click the "**+**" button to the right of the "**Flow 1**" tab along the top of the Visual Editor.  A new flow, named "**Flow 2**" will open on a new tab.
 
     ![Create Flow 2](images/04040-CreateFlow2.png)
 
@@ -265,7 +267,7 @@ We will create Node-RED flow to get data from temperature sensor and display it 
 
     ![Attach Temperature Sensor](images/05010-AttachTemperatureSensor.png)
 
-1. In the Node-RED environment, create a new flow named "Flow 3"
+1. In the Node-RED environment, create a new flow named "**Flow 3**"
 
     ![Create Flow 3](images/05020-CreateFlow3.png)
 
@@ -281,7 +283,7 @@ We will create Node-RED flow to get data from temperature sensor and display it 
 
     ![Add Grove Temperature Sensor](images/05030-AddGroveTemperatureSensor.png)
 
-1. From the "**function**" group add a "**function**" node to "**Flow 3**" and connect it to the existing "**Temperature**" node as shown below.  Double click on the new "**function**" node and complete the properites as follows.  Click the "**OK**" button to save the changes:
+1. From the "**function**" group add a "**function**" node to "**Flow 3**" and place it next it to the existing "**Temperature**" node as shown below.  Double click on the new "**function**" node and complete the properites as follows.  Click the "**OK**" button to save the changes:
 
     > **Note**: The purpose of this function is to provide the correct temperature when the sensor is being read with a 5V source. The sensor functions at 3.3 by default.
 
@@ -329,11 +331,13 @@ We will create Node-RED flow to get data from temperature sensor and display it 
 
     ![Deploy](images/05065-Flow3Deploy.png)
 
-1. Before we test the new flow, we want to turn off any debug messages being generated by the default flow on the "**Flow 1**" tab.
-    - In the Node-RED editor, switch to the "**Flow 1**" tab.
-    - On the right hand side, click on the "**debug**" tab to view debug messages.
-    - You may or may not see debug messages showing the current value of the rotary angle sensor
-    - Regardless, on the "**msg.payload**" debug node, click the box on the right edge of the node to disable the debug messages. The box on the right edge of a debug node has two possible states.  Make sure the debug node has it's debug messages **disabled**:
+1. Finally, we can test the new flow.
+    - Ensure you are on the "**Flow 3**" tab
+    - Click on the "**Debug**" tab to view debug messages generated by the green "**msg.payload**" debug node.
+    - Click the "**Trashcan**" icon at the top of the debug tab to clear any existing debug messages.
+    - Watch for the debug messages to appear on the "**debug**" tab.
+    - If you are not seeing debug messages, ensure that the "**msg.payload**" debug node has it's debug messages enabled:
+
         - Debug messages are enabled, and will appear on the "**debug**" tab:
 
         ![Debug messages enabled](images/05080-DebugMessagesEnabled.png)
@@ -342,21 +346,9 @@ We will create Node-RED flow to get data from temperature sensor and display it 
 
         ![Debug messages disabled](images/05090-DebugMessagesDisabled.png)
 
-    ![Flow 1 Debug Messages](images/05070-DisableFlow1DebugMessages.png)
-
-1. Next, click the trashcan icon on the debug tab to delete any debug messages currently being displayed on the tab:
-
-    ![Delete Debug Messages](images/05100-DeleteDebugMessages.png)
-
-1. Finally, we can test the new flow.
-    - Switch back to the "**Flow 3**" tab
-    - Click the "**Deploy**" button
-    - Once you have deployed "**Flow 3**" ensure that it's "**msg.payload*"" debug has it's debug messages enabled
-    - Watch for the debug messages to appear on the "**debug**" tab.
-
     <!-- markdownlint-disable MD028 -->
 
-    > **Note**: If you can't see the entire debug message on the debug tab, you can drag the splitter bar between the "**Visual Editor**" and "**debug**" tab panels to expand the view, or you can scroll to the right on the "**debug**" tab using the horizontal scroll bar at the bottom of it.
+    > **Note**: If you can't see the entire debug message on the debug tab, you can drag the splitter bar between the "**Visual Editor**" and "**debug**" tab panels to expand the view, or you can scroll to the right on the "**debug**" tab using the horizontal scroll bar at the bottom of it.  Also, remember that the "**Grove Temperature**" node is only publishing a sensor value once every **10 seconds** so you need to wait at least that long to see anything appear.
 
     > **Note**: You can touch the temperature sensor (or blow on it) to see the value of the "**temp**" displayed change on the "**debug**" tab.
 
@@ -390,13 +382,14 @@ We will create Node-RED flow to get data from temperature sensor and display it 
 
     ***YOU DO NOT NEED TO DO THESE STEPS UNLESS YOU ARE HAVING A PROBLEM AND WANT TO IMPORT WORKING CODE***
 
-    - You should first delete the nodes you have by selecting them all, and pressing the "**Delete**" key.
+    - You should first delete the nodes you have by selecting them all, and pressing the "**Delete**" key on your keyboard.
 
         ![Select all nodes](images/05143-SelectAllNodes.png)
 
         you can tell that nodes are "selected" when they have an orange border:
 
-        ![Select nodes have an orange border](images/05146-SelectedNodesOrangeBorder.png
+        ![Select nodes have an orange border](images/05146-SelectedNodesOrangeBorder.png)
+
     - Open the "**<a target="_blank" href="./Node-RED Flows/Flow 3 - 01 - Temperature on LCD.json">Node-RED Flows/Flow 3 - 01 - Temperature on LCD.json</a>**" file in the code editor of your choice, and copy it's contents.
 
     - In the Node-RED editor, from the "Hamburger" button in the top right corner, select "**Import**" | "**Clipboard**"
@@ -423,11 +416,11 @@ The following diagram provides an overview of the architecture we will be implem
 
 ### Common Resource Group ###
 
-We will be placing all of the azure resources we provision in this lab into a single "**Resource Group**" (<a target="_blank" href="https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/#resource-groups">link</a>).  Resource groups are a core concept in the "**Azure Resource Manager**" (<a target="_blank" href="https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/#resource-groups">link</a>) technology used by the Azure platform.  Resource Groups allow you to keep all the resources related to a solution in a single organizational container.  This in invaluable when securing, deploying, and removing the resources.
+We will be placing all of the azure resources we provision in this lab into a single "**Resource Group**" (<a target="_blank" href="https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/#resource-groups">link</a>).  Resource groups are a core concept in the "**Azure Resource Manager**" (<a target="_blank" href="https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/">link</a>) technology used by the Azure platform.  Resource Groups allow you to keep all the resources related to a solution in a single organizational container.  This in invaluable when securing, deploying, and removing the resources.
 
 ### Common Location or "Region" ###
 
-We want to make sure to deploy all of the resources are deployed in the same Azure data center, or "**Region**" (<a target="_blank" href="https://azure.microsoft.com/en-us/regions/">link</a>). This will help to ensure that the resources have low latency connections to each other (for example, the web application can directly access the sql database), as well as keep our costs low by reducing the amount of data leaving a the data center and incurrent data egress charges.
+We want to make sure to deploy all of the resources are deployed in the same Azure data center, or "**Region**" (<a target="_blank" href="https://azure.microsoft.com/en-us/regions/">link</a>). This will help to ensure that the resources have low latency connections to each other (for example, the web application can directly access the sql database), as well as keep our costs low by reducing the amount of data leaving a the data center and incur any data egress charges.
 
 That means that when need to select a region that supports all of the services we will use in our solution.  You can review the list of <a target="_blank" href="https://azure.microsoft.com/en-us/regions/services/">Products available by region</a> to verify that the services required by this lab are available in the region you want to use. The services used in this lab inclue:
 
@@ -453,11 +446,11 @@ At the time this is being written (October 2016), the following regions have all
 
 We will be provisioning a number of resources in this lab.  Some of these resources require globally unique names.  In addition, we need to be able to refer to those resources in the lab documentation.  To facilitate that, it is ***strongly recommended*** that you juse the naming convention outlined here.  In the architecture diagram above, you will see that resources have been named with a ***`<name>`*** prefix, and then some resource specific name.
 
-Choose a ***`<name>`*** prefix that is unique to you.  It is recommended that you use something like your initials.  For example if your name where "**Jane Q. Doe"** you might select "**jqd**" as your name prefix. To add a little more uniqueness you could add in your two digit birth month.  For example, if Jane was born in "**October**" she might use "**jqd10**".  **Some resources name must be at least six characters or longer.  Having a prefix that is 4-6 characters long will help ensure our names meet the minimum lenght.**
+Choose a ***`<name>`*** prefix that is unique to you.  It is recommended that you use something like your initials.  For example if your name where "**Jane Q. Doe"** you might select "**jqd**" as your name prefix. To add a little more uniqueness you could add in your two digit birth month.  For example, if Jane was born in "**October**" she might use "**jqd10**".  **Some resource names must be at least six characters or longer.  Having a prefix that is 4-6 characters long will help ensure our names meet the minimum length.**
 
 You can choose anything you like, but it must help create unique names, and it should be short because you'll be typing it a fair amount.
 
-For the purposes of this lab, I'll use the "**mic16**" prefix, short for "**Microsoft Intel Camp 2016**".
+For the purposes of this lab examples, we'll use the "**mic16**" prefix, short for "**Microsoft Intel Camp 2016**".
 
 **DO NOT USE THE _"mic16"_ PREFIX FOR YOUR OWN RESOURCES**.
 
@@ -468,10 +461,10 @@ For the purposes of this lab, I'll use the "**mic16**" prefix, short for "**Micr
 | The Device | Intel NUC, Arduino 101 & Grove Sensors  | The Intel NUC is our "Device".  It get's sensor values from the Arduino 101 and Grove sensors that are attached.  We use an easy graphical development environment called "Node-RED" on the NUC to help the NUC send messages with sensor data to the cloud, as well as to receive messags from the cloud and act on them.  |
 | Resource Group | ***&lt;name&gt;group*** | Azure Resource Groups provide a convenient way to organize all of the Azure resources for a solution into a single container.  The Resource Group can then be a unit of deployment, a securable collection, and an easy way to delete all of the resources in the group in a single operation.  We want to make sure that all of the resources we create in this lab are placed in the ***&lt;name&gt;group*** resource group.|
 |  IoT Hub | ***&lt;name&gt;iot*** | Provides a way for devices (like the Intel NUC with Arduino 101 in our lab) to send and receive messages in the cloud.  Backend services can read those messages sent by our devices, act on them, and send messages back to the device as needed. |
-| IoT Hub Device Identity | ***&lt;name&gt;IntelIoTGateway*** | This is the id we will use for our device's identity in the Azure IoT Hub Device Identiy Registry.   |
+| IoT Hub Device Identity | ***&lt;name&gt;IntelIoTGateway*** | This is the id we will use for our device's identity in the Azure IoT Hub Device Identiy Registry.  Normally you would use a system generated globally unique value like a GUID for your device identities, but for the lab it will be much easier if we use a friendlier human readable name.   |
 |  Stream Analytics Job | ***&lt;name&gt;job*** | The Azure Stream Analytics Job provides a way to watch messages coming into the Azure IoT Hub from our devices and act on them.  In our case it will forward all messages off to a SQL Database so we can report on them, but it will also watch the temperature sensor values in those messages, and forward them to an Event Hub if they exceed a pre-defined threshold temperature.
-| SQL Server |  ***&lt;name&gt;sql*** | The Azure SQL Server instance that will host our Azure SQL Database. Other than creating it to host our database.  This is also where the administrative login for our SQL Server is defined.  It is recommended that you use these login credentials:<br/><br/>login:***sqladmin***<br/>password: ***P@ssw0rd***  |
-| SQL Database |  ***&lt;name&gt;db*** | This will store the **dbo.Measurement** table.  The Stream Analytics Job above will forward all temperature messages sent to the IoT Hub into this table so we can report on the temperature data. |
+| SQL Server |  ***&lt;name&gt;sql*** | The Azure SQL Server instance will host our Azure SQL Database. Other than creating it to host our database.  This is also where the administrative login for our SQL Server is defined, as well as the server level firewall rules that we will configure to allow connections from the Internet. |
+| SQL Database |  ***&lt;name&gt;db*** | This will store the **dbo.Measurement** table and a couple of views.  The Stream Analytics Job above will forward all temperature messages sent to the IoT Hub into this table, and the Web Application and Power BI Embedded Reports will then query that data to provide reports on the temperature data. |
 | Event Hub Namespace |  ***&lt;name&gt;ns*** | This is the Service Bus Namespace that hosts our Event Hub.  We really won't do much with this directly, we just need one to host our Event Hub for us.   |
 | Event Hub | ***&lt;name&gt;alerts*** | The Event Hub is an internal messaging queue that we will use to pass along temperature alert messages.  The Stream Analytics Job will watch for temperature messages with sensor values that exceed a predefined temperature threshold and forward them off to this event hub.  We'll then create an Azure Function to read the messages out of this event hub and send alerts back to the device.  |
 | Storage Account |  ***&lt;name&gt;storage*** | A few of the services require a storage account for their own purposes.  This account exists purely as a resource for those services.  We won't use it directly for our own purposes. |
@@ -497,7 +490,7 @@ Creating an Azure IoT Hub
 
 In this task, we'll create the ***&lt;name&gt;iot*** Azure IoT Hub and since it's our first Azure resource, we'll create the ***&lt;name&gt;group*** resource group to put it in.  Make sure that you understand the information in the [Planning your Azure Resources](#PlanningAzure) section before continuing.
 
-1. Open the [Azure Portal](https://portal.azure.com) ([https://portal.azure.com](https://portal.azure.com)) and login to your subscription.  If you don't have a current Azure Subscription you can create a <a target="_blank" href="https://azure.microsoft.com/en-us/free/">free trial</a>.
+1. Open the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>) and login to your subscription.  If you don't have a current Azure Subscription you can create a <a target="_blank" href="https://azure.microsoft.com/en-us/free/">free trial</a>.
 
 1. Click the "**+ New**" button, then select "**Internet of Things**", and select "**Iot Hub**"
 
@@ -878,7 +871,7 @@ In the [Planning your Azure Resources](#PlanningAzure) section, we discussed the
 
 We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***&lt;name&gt;db*** database on it.  The ***&lt;name&gt;job*** Stream Analytics job will forward ALL of the messages that come into the Azure IoT Hub from our device off to the "**dbo.Measurement**" table inside the database. We can then query that table for reporting purposes, or whatever!
 
-1. In your web browser, login to the [Azure Portal](https://portal.azure.com) ([https://portal.azure.com](https://portal.azure.com))
+1. In your web browser, login to the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>)
 
 1. If you have any blades open from before, you can close them by clicking the "X" icon in their top right corner.
 
@@ -998,7 +991,7 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
 Next up is the ***&lt;name&gt;alerts*** Event Hub that the ***&lt;name&gt;job*** Stream Analytics Job will forward messages with high temperature readings off to.
 
-1. With your browser open to the [Azure Portal](https://portal.azure.com), close any blades that may be left open from previous steps.
+1. With your browser open to the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>), close any blades that may be left open from previous steps.
 
 1. Click "**+ New**" | "**Internet of Things**" | "**Event Hubs**"
 
@@ -1052,7 +1045,7 @@ Next up is the ***&lt;name&gt;alerts*** Event Hub that the ***&lt;name&gt;job***
 
 Great, now we have all the pieces that the ***&lt;name&gt;job*** Stream Analytics job needs.  We have the ***&lt;name&gt;iot*** Azure IoT Hub as the **input**, and the ***&lt;name&gt;db*** SQL Database and ***&lt;name&gt;alerts*** Event Hub as the outputs.  Now we just need to create our Stream Analtyics Job and wire it up!
 
-1. In the [Azure Portal](https://portal.azure.com), click "**+ New**" | "**Internet of Things**" | "**Stream Analytics**"
+1. In the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>), click "**+ New**" | "**Internet of Things**" | "**Stream Analytics**"
 
     ![Create Stream Analytics Job](images/10270-CreateStreamAnalyticsJob.png)
 
@@ -1188,7 +1181,7 @@ We'll start by creating the Azure App Service Plan and Web App in the portal.
 
 ### Setup the Web App in Azure ###
 
-1. Open the [Azure Portal](https://portal.azure.com) in the browser.  and close any open blades from previous steps. Then click "**+ New**" | "**Web + mobile**" | "**Web App**"
+1. Open the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>) in the browser.  and close any open blades from previous steps. Then click "**+ New**" | "**Web + mobile**" | "**Web App**"
 
     ![New Web App](images/11010-NewWebApp.png)
 
@@ -1326,7 +1319,7 @@ The last step is to get this web application running in Azure, not locally.  Ear
 
     ![Deployment Credentials](images/11240-DeploymentCredentials.png)
 
-1. In the [Azure Portal](https://portal.azure.com), on the "**Deployment optons**" page for your ***&lt;name&gt;web*** web app, you should see the deployment kick off.  The deployment will likely take a few minutes.  Wait until it displays the green checkmark, and "Active".
+1. In the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>), on the "**Deployment optons**" page for your ***&lt;name&gt;web*** web app, you should see the deployment kick off.  The deployment will likely take a few minutes.  Wait until it displays the green checkmark, and "Active".
 
     ![Deployment in Portal](images/11250-DeploymentInPortal.png)
 
@@ -1407,7 +1400,7 @@ Previously, we setup our ***&lt;name&gt;job*** Stream Analytics Job to forward m
 
 In this task, we'll create the **TempAlert** function and have it receive those alert messages from the event hub, and send a temp alert message back down to the device.
 
-1. Open the [Azure Port](https://portal.azure.com) in the browser, and close any blades open from previous steps.  Then click "**+ New**" | "**Compute**" | "**Function App**".
+1. Open the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>) in the browser, and close any blades open from previous steps.  Then click "**+ New**" | "**Compute**" | "**Function App**".
 
     ![New Function App](images/12065-NewFunctionApp.png)
 
@@ -1536,7 +1529,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     ![Report in Power BI Desktop](images/13010-TemperatureChartReportInDesktop.png)
 
-1. To publish the report to Power BI Embedded, we need to first create a "**Power BI Embedded Workspace Collection**".  Open the [Azure Portal](https://portal.azure.com) and close any blades left open from previous steps. Then click "**+ New**" | "**Intelligence + analytics**" | "**Power BI Embedded**"
+1. To publish the report to Power BI Embedded, we need to first create a "**Power BI Embedded Workspace Collection**".  Open the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>) and close any blades left open from previous steps. Then click "**+ New**" | "**Intelligence + analytics**" | "**Power BI Embedded**"
 
     ![New Power BI Embedded Workspace Collection](images/13020-NewPowerBiEmbeddedCollection.png)
 
@@ -1847,7 +1840,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     ![Sync Changes](images/13130-SyncWithAzure.png)
 
-1. Then, in the [Azure Portal](https://portal.azure.com), on the "**Deployment options**" for your ***&lt;name&gt;web*** Web App, verify that the deployment succeeds:
+1. Then, in the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>), on the "**Deployment options**" for your ***&lt;name&gt;web*** Web App, verify that the deployment succeeds:
 
     ![Verify Deployment](images/13140-VerifyTheDeploymentSucceeded.png)
 
@@ -1865,7 +1858,7 @@ Cleaning Up
 
 Once you are done with the lab, unless you want to continue with these resources in Azure you can delete them.
 
-1. In the browser, go to the [Azure Portal](https://portal.azure.com), and click on the "**Resource Groups**", select the "***&&&lt;name&gt;group*** and on the "**Overview**" page, review it's contents.  When you are ready, click the "**Delete**" button along the top.
+1. In the browser, go to the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>), and click on the "**Resource Groups**", select the "***&&&lt;name&gt;group*** and on the "**Overview**" page, review it's contents.  When you are ready, click the "**Delete**" button along the top.
 
     > **Note**: There are a number of interesting things to check out on your resource group before you delete it.  Take a minute and check out the "**Resouce Costs**", "**Automation Script**" and "**Monitoring**" options.
 

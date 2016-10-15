@@ -31,3 +31,12 @@ body {
 	padding: 10px;
 	font-size: 1.4em;
 }
+
+blockquote {
+	border-left-color: #999;
+	background-color: #ddd;
+}
+
+table, th, td {
+   border-bottom: 1px solid #ccc;
+}
