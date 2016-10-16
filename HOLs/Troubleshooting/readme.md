@@ -1,5 +1,12 @@
-Reset Instructions 
-==================
+# Reset Instructions 
+
+## Re-imaing the NUC
+
+Video: "**<a target="_blank" href="http://aka.ms/resetnuc">Re-Imaging the Intel IoT Gateway NUC</a>**"
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/nS6xNMGRRvg" frameborder="0" allowfullscreen></iframe> 
+
+## Manual Reset
 
 The following commands will help you reset the so that you can repeat the lab steps.  
 
@@ -7,7 +14,7 @@ The following commands will help you reset the so that you can repeat the lab st
      - Flow 2 - The one where you blinked the LED
      - Flow 3 - Where we published the sensor data to Azure IoT Hubs
 
-2. Make sure only one flow exists name "Flow 1".  Reset Flow 1 to the default Flow code:
+1. Make sure only one flow exists name "Flow 1".  Reset Flow 1 to the default Flow code:
 
     > Note: The code for default "Flow 1" can also be found in the [flow1.json](Node-RED Flows/flow1.json) file in this repo.
 
@@ -198,7 +205,7 @@ The following commands will help you reset the so that you can repeat the lab st
         }
     ]
     ```
-3. In the NUC portal, on the "Packages" page:
+1. In the NUC portal, on the "Packages" page:
 
     > **Note**: The "packagegroup-cloud-azure" package is defined here: https://github.com/intel-iot-devkit/meta-iot-cloud/blob/master/recipes-core/packagegroups/packagegroup-cloud-azure_0.9.bb
 
@@ -207,7 +214,7 @@ The following commands will help you reset the so that you can repeat the lab st
     - Delete packagegroup-cloud-azure package
     - Delete IoT_Cloud repository
 
-4. ssh (PuTTY, screens, ssh) into the NUC.  From the terminal run:   
+1. ssh (PuTTY, screens, ssh) into the NUC.  From the terminal run:   
 
     ```bash
     # This removes the public key imported from http://iotdk.intel.com/misc/iot_pub.key
@@ -228,7 +235,7 @@ The following commands will help you reset the so that you can repeat the lab st
     # You will need to re-connect to the Node-RED environment after this command. 
     systemctl restart node-red-experience
     ```
-5. Finally, I had a problem when trying to re-install the packagegroup-cloud-azure package after removing it using these steps.  I had to reboot the NUC. Not sure if I was just experiencing a fluke or if this is truly necessary, but it probably wouln't hurt to reset the NUC before trying to complete the lab steps again:
+1. Finally, I had a problem when trying to re-install the packagegroup-cloud-azure package after removing it using these steps.  I had to reboot the NUC. Not sure if I was just experiencing a fluke or if this is truly necessary, but it probably wouln't hurt to reset the NUC before trying to complete the lab steps again:
 
     ````bash
     # Reboot the NUC

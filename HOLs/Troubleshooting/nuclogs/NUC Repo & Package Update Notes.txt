@@ -1,0 +1,132 @@
+//// ======================================================================
+//// Adding IoT_Cloud Repository and packagegroup-cloud-azure manually
+//// After modifying the Dev Hub python code to have it log it's commands
+//// to /tmp/iot-dev-hub.log 
+//// I was able to retrieve the following command
+//// 
+//// Repo realted oprations are in 
+//// in  /var/www/www-repo-gui/python/manage_repo.py 
+//// 
+//// And the package related operations are in 
+//// /var/www/www-repo-gui/python/manage_package.py
+//// ======================================================================
+
+/// First at around manage_repo.py line 392 in the add_repo() function
+
+smart channel --add 'IoT_Cloud' type=rpm-md baseurl=http://iotdk.intel.com/repos/iot-cloud/wrlinux7/rcpl13 -y
+
+//// Then it looks like the following command is executed (appx line 401)
+
+smart update 'IoT_Cloud'
+
+//// Then around line 508 in the update_channels method
+
+smart update
+
+//// Then there is a call off to the manage_package.py/update_package_list() method to update the package database. I think is really just for the web gui and has no impact on actual functionality
+
+//// Then, when you go into add package, and install the packagegroup-cloud-azure pacakge:
+//// in manage_package.py around line 866 in the package_transaction() method
+
+smart install -y packagegroup-cloud-azure
+
+//// Then at line 876 a call to build_package_database()
+//// I BELIEVE (not positive) that the "package database" stuff is just for the Web UI to be able to display repos and packages. 
+//// It looks like it runs some "smart" queries to get the channels and packages, and loads them into local files that the WEB UI can use. 
+
+
+
+
+//// ======================================================================
+//// Modified /var/www/www-repo-gui/python/tools/logging_helper/logging.conf
+//// ======================================================================
+
+[loggers]
+keys=root,backend_general,cherrypy.access,cherrypy.error
+
+[handlers]
+keys=default_handler,console_handler,file_handler,cherrypy_console,cherrypy_file_handler
+
+[formatters]
+keys=backend_general,cherrypy
+
+[logger_root]
+; Possible levels in order are DEBUG, INFO, WARNING, ERROR, CRITICAL
+; This root logger will effect CherryPy's logging and all other logger without a proper defined name.
+level=DEBUG
+; Set the output target
+;handlers=default_handler
+handlers=default_handler,file_handler
+
+[logger_backend_general]
+; Possible levels in order are DEBUG, INFO, WARNING, ERROR, CRITICAL
+level=DEBUG
+; Set the output target
+;handlers=default_handler
+handlers=default_handler,file_handler
+qualname=backend_general
+propagate=0
+
+[logger_cherrypy.access]
+; Possible levels in order are DEBUG, INFO, WARNING, ERROR, CRITICAL
+; Default is INFO
+level=DEBUG
+; Set the output target
+handlers=cherrypy_console
+qualname=cherrypy.access
+propagate=0
+
+[logger_cherrypy.error]
+; Possible levels in order are DEBUG, INFO, WARNING, ERROR, CRITICAL
+; Default is INFO
+level=DEBUG
+; Set the output target
+;handlers=cherrypy_console
+handlers=cherrypy_console,cherrypy_file_handler
+qualname=cherrypy.error
+propagate=0
+
+[handler_default_handler]
+class=StreamHandler
+; Do not need to change the level here. Control the level at logger level.
+level=DEBUG
+formatter=backend_general
+args=(sys.stderr,)
+
+[handler_console_handler]
+class=StreamHandler
+; Do not need to change the level here. Control the level at logger level.
+level=DEBUG
+formatter=backend_general
+args=(sys.stdout,)
+
+[handler_file_handler]
+class=logging.handlers.RotatingFileHandler
+; Do not need to change the level here. Control the level at logger level.
+level=DEBUG
+formatter=backend_general
+args=('/tmp/iot-dev-hub.log', 'maxBytes=100000','backupCount=10','encoding=utf8')
+
+[handler_cherrypy_console]
+class=logging.StreamHandler
+; Do not need to change the level here. Control the level at logger level.
+level=DEBUG
+formatter=cherrypy
+args=(sys.stdout,)
+
+[handler_cherrypy_file_handler]
+class=logging.handlers.RotatingFileHandler
+; Do not need to change the level here. Control the level at logger level.
+level=DEBUG
+formatter=cherrypy
+args=('/tmp/iot-dev-hub.log', 'maxBytes=100000','backupCount=10','encoding=utf8')
+
+[formatter_backend_general]
+format=%(asctime)s - %(levelname)s - %(filename)s:%(lineno)s - %(funcName)5s(): %(message)s
+datefmt=
+
+[formatter_cherrypy]
+format=%(asctime)s - %(levelname)s - CherryPy: %(message)s
+datefmt=
+
+
