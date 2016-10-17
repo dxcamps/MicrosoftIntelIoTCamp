@@ -5,7 +5,7 @@ Intel IoT Gateway, Arduino 101 and Microsoft Azure Hands-On-Lab
 Overview
 ---
 
-In this lab, we will unbox and set up an Intel IoT Gateway and the Arduino 101 board (with a Grove Starter kit) along with several services available in Microsoft Azure to monitor the temperature and alert maintenance of a high temperature. Using Node-RED, running on the Intel NUC Gateway, the application will read the temperature value from a Grove temperature sensor and publish that data to an Azure IoT Hub.  From there a collection of Azure services including Stream Analytics, Event Hubs, SQL Database, Web Applications and Power BI Embedded will be used to both display the temperature data as well as alert the user to temperature readings over a certain threshold.
+In this lab, we will unbox and set up an Intel IoT Gateway and the Arduino 101 board (with a Seeed Grove Starter kit) along with several services available in Microsoft Azure to monitor the temperature and alert maintenance of a high temperature. Using Node-RED, running on the Intel NUC Gateway, the application will read the temperature value from a Grove temperature sensor and publish that data to an Azure IoT Hub.  From there a collection of Azure services including Stream Analytics, Event Hubs, SQL Database, Web Applications and Power BI Embedded will be used to both display the temperature data as well as alert the user to temperature readings over a certain threshold.
 
 ![Lab Architecture](images/00000-LabArchitecture.jpg)
 
@@ -17,7 +17,7 @@ In order to successfully complete this lab you will need:
 
 - Intel Grove Commercial IoT Developer Kit **<a target="_blank" href="https://www.seeedstudio.com/Grove-IoT-Commercial-Developer-Kit-p-2665.html">link</a>**
 - Arduino 101 **<a target="_blank" href="https://www.arduino.cc/en/Main/ArduinoBoard101">link</a>**
-- A computer.  Windows, Mac OSx or Linux
+- A computer.  Windows, macOS or Linux
 - An active Microsoft Azure Subscription.  If you do not have a current subscription, you can create one using the **<a target="_blank" href="https://azure.microsoft.com/en-us/free/">free trial</a>**
 - Node.js 4.x or later.  You can install Node.js from **<a target="_blank" href="https://nodejs.org/en/">nodejs.org</a>**
 - Visual Studio Code. Visual Studio Code is a free, open source, cross platform development environment.  You can install it from **<a target="_blank" href="http://code.visualstudio.com">code.visualstudio.com</a>**
@@ -54,20 +54,20 @@ ___
 Getting Started with Grove IoT Commercial Developer Kit
 ---
 
-1. Unbox the Grove Starter Kit and Arduino 101
+1. Unbox the Grove Starter Kit and Arduino 101:
 
     ![Grove Starter Kit](images/01010-GroveStarterKit.png)
     ![Arduino 101](images/01020-Arduino101.png)
 
-1. Remove the Grove Base Shield from the Grove Starter Kit and attach it to the Arduino 101
+1. Remove the Grove Base Shield from the Grove Starter Kit and attach it to the Arduino 101:
 
     ![Grove Base Shield](images/01030-AttachGroveBaseShield.png)
 
-1. Ensure the base sheild's voltage selector switch is set to 5V
+1. Ensure the base shield's voltage selector switch is set to 5V (move the VCC switch to the right):
 
     ![Base Sheild set to 5V](images/01040-BaseShield5V.png)
 
-1. Connect the LCD to any I2C socket and rotary angle to A0 socket with a grove connector cable as shown below, the cables are in the green box.
+1. Connect the LCD screen to any I2C socket and rotary angle to A0 socket with a grove connector cable as shown below, the cables are in the green box:
 
     ![Rotary Encoder and LCD](images/01050-RotaryEncoderAndLCD.png)
     ![Rotary Encoder and LCD Attached](images/01060-RotaryEncoderAndLCDAttached.png)
@@ -76,7 +76,7 @@ Getting Started with Grove IoT Commercial Developer Kit
 
     ![Attach Arduino 101](images/01070-AttachArduino101.png)
 
-1. Connect the Intel IoT Gateway to Ethernet and Power
+1. Connect the Intel IoT Gateway to Ethernet and Power:
 
     ![IoT Gateway Ethernet and Power](images/01080-IoTGatewayEthernetAndPower.png)
 
@@ -895,7 +895,7 @@ Processing Temperature Data with Stream Analytics
 
 Now that we have messages making it into our Azure IoT Hub from our device, we can start to process those messages in the cloud.
 
-In the [Planning your Azure Resources](#PlanningAzure) section, we discussed the ***&lt;name&gt;job*** Stream Analytics Job and it's two outputs, the ***&lt;name&gt;db*** SQL Database and the ***&lt;name&gt;alerts*** Event Hub.  It's much easier to configure the Stream Analytics job if it's outputs already exist.  So we'll start by creating those resources first.
+In the [Planning your Azure Resources](#PlanningAzure) section, we discussed the ***&lt;name&gt;job*** Stream Analytics Job and its two outputs, the ***&lt;name&gt;db*** SQL Database and the ***&lt;name&gt;alerts*** Event Hub.  It's much easier to configure the Stream Analytics job if it's outputs already exist.  So we'll start by creating those resources first.
 
 ### Creating the Azure SQL Database ###
 
