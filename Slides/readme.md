@@ -1,5 +1,5 @@
 # Get the slides!
 
-- [Walk-in Deck](Walk In Deck.pptx)
-- [Microsoft Azure IoT Overview](MicrosoftAzureIoTOverview.pptx)
-- [Intel's IoT Gateway Overview](Microsoft Intel IoT Camp Gateway Overview.pdf)
+- <a target="_blank" href="Walk In Deck.pptx">Walk In Deck</a>
+- <a target="_blank" href="MicrosoftAzureIoTOverview.pptx">Microsoft Azure IoT Overview</a>
+- <a target="_blank" href="Microsoft Intel IoT Camp Gateway Overview.pdf">Intel IoT Gateway Overview</a>
