@@ -912,7 +912,7 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 1. In the properties blade for the new SQL Database, complete the following fields, ***but don't click create yet***, we still need to configure our new Azure SQL Server and select a pricing tier:
 
     - Database name - ***&lt;name&gt;db***
-    - Subscription - **Chose the subscription you used for your Azure IoT Hub**
+    - Subscription - **Choose the subscription you used for your Azure IoT Hub**
     - Resource group - Choose "**Use existing**" and select the ***&lt;name&gt;group*** we created when provising the Azure IoT Hub.
     - Select source - "**Blank database**"
     - Collation - Leave it at the default "**SQL_Latin1_General_CP1_CI_AS**"
@@ -965,7 +965,7 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     ![HOLs Folder Open in VS Code](images/10090-HOLsFolderInCode.png)
 
-1. Then click the icon to open the "**Extensions**" panel, and in the search box at the top type **vscode-mssql**, and in the search results, click the "**Install**" button for the "**vscode-mssql** extension
+1. Then click the icon to open the "**Extensions**" panel, and in the search box at the top type **vscode-mssql**, and in the search results, click the "**Install**" button for the "**vscode-mssql** extension (by sanagama)
 
     > **Note**: Extensions provide a powerful way to expand the capabilities of Visual Studio Code.  There is a rich ecosystem of extensions developed by Microsoft as well as a worldwide community of developers that you can use in "**Visual Studio Code**".  The "**vscode-mssql**" extension we are installing here allows you to connect to your "**Azure SQL Database**" from with "**Visual Studio Code**" and execute SQL statements.
 
@@ -991,7 +991,7 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     Save and close the **settings.json** file when you are done.
 
-1. Click on the icon for the "**Explorer**" panel, select select the "**SQL Database Scripts\Create SQL Database Objects.sql**" file.  This script creates the following objects:
+1. Click on the icon for the "**Explorer**" panel, select the "**SQL Database Scripts\Create SQL Database Objects.sql**" file.  This script creates the following objects:
 
     - The "**dbo.Measurement**" table.  This table is structured to match the data being sent by the Node-RED flow Intel NUC.  It has the following columns:
         - "**MeasurementID**" is a dynamically generated ID for each row in the database.
@@ -1017,7 +1017,7 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     ![Run the SQL Script](images/10190-RunSQLScript.png)
 
-1. The "**MSSQL Output**" window will open, and on it's "**Messages**" tab you should see that no errors occurred.  The "**(0 Row(s) affected)** messages are from the test queries on the objects we just created.  Since there is no data in them, no rows are returned.
+1. The "**MSSQL Output**" window will open, and on its "**Messages**" tab you should see that no errors occurred.  The "**(0 Row(s) affected)** messages are from the test queries on the objects we just created.  Since there is no data in them, no rows are returned.
 
     ![MSSQL Output](images/10200-SQLMessages.png)
 
