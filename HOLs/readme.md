@@ -593,13 +593,15 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
 
 1. This task requires that you have Node.js 4.x or later installed.  If you don't have it installed already, you can install it from **<a target="_blank" href="https://nodejs.org/en/">nodejs.org/</a>**.  Make sure that Node is added to the path so you can access it from anywhere on the command line.
 
-1. Open a command prompt, or terminal window, and install the "iothub-explorer" npm package globally as follows:
+1. Open a command prompt, or terminal window, **on your development PC** (not on the NUC) and install the "iothub-explorer" npm package globally as follows:
 
     > **Note**: **MAKE SURE TO USE THE -g OPTION TO INSTALL THE PACKAGE GLOBALLY**
 
     ```text
     npm install -g iothub-explorer
     ```
+
+    > **Note**: **IF YOU'RE ON A MAC OR LINUX PC, YOU NEED TO USE 'SUDO' TO GAIN ADMIN PRIVILEGES FOR THE COMMAND ABOVE.
 
 1. You should see output similar to the following:
 
@@ -748,7 +750,7 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
     rpm --import http://iotdk.intel.com/misc/iot_pub.key
     ```
 
-1. Next, install the `node-red-contrib-os` npm package globally using the following statement:
+1. Next, install the `node-red-contrib-os` npm package globally on the NUC using the following statement:
 
     You will see a number of "***WARN unmet dependency***" messages appear.  ***You can safely ignore these***.
 
