@@ -601,7 +601,7 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
     npm install -g iothub-explorer
     ```
 
-    > **Note**: **IF YOU'RE ON A MAC OR LINUX PC, YOU NEED TO USE 'SUDO' TO GAIN ADMIN PRIVILEGES FOR THE COMMAND ABOVE.
+    > **Note**: **IF YOU'RE ON A MAC OR LINUX PC, YOU NEED TO USE 'SUDO' TO GAIN ADMIN PRIVILEGES FOR THE COMMAND ABOVE**
 
 1. You should see output similar to the following:
 
