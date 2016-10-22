@@ -1409,7 +1409,7 @@ We'll configure our Intel NUC to turn on its buzzer for one second if it receive
 
     ![Import From Clipboard](images/12020-ImportFromClipboard.png)
 
-1. Paste the code copied from the "**HOLs\Node-RED Flows\Flow - Add Buzzer Support.json**" file into the "**Import nodes**" box, and click "**OK**".
+1. Paste the code copied from the "**HOLs\Node-RED Flows\Flow 3 - 03 - Alert and Buzzer Nodes Only.json**" file into the "**Import nodes**" box, and click "**OK**".
 
     ![Import Nodes](images/12030-ImportNodes.png)
 
@@ -1436,14 +1436,14 @@ We'll configure our Intel NUC to turn on its buzzer for one second if it receive
 
 1. Just to the left of each device under the "**Devices**" heading there is a small green button with a lightning bolt on it (![Test Buzzer Button](images/00000-TestBuzzerButton.png)).  Click that button next to the device where you have deployed the updated Node-RED code, and you should:
 
+    - Hear the buzzer sound
+    - See the test message "***Buzzer Test***" displayed briefly on the LCD
+    - See the LCD background change to red briefly.
+
     <blockquote>
         <strong>Note</strong>: If the test doesn't function try restarting the Azure Web App (you can open the web app in the portal, and click the "<strong>Restart</strong>" or "<strong>Stop</strong>" and "<strong>Start</strong>" buttons along the top), as well as ssh'ing into your Intel NUC and issuing a shutdown / reboot command:<br/>
         <pre><code class="lang-bash">shutdown 0 -raw</code></pre>
     </blockquote>
-
-    - Hear the buzzer sound
-    - See the test message "***Buzzer Test***" displayed briefly on the LCD
-    - See the LCD background change to red briefly.
 
     ![Test Buzzer Button on Web Site](images/12050-TestBuzzerOnWebsite.png)
 
