@@ -1455,7 +1455,7 @@ Previously, we setup our ***&lt;name&gt;job*** Stream Analytics Job to forward m
 
 In this task, we'll create the **TempAlert** function and have it receive those alert messages from the event hub, and send a temp alert message back down to the device.
 
-1. Open the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>) in the browser, and close any blades open from previous steps.  Then click "**+ New**" | "**Compute**" | "**Function App**".
+1. Open the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>) in the browser, and close any blades open from previous steps.  Then click "**+ New**" | "**Virtual Machines**" | "**Function App**". Function apps used to be listed under **Compute** and your Azure Portal may differ from the screenshot below.
 
     ![New Function App](images/12065-NewFunctionApp.png)
 
@@ -1464,7 +1464,7 @@ In this task, we'll create the **TempAlert** function and have it receive those 
     - App name - ***&lt;name&gt;functions***
     - Subscription - **Chose the same subscription used for the previous resources**
     - Resource group - Choose "**Use existing**" and select the ***&lt;name&gt;group*** resource group created previously
-    - App Service Plan - Choose the ***&lt;name&gt;plan*** plan we created previously.
+    - App Service Plan - Select "**Classic**" and then choose the ***&lt;name&gt;plan*** plan we created previously.
     - Storage Account - Select "**Create New**" and name it ***&lt;name&gt;storage***
     - Pin to dashboard - **Checked**
 
@@ -1479,11 +1479,12 @@ In this task, we'll create the **TempAlert** function and have it receive those 
     - Event Hub Name - ***&lt;name&gt;alerts***
     - Event Hub connection - Click the "**new**" link
 
-    ![New Function Properties](images/12090-NewFunctionProperties.png
+    ![New Function Properties](images/12090-NewFunctionProperties.png)
+
 1. On the "**Service Bus connection**" blade, click "**Add a connection string**" the configure the properties on the "**Add Service Bus connection**" blade as follows and click "**OK**":
 
     - Connection name - ***&lt;name&gt;ns***
-    - Connection string - Copy the value for the "**Root Manage Shared Access Key SAS Policy Primary Connection String:**" from the "**[myresources.txt](./myresources.txt)**" file and paste it in here.
+    - Connection string - Copy the value from your Event Hub for the "**Root Manage Shared Access Key SAS Policy Primary Connection String:**" from the "**[myresources.txt](./myresources.txt)**" file and paste it in here. DO NOT confuse this with IoT Hub connection strings. 
 
     ![Event Hub Connection String](images/12100-EventHubConnection.png)
 
