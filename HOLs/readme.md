@@ -63,7 +63,7 @@ Getting Started with Grove IoT Commercial Developer Kit
 
     ![Grove Base Shield](images/01030-AttachGroveBaseShield.png)
 
-1. Ensure the base shield's voltage selector switch is set to 5V (move the VCC switch to the right):
+1. **IMPORTANT:** Ensure the base shield's voltage selector switch is set to 5V (move the VCC switch to the right):
 
     ![Base Sheild set to 5V](images/01040-BaseShield5V.png)
 
@@ -456,6 +456,8 @@ For the purposes of this lab examples, we'll use the "**mic16**" prefix, short f
 **DO NOT USE THE _"mic16"_ PREFIX FOR YOUR OWN RESOURCES**.
 
 ### Service Descriptions ###
+
+The following table is a summary of the Azure services you will create in the lab, to help you better understand the role of each service. **DO NOT rush into creating these services on your own**. We will walk through step-by-step instructions in the sections below.
 
 | Service | Name | Description |
 | ------- | ---- | ----------- |
