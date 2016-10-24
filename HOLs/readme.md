@@ -1614,7 +1614,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     ![Document Collection](images/13060-DocumentCollectionNameAndKey.png)
 
-1. A "**Workspace Collection**" is just what it sounds like, it is a collection of one or more "**Workspace**" instances. To upload a report, it must go into a Workspace, but at the time this is being writting you can't create new Workspaces in the portal.  The rest of our interaction with the Power BI Embedded service will be via the "**powerbi-cli** npm package (<a target="_blank" href="https://www.npmjs.com/package/powerbi-cli">link</a>).  Open a command prompt or terminal window and issue the following npm command to install the "**powerbi-cli**" package globally:
+1. A "**Workspace Collection**" is just what it sounds like, it is a collection of one or more "**Workspace**" instances. To upload a report, it must go into a Workspace, but at the time of this writing you can't create new Workspaces in the Azure portal.  The rest of our interaction with the Power BI Embedded service will be via the "**powerbi-cli** npm package (<a target="_blank" href="https://www.npmjs.com/package/powerbi-cli">link</a>).  Open a command prompt or terminal window and issue the following npm command to install the "**powerbi-cli**" package globally:
 
     ```text
     npm install -g powerbi-cli
@@ -1624,7 +1624,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     > **Note**: The `powerbi config` command creates a `.powerbirc` file in the directory where the command was executed.  It contains sensitive connection information about how to connect to to your Power BI Embedded Workspace Collection so be careful who you expose that file to.
 
     ```text
-    powerbi config -c <collectioName> -k <accessKey>
+    powerbi config -c <collectioName> -k "<accessKey>"
     ```
     For example:
 
@@ -1632,19 +1632,19 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     powerbi config -c mic16collection -k "BoeKHkxkB/JuHsXTRsgUSegrvNnMC97YgycKJYXKDY7q9v5nbSxpoJkfvMmvMr68CrAi1iQVv0KgCpjlVtLIxw=="
     ```
 
-    Which returns this output.  The values shown here are stored in the ".powerbirc" file in the current directory:
+    Which returns this output as shown below.  The values shown here are stored in the ".powerbirc" file in the current directory:
 
     ```text
     [ powerbi ] collection: mic16collection
     [ powerbi ] accessKey: BoeKHkxkB/JuHsXTRsgUSegrvNnMC97YgycKJYXKDY7q9v5nbSxpoJkfvMmvMr68CrAi1iQVv0KgCpjlVtLIxw==
     ```
 
-1. Now, we can create a new "**Workspace**" workspaces are the containers that we upload reports into.  Use the following command:
+1. Now, we can create a new "**Workspace**". Workspaces are the containers that we upload reports into.  Use the following command:
 
     ```text
     powerbi create-workspace
     ```
-    Which returns output similar to the following.
+    Which returns output similar to the following, showing the Id of the workspace that was created:
 
     ```text
     [ powerbi ] Workspace created: 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
@@ -1656,13 +1656,13 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     powerbi config -w <workspaceId>
     ```
 
-    For example
+    For example:
 
     ```text
     powerbi config -w 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
     ```
 
-    Which returns
+    Which returns:
 
     ```text
     [ powerbi ] collection: mic16collection
@@ -1674,7 +1674,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     ![Workspace ID Documented](images/13070-WorkspaceIdDocumented.png)
 
-1. Now we can upload our report (the TemperatureChart.pbix file) into our new workspace.
+1. Now we can upload our report (the TemperatureChart.pbix file) into our new workspace:
 
     > **Note**: These commands assume you are in the "**HOLs\PowerBI**" folder.
 
@@ -1682,7 +1682,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     powerbi import -n <what to call the report> -f <local path the to your .pbix file>
     ```
 
-    For example
+    For example:
 
     ```text
     powerbi import -n "TemperatureChart" -f "TemperatureChart.pbix"
@@ -1705,7 +1705,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     powerbi get-reports
     ```
 
-    Returns
+    Returns:
 
     ```text
     [ powerbi ] =========================================
@@ -1753,7 +1753,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 1. Next, use the values for our Dataset ID, SQL Login Name and Password, and the Connection String from above to complete the following statement:
 
     ```text
-    powerbi update-connection --dataset "<Dataset ID>" --username <your sql login> --password "<your sql password" --connectionString "<your conneciton string>"
+    powerbi update-connection --dataset "<Dataset ID>" --username <your sql login> --password "<your sql password" --connectionString "<your connection string>"
     ```
 
     For example:
@@ -1763,7 +1763,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     ```
     Which returns something similar to:
 
-    > **Note**: Sometimes this fails.  If you get an error, double check your parameters, but even if they are correct, simply running the command a second or third time may work.
+    > **Note**: Sometimes this fails.  If you get an error, double check your parameters, **but even if they are correct, simply running the command a second or third time may work**.
 
     ```text
     [ powerbi ] Found dataset!
@@ -1787,7 +1787,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     [ powerbi ] Gateway ID:  8b37fcc6-be5a-47e3-a48d-9d9390b29338
     ```
 
-1. Ok, last step is to actually embed the report into our web app.  Most of the code has already been written for us, we just need to make a few quick changes. To get started, open the "**HOLs\WebApp"** folder in "**Visual Studio Code**".  Use the values you've saved in the "**[myresources.txt](./myresources.txt)**" file to complete the "powerbi*" config settings in the config.json file:
+1. Ok, the last step is to actually embed the report into our web app.  Most of the code has already been written for us, we just need to make a few quick changes. To get started, open the "**HOLs\WebApp"** folder in "**Visual Studio Code**".  Use the values you've saved in the "**[myresources.txt](./myresources.txt)**" file to complete the "powerbi*" config settings in the config.json file, and **Save** your changes:
 
     ![Power BI Config Settings](images/13080-PowerBIConfigValues.png)
 
@@ -1795,7 +1795,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     ![Power BI Config Completed](images/13085-PowerBIConfigCompleted.png)
 
-1. Next, open the "**public/index.html**" file and locate the code as shown below. The div that will contain our embedded report has been commented out, and a place holder `<img/>` is being displayed instead.  We need to switch that around so the `<img/>` is commented out, and the `<div..></div>` is availabe.
+1. Next, open the "**public/index.html**" file and locate the code as shown below. The div that will contain our embedded report has been commented out, and a placeholder `<img/>` is being displayed instead.  We need to switch that around so the `<img/>` is commented out, and the `<div..></div>` is availabe.
 
     ```html
     <img src="images/chartplaceholder.png" style="width:455px;height:380px;border:none;" />
@@ -1830,11 +1830,11 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     ![Uncomment embedReport() call](images/13110-EmbedReportCallUncommented.png)
 
-    This will cause some code to run when the page is loaded to embed the report into the `<div />` container we uncommented above.
+    This will cause some code to run when the page is loaded to embed the report into the `<div />` container we uncommented above. **Save** your changes.
 
 1. The following information is just FYI, you don't need to do anything with this code:
 
-    The embedReport() function we are calling above, calls into the backed node.js application hosted in server.js to retrieve a valid "**embed token**" for the eport.
+    The embedReport() function we are calling above calls into the backend node.js application hosted in server.js to retrieve a valid "**embed token**" for the report.
 
     ```javascript
     $scope.embedReport = function () {
@@ -1849,7 +1849,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     }
     ```
 
-    The `/api/powerbiembedconfig` route on the backed server in server.js uses the **<a target="_blank" href="https://www.npmjs.com/package/powerbi-api">powerbi-api</a>** node.js library to create a "**JSON Web Toke**" or "**JWT**" token that the embedded request uses to authenticate with the Power BI Embedded service.  The "**JWT**" token is signed by your Workspace Collection's Access Key which is known by the backend server, but not the front end web application:
+    The `/api/powerbiembedconfig` route on the backend server in server.js uses the **<a target="_blank" href="https://www.npmjs.com/package/powerbi-api">powerbi-api</a>** node.js library to create a "**JSON Web Token**" or "**JWT**" token that the embedded request uses to authenticate with the Power BI Embedded service.  The "**JWT**" token is signed by your Workspace Collection's Access Key which is known by the backend server, but not the front end web application:
 
     ```javascript
     app.get('/api/powerbiembedconfig',
@@ -1905,11 +1905,11 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     ![Verify Deployment](images/13140-VerifyTheDeploymentSucceeded.png)
 
-1. Then in your browser open the web site in azure (`***http://<name>web.azurewebsites.net`***) checkout the new report !
+1. Then in your browser open the web site in azure (`***http://<name>web.azurewebsites.net`***) and check out the new report!
 
     ![Embedded Report Visible](images/13150-EmbeddedReportVisibleInAzure.png)
 
-1. The page is set to refresh automatically every 30 seconds.  You should see that the report updates the data it displayes as well!
+1. The page is set to refresh automatically every 30 seconds.  You should see that the report updates the data it displays as well!
 
 ___
 
