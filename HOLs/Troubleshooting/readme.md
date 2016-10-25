@@ -12,7 +12,7 @@ Video: "**<a target="_blank" href="https://www.youtube.com/embed/nS6xNMGRRvg">Re
 
 If you've messed up the "**Flow 1**", "**Blinky**" for "**Flow 3**" (Azure) flows you can import versions of the flows from the **"/Node-RED Flows**" files.  
 
-## Manual IoT_Cloud Repository And packagegroup-cloud-azure installs (untested)
+## Manual IoT_Cloud Repository And packagegroup-cloud-azure installs with RPM
 
 ssh into the NUC and run the following commands:
 
@@ -23,5 +23,18 @@ smart channel --add 'IoT_Cloud' type=rpm-md baseurl=http://iotdk.intel.com/repos
 smart update 'IoT_Cloud'
 smart update
 smart install -y packagegroup-cloud-azure
+systemctl restart node-red-experience
+```
+
+## Manual Node-Red AzureIoTHub node installation using NPM instead of RPM
+
+ssh into the NUC and run the following commands:
+
+> **Note**: Make sure to include the `@0.0.1` version specifier on the `node-red-contrib-azureiothubnode` installation.  That will make sure that you install the version this lab was documented against. 
+
+```text
+rpm --import http://iotdk.intel.com/misc/iot_pub.key
+npm install node-red-contrib-os -g
+npm install -g node-red-contrib-azureiothubnode@0.0.1
 systemctl restart node-red-experience
 ```
