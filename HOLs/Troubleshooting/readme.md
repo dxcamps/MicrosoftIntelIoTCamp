@@ -1,6 +1,6 @@
 # Reset Instructions 
 
-## Re-imaing the NUC
+## Re-imaging the NUC
 
 The "**Intel IoT Gateway**" ships with a linux image already running on it.  There should also be a restorable factory image that can be used if you feel that your "**NUC**" is behaving poorly.  To do so, you'll need to have an HDMI Monitor and Keyboard attached to the NUC.  Here's how to do it:
 
@@ -17,6 +17,8 @@ If you've messed up the "**Flow 1**", "**Blinky**" for "**Flow 3**" (Azure) flow
 ssh into the NUC and run the following commands:
 
 ```text
+rpm --import http://iotdk.intel.com/misc/iot_pub.key
+npm install node-red-contrib-os -g
 smart channel --add 'IoT_Cloud' type=rpm-md baseurl=http://iotdk.intel.com/repos/iot-cloud/wrlinux7/rcpl13 -y
 smart update 'IoT_Cloud'
 smart update
