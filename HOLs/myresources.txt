@@ -51,7 +51,7 @@ Azure SQL Server Login (sqladmin is recommeded):
 Azure SQL Server Qualified SQL Login:
 <paste your sql admin login name here>@<paste your Azure SQL Server name here>
 
-Azure SQL Server Password (P@ssword is recommended):
+Azure SQL Server Password (P@ssw0rd is recommended):
 <paste your sql admin password here>
 
 ========================================

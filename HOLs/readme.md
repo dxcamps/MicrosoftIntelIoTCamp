@@ -83,7 +83,7 @@ Getting Started with Grove IoT Commercial Developer Kit
 1. Press the power button on the IoT Gateway to boot it.  It will take about two minutes or so for the device to boot.  Once it has booted the default Node-RED flow on the gateway will run and display the Gateway's IP Address on the LCD panel attached to the Arduino 101.  ***The IP Address displayed is the IP Address of your Intel IoT Gateway NUC.  You will use this to attach to your gateway throughout the rest of this lab.***
 
     <blockquote>
-        <strong>Note</strong>: If you do not see your IP address within about five minutes (make sure you give the NUC plenty of time to boot), you can try the following:
+        <strong>Note</strong>: If you do not see your IP address within about <strong><em>five minutes</em></strong> (make sure you give the NUC plenty of time to boot), you can try the following:
         <ul>
         <li>Ensure that the network cable is connected properly and that it is connected to a network with Internet Access.  If you re-connect the cable wait at least one minute to see if the IP Address appears on the LCD.  The default flow only updates the display of the address once every minute.</li>
         <li>If you still don't see an IP Address, you can try re-booting it by pressing the powerbutton until the light turns off, then turning it back on again.</li>
@@ -94,7 +94,7 @@ Getting Started with Grove IoT Commercial Developer Kit
 
 1. Once the IP Address has been dispalyed, wait another two minutes and then open your browser and go to the IP Address from the previous step (`http://your.nucs.ip.address` where `your.nucs.ip.address is` the IP Address from above).  If you are presented with a **"Privacy Statement"** click **"Continue"**.
 
-    > **Note:** Why are we waiting?  The "IoT Gateway Developer Hub" is a web application that is delivered by an nginx web server instance that takes a little bit of time to spin up.  Just because the IP Address is showing on the LCD, that doesn't mean that the web application is ready yet.  Give it a couple of minutes, and you'll likely be less frustrated!  ***Have some fun while you wait, try turning the knob on the Rotary Angle Sensor to see the background colors on the RGB LCD change.  That happens because the default flow is reading that sensor value and changing the background color based on the value it reads.  Enjoy.***
+    > **Note:** Why are we waiting?  The "IoT Gateway Developer Hub" is a web application that is delivered by an nginx web server instance that takes a little bit of time to spin up.  Just because the IP Address is showing on the LCD, that doesn't mean that the web application is ready yet.  **Give it a few of minutes, it may even take up to five minutes or so**, and you'll likely be less frustrated!  ***Have some fun while you wait, try turning the knob on the Rotary Angle Sensor to see the background colors on the RGB LCD change.  That happens because the default flow is reading that sensor value and changing the background color based on the value it reads.  Enjoy.***
 
     ![Privacy Statement](images/01100-PrivacyStatement.png)
 
@@ -530,7 +530,6 @@ In this task, we'll create the ***&lt;name&gt;iot*** Azure IoT Hub and since it'
     - Device-to-cloud partitions: **4**
     - Subscription: **choose the subscription you wish to use if you have multiple available**
     - Resource Group: **Create new** resource group using the ***&lt;name&gt;group*** naming convention
-    - Enable Device Management - PREVIEW: **Leave Unchecked**
     - Location: **Choose the location [listed above](#locations) that is closest to you, and then make sure to use that location for all other resources in the lab**
     - Pin to dashboard: **Checked** (this will place a tile for the IoT Hub on your portal dashboard.)
 
@@ -573,11 +572,15 @@ In this task, we'll create the ***&lt;name&gt;iot*** Azure IoT Hub and since it'
 
     > **Note**: Consumer groups enable multiple consuming applications to each have a separate view of the event stream, and to read the stream independently at their own pace and with their own offsets. In a stream processing architecture, each downstream application equates to a consumer group.  By creating a consumer group specifically for the Stream Analytics Job, it allows us to use other tools (like iothub-explorer) to monitor messages using the **$Default** consumer group, and not conflict with the Stream Analytics job. Basically each consumer group allows you to run a different application (or pool of consumers) on the hub and allow each application to receive their own copy of the messages.
 
-    - Click on the "**Messaging**" link along the left, then at the bottom of the messaging blade, enter the following name into the empty box below the **$Default** consumer group:
+    - Click on the "**Endpoints**" link along the left, then click on the "**Events**" endpoint
+
+    ![Open the Events Endpoint](images/07095-OpenEventsEndpoint.png)
+
+    - In the "**Properties** blade for the "Events" endpoint, at the bottom, enter the following name into the empty box below the **$Default** consumer group:
 
         `streamanalytics`
 
-    - Click the "**Save**" button at the top of the messaging blade to save the new consumer group.
+    - Click the "**Save**" button at the top of the "**Properties**" blade to save the new consumer group, the close the "**Properties**" blade.
 
     ![Create streamanalytics Consumer Group](images/07100-StreamAnalyticsConsumerGroup.png)
 
@@ -607,6 +610,8 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
 
 1. You should see output similar to the following:
 
+    > **Note**: Your output may look different if you are running a newer version of node, or as the iothub-explorer packages is versioned.
+
     ```text
     C:\Users\iotde\AppData\Roaming\npm\iothub-explorer -> C:\Users\iotde\AppData\Roaming\npm\node_modules\iothub-explorer\iothub-explorer.js
     iothub-explorer@1.0.14 C:\Users\iotde\AppData\Roaming\npm\node_modules\iothub-explorer
@@ -629,38 +634,37 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
     It will display its usage details:
 
     ```text
-    Usage
-    iothub-explorer login <connection-string> [--duration=<num-seconds>]
-        Creates a session lasting <num-seconds>; commands during the session can omit <connection-string>
-        Default duration is 3600 (one hour).
-    iothub-explorer logout
-        Cancels any session started by 'login'
-    iothub-explorer [<connection-string>] list [--display="<property>,..."] [--connection-string]
-        Returns a list of (at most 1000) devices
-        Can optionally display only selected properties and/or connection strings.
-    iothub-explorer [<connection-string>] get <device-id> [--display="<property>,..."] [--connection-string]
-        Returns information about the given device
-        Can optionally display just the selected properties and/or the connection string.
-    iothub-explorer [<connection-string>] create <device-id|device-json> [--display="<property>,..."] [--connection-string]
-        Adds the given device to the IoT Hub and displays information about it
-        Can optionally display just the selected properties and/or the connection string.
-    iothub-explorer [<connection-string>] delete <device-id>
-        Deletes the given device from the IoT Hub.
-    iothub-explorer <connection-string> monitor-events <device-id>
-        Monitors and displays the events received from a specific device.
-    iothub-explorer [<connection-string>] send <device-id> <msg> [--ack="none|positive|negative|full"]
-        Sends a cloud-to-device message to the given device, optionally with acknowledgment of receipt
-    iothub-explorer [<connection-string>] receive [--messages=n]
-        Receives feedback about the delivery of cloud-to-device messages; optionally exits after receiving n messages.
-    iothub-explorer [<connection-string>] sas-token <device-id> [--duration=<num-seconds>]
-        Generates a SAS Token for the given device with an expiry time <num-seconds> from now
-        Default duration is 3600 (one hour).
-    iothub-explorer help
-        Displays this help message.
+    Usage: iothub-explorer [options] <command> [command-options] [command-args]
 
-    Use the --display option to show only the given properties from the azure-iothub.Device object.
-    Use the --connection-string option to generate a connection string for the device(s).
-    Add the --raw option to any command (except help) to minimize output and format results as JSON.
+
+    Commands:
+
+        login                                                                          start a session on your IoT hub
+        logout                                                                         terminate the current session on your IoT hub
+        list                                                                           list the device identities currently in your IoT hub device registry
+        create <device-id|device-json>                                                 create a device identity in your IoT hub device registry
+        delete <device-id>                                                             delete a device identity from your IoT hub device registry
+        get <device-id>                                                                get a device identity from your IoT hub device registry
+        import-devices                                                                 import device identities in bulk: local file -> Azure blob storage -> IoT hub
+        export-devices                                                                 export device identities in bulk: IoT hub -> Azure blob storage -> local file
+        send <device-id> <message>                                                     send a message to the device (cloud-to-device/C2D)
+        monitor-feedback                                                               monitor feedback sent by devices to acknowledge cloud-to-device (C2D) messages
+        monitor-events [device-id]                                                     listen to events coming from devices (or one in particular)
+        monitor-uploads                                                                monitor the file upload notifications endpoint
+        monitor-ops                                                                    listen to the operations monitoring endpoint of your IoT hub instance
+        sas-token <device-id>                                                          generate a SAS Token for the given device
+        simulate-device <device-id>                                                    simulate a device with the specified id
+        get-twin <device-id>                                                           get the twin of a device
+        update-twin <device-id> <twin-json>                                            update the twin of a device and return it.
+        query-twin <sql-query>                                                         Gets the twin of a device
+        query-job [job-type] [job-status]                                              Gets the twin of a device
+        device-method <device-id> <method-name> [method-payload] [timeout-in-seconds]  Gets the twin of a device
+        help [cmd]                                                                     display help for [cmd]
+
+    Options:
+
+        -h, --help     output usage information
+        -V, --version  output the version number
     ```
 1. Note the `iothub-explorer login` option.  This allows you to enter your IoT Hub connection string once, and not have to re-supply the connection string for every command during the "session".  The "session" lasts for one hour by default. To login, we'll need the "iothubowner" SAS policy connection string we copied int the "**[myresources.txt](./myresources.txt)**" file previously.  Retrieve that string from the file, and use it to login to your Azure IoT Hub with iothub-explorer as follows:
 
@@ -676,7 +680,8 @@ There is a graphical tool for Windows called "**Device Explorer**".  We won't do
     You should see details about your login session returned.  Something similar to this:
 
     ```text
-    Session started, expires Sun Oct 09 2016 16:52:57 GMT-0700 (Pacific Daylight Time)
+    Session started, expires on Wed Dec 14 2016 10:40:28 GMT-0800 (Pacific Standard Time)
+    Session file: C:\Users\IoTDev\AppData\Local\iothub-explorer\config
     ```
 
 1. Next, we need to determine the id we will use for the device identity.  We will use the same naming convention for the other resources to create a device identity with the following id:
@@ -745,6 +750,10 @@ Publishing Temperature Sensor Data to the Azure IoT Hub
 In this task, we'll update the Intel NUC with some packages to help it talk to our Azure IoT Hub, then we'll modify the "**Flow 3**" flow we created earlier to publish the temperature sensor data to our Azure IoT Hub.
 
 1. Open an ssh connection to your Intel NUC using the method desribed previously.  From the prompt, run the following command:
+
+    > **Note**: ***MAKE SURE YOU ARE RUNNING THESE COMMANDS ON THE INTEL NUC VIA AN SSH SESSION.***
+
+    > **Note**: If you are using PuTTY, you can copy the command below to your computer's clipboard, then right-click on the PuTTY window to paste it into the remote ssh command prompt.  Other ssh clients should offer a similar paste option.
 
     The command will not return any result unless there was a problem.
 
