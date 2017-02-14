@@ -1685,6 +1685,8 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     ```
     Which returns output similar to the following, showing the Id of the workspace that was created:
 
+    > **Note**: When a PowerBI Embedded Collection has just been created, you may get intermittent errors when attempting to connect to it.  If you get an error, first verify that you are using the proper values as arguments, and then continue to repeat the statement until it succeeds.
+
     ```text
     [ powerbi ] Workspace created: 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
     ```
@@ -1792,7 +1794,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 1. Next, use the values for our Dataset ID, SQL Login Name and Password, and the Connection String from above to complete the following statement:
 
     ```text
-    powerbi update-connection --dataset "<Dataset ID>" --username <your sql login> --password "<your sql password" --connectionString "<your connection string>"
+    powerbi update-connection --dataset "<Dataset ID>" --username <your sql login> --password "<your sql password>" --connectionString "<your connection string>"
     ```
 
     For example:
@@ -1826,7 +1828,7 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     [ powerbi ] Gateway ID:  8b37fcc6-be5a-47e3-a48d-9d9390b29338
     ```
 
-1. Ok, the last step is to actually embed the report into our web app.  Most of the code has already been written for us, we just need to make a few quick changes. To get started, open the "**HOLs\WebApp"** folder in "**Visual Studio Code**".  Use the values you've saved in the "**[myresources.txt](./myresources.txt)**" file to complete the "powerbi*" config settings in the config.json file, and **Save** your changes:
+1. Ok, the last step is to actually embed the report into our web app.  Most of the code has already been written for us, we just need to make a few quick changes. To get started, open the "**HOLs\WebApp"** folder directly in ***A SEPARATE INSTANCE*** of "**Visual Studio Code**" just as you did when you were working with the web app previously.  Use the values you've saved in the "**[myresources.txt](./myresources.txt)**" file to complete the "powerbi*" config settings in the config.json file, and **Save** your changes:
 
     ![Power BI Config Settings](images/13080-PowerBIConfigValues.png)
 

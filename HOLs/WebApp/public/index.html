@@ -174,15 +174,17 @@
 
                 $scope.embedReport = function () {
                     //Get just the very latest measurements from the node.js server back end
-                    $http.get('/api/powerbiembedconfig').then(function(config) {
+                    $http.get('/api/powerbiembedconfig').then(function(result) {
                         
+                        var config = result.data;
+
                         if(config) {
                             var powerbiReport = angular.element( document.querySelector( '#powerbiReport' ) )[0];
                             powerbi.embed(powerbiReport,config);
                         } 
                     });
                 }
-
+                
                 $scope.getRecentMeasurements();
                 $scope.getDevices();
 
