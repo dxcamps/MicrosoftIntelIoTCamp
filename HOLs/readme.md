@@ -209,7 +209,7 @@ In this exercise, you will use the Node-RED development environment pre-installe
 
     ![Launch Node-RED](images/04010-LaunchNodeRed.png)
 
-    > **Note**: Accessing the Node-RED environment from the Administration page leaves the IoT Gateway links, etc. still visible at the top of the page and can cause some difficulty with the Node-RED environment.  If you prefer to access the Node-RED environment directly, you can do so by navigating to port **1880** on your gateway using **`http://your.nucs.ip.address:1880`** . Again, replace your.nucs.ip.address with your gateway's IP Address.
+    > **Note**: Accessing the Node-RED environment from the Administration page leaves the IoT Gateway links, etc. still visible at the top of the page and can cause some difficulty with the Node-RED environment.  If you prefer to access the Node-RED environment directly, you can do so by navigating to port **1880** on your gateway using **`http://your.nucs.ip.address:1880`** . Again, replace **`your.nucs.ip.address`** with your gateway's IP Address.
 
 1. The Node-RED environment will show the default "**Flow 1**" workflow that is responsible for retrieving your gateway's IP Address and displaying it on the LCD panel as well as reading the value from the rotary angle sensor, changing the background color of the RGB LCD based on the sensor value, and displaying it in the charts on the IoT Gateway web portal.  Leave this flow as is for now.
 
@@ -300,7 +300,7 @@ We will create Node-RED flow to get data from temperature sensor and display it 
 
     ![Data Conversion Function](images/05040-AddFunctionNode.png)
 
-1. Connect the existing "**Temperature**" node to the new "**Data Conversion**" function node by dragging a line from the square box at on the right end of the "**Temperature**" node to the squre box on the left edge of the "**Data Conversion**" node.
+1. Connect the existing "**Grove Temperature**" node to the new "**Data Conversion**" function node by dragging a line from the square box at on the right end of the "**Temperature**" node to the squre box on the left edge of the "**Data Conversion**" node.
 
     ![Connect Nodes](images/05050-ConnectNodes.png)
 
@@ -349,7 +349,7 @@ We will create Node-RED flow to get data from temperature sensor and display it 
 
     <!-- markdownlint-disable MD028 -->
 
-    > **Note**: If you can't see the entire debug message on the debug tab, you can drag the splitter bar between the "**Visual Editor**" and "**debug**" tab panels to expand the view, or you can scroll to the right on the "**debug**" tab using the horizontal scroll bar at the bottom of it.  Also, remember that the "**Grove Temperature**" node is only publishing a sensor value once every **10 seconds** so you need to wait at least that long to see anything appear.
+    > **Note**: If you can't see the entire debug message on the debug tab, you can drag the splitter bar between the "**Visual Editor**" and "**debug**" tab panels to expand the view, or you can scroll to the right on the "**debug**" tab using the horizontal scroll bar at the bottom of it.  Also, remember that the "**Grove Temperature**" node is only publishing a sensor value once every **10 seconds** (10,000ms) so you need to wait at least that long to see anything appear.
 
     > **Note**: You can touch the temperature sensor (or blow on it) to see the value of the "**temp**" displayed change on the "**debug**" tab.
 
@@ -421,7 +421,7 @@ We will be placing all of the azure resources we provision in this lab into a si
 
 ### Common Location or "Region" ###
 
-We want to make sure to deploy all of the resources are deployed in the same Azure data center, or "**Region**" (<a target="_blank" href="https://azure.microsoft.com/en-us/regions/">link</a>). This will help to ensure that the resources have low latency connections to each other (for example, the web application can directly access the sql database), as well as keep our costs low by reducing the amount of data leaving a the data center and incur any data egress charges.
+We want to make sure to deploy all of the resources we create into the same Azure data center, or "**Region**" (<a target="_blank" href="https://azure.microsoft.com/en-us/regions/">link</a>). This will help to ensure that the resources have low latency connections to each other (for example, the web application can directly access the sql database), as well as keep our costs low by reducing the amount of data leaving a the data center and incur any data egress charges.
 
 That means that when need to select a region that supports all of the services we will use in our solution.  You can review the list of <a target="_blank" href="https://azure.microsoft.com/en-us/regions/services/">Products available by region</a> to verify that the services required by this lab are available in the region you want to use. The services used in this lab inclue:
 
@@ -451,7 +451,7 @@ Choose a ***`<name>`*** prefix that is unique to you.  It is recommended that yo
 
 You can choose anything you like, but it must help create unique names, and it should be short because you'll be typing it a fair amount.
 
-For the purposes of this lab examples, we'll use the "**mic16**" prefix, short for "**Microsoft Intel Camp 2016**".
+For the purposes of this lab's examples, we'll use the "**mic16**" prefix, short for "**Microsoft Intel Camp 2016**".
 
 **DO NOT USE THE _"mic16"_ PREFIX FOR YOUR OWN RESOURCES**.
 
@@ -486,6 +486,8 @@ We'll document the choices, names, connection strings, keys, etc. for the resour
 You could really edit "**myresources.txt**" with any text editor, but we'll be using **Visual Studio Code** for a number of tasks throughout this lab, so we'll take the opportunity here to get it open:
 
 1. Open Visual Studio Code (if you don't have it installed you can download it for free for any platofrm from <a target="_blank" href="http://code.visualstudio.com">code.visualstudio.com</a>).
+
+1. From the Visual Studio Code menu bar, select "**File**" | "**Open Folder...**", navigate to the folder where you extracted the lab content for this workshop, and select the "**HOLs**" folder.
 
 1. In the "Explorer" panel, click on the "**myresources.txt**" file to open it. In the file, you can see numerous placeholders for information you will be collecting throughout this lab:
 
@@ -524,6 +526,7 @@ In this task, we'll create the ***&lt;name&gt;iot*** Azure IoT Hub and since it'
     ![New IoT Hub](images/07010-NewIoTHub.png)
 
 1. Complete the properties for the new IoT Hub as shown below, the click the "**Create**" button to provision the new IoT Hub in the new Resource Group:
+
     - Name: ***&lt;name&gt;iot*** - Use the naming prefix you selected in the [Planning your Azure Resources](#PlanningAzure) section.
     - Pricing and scale tier: **S1 - Standard**  (There is a free tier, but we will be removing these resources at the end of the lab, and the S1 pricing teir should not impact your subscription significantly)
     - IoT Hub units: **1**
@@ -533,9 +536,11 @@ In this task, we'll create the ***&lt;name&gt;iot*** Azure IoT Hub and since it'
     - Location: **Choose the location [listed above](#locations) that is closest to you, and then make sure to use that location for all other resources in the lab**
     - Pin to dashboard: **Checked** (this will place a tile for the IoT Hub on your portal dashboard.)
 
+    > **Note**: The "**Enable Device Managent-PREVIEW**" option will likely not be there.  This screen shot was taken when that feature was still in preview.
+
     ![New IoT Hub Properites](images/07020-NewIoTHubProperites.png)
 
-1. The IoT Hub could take five minutes or longer to deploy.  While it is deploying, a tile will be shown on your portal dashboard that looks like this:
+1. ***The IoT Hub could take five minutes or longer to deploy***.  While it is deploying, a tile will be shown on your portal dashboard that looks like this:
 
     ![IoT Hub Deploying Tile](images/07030-IoTHubDeployingTile.png)
 
@@ -546,7 +551,7 @@ In this task, we'll create the ***&lt;name&gt;iot*** Azure IoT Hub and since it'
 1. In order to connect to your IoT Hub from client applications, you need to know the name and key for a "Shared Access Policy" (SAS Policy) that provides your client application the necessary privileges.  Your IoT Hub comes pre-provisioned with a number of  SAS policies that you can use, or you can create additonal policies as needed.  In this lab we will use two of the default SAS policies.
 
     - "**iothubowner**" - This policy allows applications that connect with it full access to the IoT Hub.  They can manage devices registered with the hub, as well as send and receive messages.  We will use this SAS policy when we want to manage our IoT Hub.
-    - "**service**" - This policy is intended for back-end services or client applications that need to interact with devices via the IoT Hub.  These applications need to be able to receive messages coming into the hub from devices in the field, as well as send messages back to those devices.  This policy is granted the "service connect" permission which allows it to do just that.
+    - "**service**" - This policy is intended for back-end services or client applications that need to interact with devices via the IoT Hub.  These applications need to be able to receive messages coming into the hub from devices in the field ("**Device-to-Cloud**" messages), as well as send messages back to those devices ("**Cloud-to-Device**" messages).  This policy is granted the "service connect" permission which allows it to do just that.
 
 1. In the portal, with your IoT Hub blade open, click on the "**Shared access policies**" along the left edge to see the hub's SAS policies:
 
@@ -792,7 +797,7 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
     ![Update Repositories](images/09030-UpdateRepositories.png)
 
-1. When the button states that the repositories have been updated, you can click on the "X" in the top right corner of the "**Manage Repositories**" window to close it:
+1. When the button states that the repositories have been updated (this will also take a minute or so to update), you can click on the "X" in the top right corner of the "**Manage Repositories**" window to close it:
 
     ![Close Manage Repositories Window](images/09040-CloseManageRepositoriesWindow.png)
 
@@ -803,7 +808,7 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 1. In the "**Add New Packages**" window, in the search box, type "**cloud-azure**", then click the "**Install**" button next to the "**packagegroup-cloud-azure**" package.  Again, this takes a few minutes so be patient:
 
     <blockquote>
-      **Note**: You can see what all is installed with the packagegroup-cloud-azure package here: <a target="_blank" href="https://github.com/intel-iot-devkit/meta-iot-cloud/blob/master/recipes-core/packagegroups/packagegroup-cloud-azure_0.9.bb">link</a>
+      <strong>Note</strong>: You can see what all is installed with the packagegroup-cloud-azure package here: <a target="_blank" href="https://github.com/intel-iot-devkit/meta-iot-cloud/blob/master/recipes-core/packagegroups/packagegroup-cloud-azure_0.9.bb">link</a>
        <br/>
       Basically it is all of the npm packages for the various Azure IoT Hub sdks.  It also includes a Node-RED node for working with Azure IoT Hubs (<a target="_blank" href="https://www.npmjs.com/package/node-red-contrib-azureiothubnode">link</a>).
     </blockquote>
@@ -814,13 +819,13 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
     ![Close the Add New Packages Window](images/09070-CloseAddNewPackagesWindow.png)
 
-1. Back in your ssh connection, run the following command to restart the Node-RED environment on the NUC.  This is necessary because the package that we just installed updated the resources available to Node-RED so it needs to be re-initialized:
+1. ***Back in your ssh connection to the NUC***, run the following command to restart the Node-RED environment on the NUC.  This is necessary because the package that we just installed updated the resources available to Node-RED so it needs to be re-initialized:
 
     ```text
     systemctl restart node-red-experience
     ```
 
-1. Now, open the Node-RED development environment in the browser (Remember you can just point your browser to port 1880 on your NUC, eg: `http://your.nucs.ip.address:1880` where `your.nucs.ip.address is` your NUC's IP Address).  If you already had it open, make sure to refresh it.  In the list of nodes on the left, you should see a new "**cloud**" category, and within it the "**azureiothub**" node:
+1. Now, ***from your computer*** open the Node-RED development environment in the browser (Remember you can just point your browser to port 1880 on your NUC, eg: `http://your.nucs.ip.address:1880` where `your.nucs.ip.address is` your NUC's IP Address).  If you already had it open, make sure to refresh it.  In the list of nodes on the left, you should see a new "**cloud**" category, and within it the "**azureiothub**" node:
 
     <blockquote>
       <strong>Note</strong>: if the "<strong>cloud</strong>" category and "<strong>azureiothubnode</strong>" node don't appear, you may need to manually install the "<strong>node-red-control-azureiothubnode</strong>" package on the NUC.  If that is necessary, ssh into the NUC, and from the prompt run the following two commands:<br/>
@@ -852,46 +857,47 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
     ![Deploy the Changes](images/09120-DeployChanges.png)
 
-1. Back in the command prompt or terminal window on your system, run the following command to monitor the messages being sent into your Azure IoT Hub by your device:
+1. Back in the command prompt or terminal window ***on your system***, run the following command to monitor the messages being sent into your Azure IoT Hub by your device:
 
-    - You will need to copy the "**IoT Hub "iothubowner" SAS Policy Primary Connection String**" from the [myresources.txt](./myresources.txt) file.
+    - You will need to copy the '**IoT Hub "iothubowner" SAS Policy Primary Connection String**' from the [myresources.txt](./myresources.txt) file.
 
     - Use the device id you generated in place of the ***&lt;name&gt;IntelIoTGateway*** device id
 
     ```text
-    iothub-explorer "<IoT Hub 'iothubowner' SAS Policy Primary Connection String>" monitor-events <name>IntelIoTGateway
+    iothub-explorer monitor-events <name>IntelIoTGateway --login "<IoT Hub 'iothubowner' SAS Policy Primary Connection String>"
     ```
 
     For example:
 
     ```text
-    iothub-explorer "HostName=mic16iot.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=MuIeI2Bpp4lm6knbNiXX4J1V+UivTov/ebfIfykWD+g=" monitor-events mic16IntelIoTGateway
+    iothub-explorer monitor-events mic16IntelIoTGateway --login "HostName=mic16iot.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=MuIeI2Bpp4lm6knbNiXX4J1V+UivTov/ebfIfykWD+g="
     ```
 
     And you should see output similar to this:
 
     ```text
     Monitoring events from device mic16IntelIoTGateway
-    Event received:
+    ==== From: mic16IntelIoTGateway ====
     {
     "deviceID": "mic16IntelIoTGateway",
     "timestamp": "2016-10-10T03:49:48.966Z",
     "temperature": 36.959999999999994
     }
-
-    Event received:
+    ====================
+    ==== From: mic16IntelIoTGateway ====
     {
     "deviceID": "mic16IntelIoTGateway",
     "timestamp": "2016-10-10T03:49:59.006Z",
     "temperature": 37.62
     }
-
-    Event received:
+    ====================
+    ==== From: mic16IntelIoTGateway ====
     {
     "deviceID": "mic16IntelIoTGateway",
     "timestamp": "2016-10-10T03:50:09.085Z",
     "temperature": 36.959999999999994
     }
+    ====================
     ```
 
 1. Remember that we had the Node-RED flow only getting temperatue values once every 10 seconds (10000ms).  It is recommended that you don't publish too much more frequently during this event.  It just helps to reduce the amount of traffic on the network.
@@ -899,6 +905,8 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 1. If you are feeling adventurous, trade iothubowner connection strings and device IDs with a neighbor in the lab and verify that you can monitor each other's devices.
 
 1. One last comment, we are using the "**iothubowner**" connection string to monitor the events.  You could actually use a less privileged policy, like the "**service**" sas policy  we copied the connection string for earlier.  Go ahead and try monitoring events with the **IoT Hub "service" SAS Policy Primary Connection String** policy connection string you pasted into the [myresources.txt](./myresources.txt) file.  It should work just fine because that SAS policy has permissions to read messages from the IoT Hub.
+
+1. To stop monitoring events, press **Ctrl-C** at the command prompt and confirm exiting the script. 
 
 ___
 
