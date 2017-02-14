@@ -1109,9 +1109,9 @@ Next up is the ***&lt;name&gt;alerts*** Event Hub that the ***&lt;name&gt;job***
 
 ### Create the Stream Analytics Job ###
 
-Great, now we have all the pieces that the ***&lt;name&gt;job*** Stream Analytics job needs.  We have the ***&lt;name&gt;iot*** Azure IoT Hub as the **input**, and the ***&lt;name&gt;db*** SQL Database and ***&lt;name&gt;alerts*** Event Hub as the outputs.  Now we just need to create our Stream Analtyics Job and wire it up!
+Great, now we have all the pieces that the ***&lt;name&gt;job*** Stream Analytics job needs.  We have the ***&lt;name&gt;iot*** Azure IoT Hub as the **input**, and the ***&lt;name&gt;db*** SQL Database and ***&lt;name&gt;alerts*** Event Hub as the **outputs**.  Now we just need to create our Stream Analtyics Job and wire it up!
 
-1. In the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>), click "**+ New**" | "**Internet of Things**" | "**Stream Analytics**"
+1. In the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>), click "**+ New**" | "**Internet of Things**" | "**Stream Analytics job**"
 
     ![Create Stream Analytics Job](images/10270-CreateStreamAnalyticsJob.png)
 
