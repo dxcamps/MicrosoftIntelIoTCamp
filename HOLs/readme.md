@@ -1485,7 +1485,9 @@ Previously, we setup our ***&lt;name&gt;job*** Stream Analytics Job to forward m
 
 In this task, we'll create the **TempAlert** function and have it receive those alert messages from the event hub, and send a temp alert message back down to the device.
 
-1. Open the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>) in the browser, and close any blades open from previous steps.  Then click "**+ New**" | "**Virtual Machines**" | "**Function App**". Function apps used to be listed under **Compute** and your Azure Portal may differ from the screenshot below.
+1. Open the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>) in the browser, and close any blades open from previous steps.  Then click "**+ New**" | "**Compute**" | "**Function App**": 
+
+    > **Note**: Function apps may appear in your portal **Virtual Machines** instead.
 
     ![New Function App](images/12065-NewFunctionApp.png)
 
@@ -1494,7 +1496,8 @@ In this task, we'll create the **TempAlert** function and have it receive those 
     - App name - ***&lt;name&gt;functions***
     - Subscription - **Chose the same subscription used for the previous resources**
     - Resource group - Choose "**Use existing**" and select the ***&lt;name&gt;group*** resource group created previously
-    - App Service Plan - Select "**Classic**" and then choose the ***&lt;name&gt;plan*** plan we created previously.
+    - Hosting Plan - Choose "**App Service Plan**"
+    - App Service Plan - Select the ***&lt;name&gt;plan*** plan we created previously.
     - Storage Account - Select "**Create New**" and name it ***&lt;name&gt;storage***
     - Pin to dashboard - **Checked**
 
@@ -1526,21 +1529,29 @@ In this task, we'll create the **TempAlert** function and have it receive those 
 
     ![Function Integration](images/12110-FunctionIntegration.png)
 
-1. Switch back to the "**Develop**" page for the function.  The code for our C# function is stored in the "**run.csx*"" file.  The default code simply logs the contents of the "myEventHubMessage" parameter value to the console.  We are going to upload some files into our function that provides a little more functionality.  To do that, click the "**View files**" link:
+1. Switch back to the "**Develop**" page for the function.  The code for our C# function is stored in the "**run.csx**"" file.  The default code simply logs the contents of the "myEventHubMessage" parameter value to the console.
 
     ![Default Code](images/12120-DefaultCode.png)
 
-1. Click the button below the list of files to upload new files:
+1. We are going to replace the default code with something that provides a little more functionality. Back in Visual Studio Code, open the "**HOLs\FunctionApp\TempAlert\run.csc**" file.  If you receive a prompt from Visual Studio Code to fix unresolved dependencies, click "**Close**".  Once the file is open though, copy the entire contents of "**run.csx**" to the clipboard:
 
-    ![Upload Files Button](images/12130-UploadFilesButton.png)
+    ![Copy Run.csx](images/12126-CopyRunCsxToClipboard.png)
 
-1. In the "**Open**" dialog, navigate to the **HOLs/FunctionApp/TempAlert** folder under where you extracted the lab files, select the the following files, and click the "**Open**" button to upload them:
+1. Back in the portal, replace the entire contents of the run.csx file with the code you copied from Visual Studio Code, then clickthe "**Save**" button to save the changes:
 
-    - "**project.json**" - This is a regular C# project.json file that defines the various nuget packages that are needed by the code in our function.  Because our function will be sending message to Azure IoT Hub devices, it needs to have the Azure IoT Hub SDKs available.  The project.json file defines those dependencies allows the Azure Function App platform to load them.
-    - "**run.csx**" - This is a more robust block of function code that parses the "**myEventHubMessage**" sent in by the Event Hub Trigger, generates and Alert message, and then uses the Azure IoT Hub SDKs to send the message to the appropriate device based on the "deviceID" property of the incomnig message.
-    - "**function.json**" - **DO NOT UPLOAD THE FUNCTION.JSON FILE**.  This file stores the trigger, input and output integrations, and we have already configured the integration for our function.
+    ![Paste Code into run.csx in the Portal](images/12128-PasteCodeInRunCsx.png)
 
-    ![Upload Files](images/12140-UploadFiles.png)
+1. The code we pasted into "**run.csx**" depends on some libraries (like `Microsoft.Azure.Devices` and `Newtonsoft.Json` as well as others.  To make sure the the libraries are installed on the server, we need to specify them in a "**project.json**" file. To add a "**project.json**" file to our our function, click the "**View Files**"" button, then click the "**+ Add**" button, and name the new file "**project.json**" (all lower case):
+
+    ![Add project.json](images/12130-AddProjectJson.png)
+
+1. Back in Visual Studio Code, copy the contents of the "**HOLs\FunctionApp\TempAlert\project.json**" file to the clipboard:
+
+    ![Copy project.json contents](images/12132-CopyProjectJson.png)
+
+1. And back in the portal, replace the contents of the new "**project.json**" file you just created with the contents you copied from Visual Studio Code:
+
+    ![Paste project.json contents](images/12134-PasteProjectJson.png)
 
 1. Once the upload is complete, click on each file ("**function.json**","**project.json**", and "**run.csx**") to review their contents.
 
@@ -1550,7 +1561,7 @@ In this task, we'll create the **TempAlert** function and have it receive those 
 
     ![Review run.csx](images/12170-RevewRunCsx.png)
 
-1. In the "**run.csx**" file, locate the line of code that reads:
+1. In the "**run.csx**" file, locate the line of code that reads (should be at line 31 or so):
 
     ```c#
     static string connectionString = "<Your IoT Hub "service" SAS Policy Primary Connection String goes here>";
