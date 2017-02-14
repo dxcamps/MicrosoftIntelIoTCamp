@@ -1,52 +1,18 @@
 // Place your settings in this file to overwrite default and user settings.
 {
 
-  // [Optional] Log debug output to the VS Code console (Help -> Toggle Developer Tools). Default is 'false'.
-    "vscode-mssql.logDebugInfo": false,
-
-    // Connections placed here are shown in the connections picklist across VS Code sessions.
-    "vscode-mssql.connections":
-    [
-        // Properties for a connection
+    "mssql.connections": [
         {
-            // [Required] Server to connect to. Use 'hostname\\instance' or '<server>.database.windows.net'.
+            //Leave the authenticationType as 'SqlLogin'
+            "authenticationType": "SqlLogin",
+
+            //
             "server": "paste your Azure SQL Server Fully Qualified Domain Name (FQDN) here",
-
-            // [Optional] Database to connect to.
-            // If this is empty, default depends on server configuration, typically 'master'.
             "database": "paste your Azure SQL Database Name here",
-
-            // [Required] User name for SQL authentication. If this is empty, you are prompted when you connect.
             "user": "paste your Azure SQL Server Qualified SQL Login here",
-
-            // [Required] Password for SQL authentication. If this is empty, you are prompted when you connect.
             "password": "paste your Azure SQL Server Password here",
-
-            // Below are more optional settings in case you wish to override them
-
-            // [Optional] Port to connect to. Default is 1433.
-            "port": 1433,
-
-            // [Optional] Connection timeout in milliseconds.
-            // Default is 30000 ms for Azure SQL DB and 15000 ms otherwise.
-            "connectionTimeout": 15000,
-
-            // [Optional] Request timeout in milliseconds.
-            // Default is 30000 ms for Azure SQL DB and 15000 ms otherwise.
-            "requestTimeout": 15000,
-
-            // Additional advanced options
-            "options":
-            {
-                // [Optional] Specify if the connection will be encrypted.
-                // Always 'true' for Azure SQL DB and loaded from settings otherwise.
-                "encrypt": true,
-
-                // [Optional] Application name used for SQL server logging (default: 'vscode-mssql').
-                "appName": "vscode-mssql"
-            }
+            "savePassword": true
         }
-
     ]
 
 }

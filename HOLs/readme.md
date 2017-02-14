@@ -936,6 +936,7 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
     - Subscription - **Choose the subscription you used for your Azure IoT Hub**
     - Resource group - Choose "**Use existing**" and select the ***&lt;name&gt;group*** we created when provising the Azure IoT Hub.
     - Select source - "**Blank database**"
+    - Want to use SQL elastic pool? - "**Not Now**" (this option was made available after the screen show below was captured).  Just make sure to not enable it if the option is visible for you.
     - Collation - Leave it at the default "**SQL_Latin1_General_CP1_CI_AS**"
 
     ![New SQL Database Properties](images/10020-NewSqlDbProperties.png)
@@ -947,7 +948,7 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
     - Password - **P@ssw0rd**
     - Confirm Password - **P@ssw0rd**
     - Location - **Select the same region you provisioned the Azure IoT Hub into**
-    - Create V12 server - **Yes**
+    - Create V12 server - **Yes** (if it is present)
     - Allow azure services to access server: **Checked**
 
     ![New SQL Server Properties](images/10030-NewSQLServerProperites.png)
@@ -986,23 +987,23 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     ![HOLs Folder Open in VS Code](images/10090-HOLsFolderInCode.png)
 
-1. Then click the icon to open the "**Extensions**" panel, and in the search box at the top type **vscode-mssql**, and in the search results, click the "**Install**" button for the "**vscode-mssql** extension (by sanagama)
+1. Then click the icon to open the "**Extensions**" panel, and in the search box at the top type "**mssql**", and in the search results, click the "**Install**" button for the "**mssql** extension.
 
-    > **Note**: Extensions provide a powerful way to expand the capabilities of Visual Studio Code.  There is a rich ecosystem of extensions developed by Microsoft as well as a worldwide community of developers that you can use in "**Visual Studio Code**".  The "**vscode-mssql**" extension we are installing here allows you to connect to your "**Azure SQL Database**" from with "**Visual Studio Code**" and execute SQL statements.
+    > **Note**: Extensions provide a powerful way to expand the capabilities of Visual Studio Code.  There is a rich ecosystem of extensions developed by Microsoft as well as a worldwide community of developers that you can use in "**Visual Studio Code**".  The "**mssql**" extension we are installing here allows you to connect to your "**Azure SQL Database**" from with "**Visual Studio Code**" and execute SQL statements.
 
-    ![Install the vscode-mssql Extension](images/10100-InstallVsCodeMssql.png)
+    ![Install the mssql Extension](images/10100-InstallVsCodeMssql.png)
 
-1. Once installed, click the "**Enable**" button to enable the extension, and when prompted click "**OK**" to allow VS Code to restart:
+1. Once installed, click the "**Reload**" button to enable the extension, and when prompted click "**Reload Window**" to allow VS Code to restart:
 
     ![Enable Extension](images/10110-EnableExtension.png)
 
     ![Confirm Restart](images/10120-ConfirmVSCodeRestart.png)
 
-1. Next, we need to tell **vscode-mssql** how to connect to our Azure SQL Server and Database.  To do so, from the menu bar, select "**File**" | "**Preferences**" | "**Workspace Settings**"
+1. Next, we need to tell the **mssql** extension how to connect to our Azure SQL Server and Database.  To do so, from the menu bar, select "**File**" | "**Preferences**" | "**Settings**"
 
     ![Open Workspace Settings](images/10130-OpenWorkspaceSettings.png)
 
-1. Two files will open: **Default Settings** and **settings.json**.  The "**Default Settings**" are just there to show you what the defaults, we can ignore them, infact you can close the "**Default Settings**" tab is you wish.  Locate the connection properties for the SQL Server connection in the file:
+1. Then, in the **settings.json** file, click the "**Workspace Settings**" header.  Locate the connection properties for the SQL Server connection in the file:
 
     ![Connection Properties](images/10140-SQLConnectionProperties.png)
 
@@ -1012,7 +1013,15 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     Save and close the **settings.json** file when you are done.
 
-1. Click on the icon for the "**Explorer**" panel, select the "**SQL Database Scripts\Create SQL Database Objects.sql**" file.  This script creates the following objects:
+1. Click on the icon for the "**Explorer**" panel, select the "**SQL Database Scripts\Create SQL Database Objects.sql**" file.  If this is the first "**.sql**" file you have opened since installing the "**mssql**" extension, you may see some the "**OUTPUT**" panel appear to show the output of the sql tools initialization. 
+
+    ![SQL Tools Initialization](images/10147-SQLToolsInitialization.png)
+
+1. You may also be prompted to view the release notes, and finally on Windows, you may geta  firewall prompt.  Make sure to confirm the firewall prompt, and to enable it on all network types:
+
+    ![Windows Firewall Prompt](images/10148-FirewallPrompt.png)
+
+1. The "**Create SQL Database Objects.sql**" script creates the following objects:
 
     - The "**dbo.Measurement**" table.  This table is structured to match the data being sent by the Node-RED flow Intel NUC.  It has the following columns:
         - "**MeasurementID**" is a dynamically generated ID for each row in the database.
@@ -1024,7 +1033,9 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     ![Open SQL Script](images/10150-OpenCreateScript.png)
 
-1. Make sure the "**Create SQL Database Objects.sql**" file is the currently active file in VS Code, then press the "**F1**" key (or **Ctrl+Shift+P**) to open the "**Command Palette**", and in the box, type "**&gt;MSSQL: Connect to a database**" (don't forget the **&gt;**) and press "**Enter**" (Note you could also have used the **Ctrl-Shift-C** keyboard shortcut while the SQL script file was active).
+1. Make sure the "**Create SQL Database Objects.sql**" file is the currently active file in VS Code, then press the "**F1**" key (or **Ctrl+Shift+P**) to open the "**Command Palette**", and in the box, type "**&gt;MS SQL: Connect**" (don't forget the **&gt;**) and press "**Enter**" (Note you could also have used the **Ctrl-Shift-C** keyboard shortcut while the SQL script file was active).
+
+    ![MS SQL Connect](images/10155-MSSQLConnect.png)
 
     ![Select Connection](images/10160-SelectConnection.png)
 
@@ -1038,11 +1049,7 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     ![Run the SQL Script](images/10190-RunSQLScript.png)
 
-1. The "**MSSQL Output**" window will open, and on its "**Messages**" tab you should see that no errors occurred.  The "**(0 Row(s) affected)** messages are from the test queries on the objects we just created.  Since there is no data in them, no rows are returned.
-
-    ![MSSQL Output](images/10200-SQLMessages.png)
-
-1. You can use the "**Results**" tab to view the results from the three "**select**" statements in the script.  However, since there is no data in the "**dbo.Measurement**" table yet, there aren't any rows retrieved.
+1. The "**Results: Create SQL Database Objects.sql**" tab will open, display the results of the script exectution.  You can close the "**Results: Create SQL Database Objects.sql**" and "**Create SQL Database Objects.sql**" tabs when you are done.
 
     ![SQL Results](images/10210-SQLResults.png)
 
