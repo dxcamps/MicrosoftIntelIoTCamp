@@ -1223,7 +1223,7 @@ Great, now we have all the pieces that the ***&lt;name&gt;job*** Stream Analytic
 
     ![Job Started](images/10400-JobStarted.png)
 
-1. At this point, we should have data being forwarded into our SQL Database.  We can verify that using Visual Studio Code.  In Code, open the "**SQL Database Scripts\Query Measurement Data.sql**" file.  Make sure the file is active by clicking into it, and then execute the entire query by pressing **Ctrl+Shift+E**.  You should see the results of the three queries show up on the "**MSSQL Output**" tab.  You can use the "**Results** drop down to see the results of each of the three queries.
+1. At this point, we should have data being forwarded into our SQL Database.  We can verify that using Visual Studio Code.  In Code, open the "**SQL Database Scripts\Query Measurement Data.sql**" file.  Make sure the file is active by clicking into it, and then execute the entire query by pressing **Ctrl+Shift+E** (If prompted, select your SQL Server connection again).  You should see the results of the three queries show up on the "**Results**" tab. 
 
     > **Note**: You need to be connected to the SQL Server already.  If you aren't, press **Ctrl+Shift+C**, select your SQL Connection and press enter.  Also make sure that your cursor is INSIDE the "**Query Measurement Data.sql**" file in the editor or the **Ctrl+Shift+C** and **Ctrl+Shift+E** do different things (open a command prompt, and open the explorer panel respectively).
 
@@ -1272,7 +1272,7 @@ We'll start by creating the Azure App Service Plan and Web App in the portal.
 
     ![Create Web App](images/11050-CreateWebApp.png)
 
-1. Once the Web App is deployed, its blade will open in the portal.  When it does, click the "**Deployment options**" button along the left, then click "**Choose Source**" and then select **"Local Git Repository**"
+1. Once the Web App is deployed, its blade will open in the portal.  When it does, click the "**Deployment options**" button along the left, then click "**Choose Source**" and then select **"Local Git Repository**":
 
     ![Setup git repo](images/11060-SetupGitRepo.png)
 
@@ -1343,6 +1343,10 @@ The reason for this is that we are going to be using the Node.js Debugging and G
 1. Back in VS Code, on the Debug panel, click the green "**play**" button along the top to start debugging the web app.
 
     ![Debug](images/11160-Debug.png)
+
+1. On Windows, you may be prompted to verify the firewall configuration.  If so, select all networks, and click "**Allow access**":
+
+    ![Firewall](images/11165-Firewall.png)
 
 1. In the Debug Console (if your's isn't visible press **Ctrl+Shift+Y**), you should see that the app is running on [http://localhost:3000](http://localhost:3000)
 

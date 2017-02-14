@@ -138,10 +138,12 @@
             
                 //Get the recent measurements from the node.js server back end
                 $scope.getRecentMeasurements = function(){
-                    $http.get('/api/recent').success(function(result) {
+                    $http.get('/api/recent').then(function(result) {
                         
-                        if(result.length > 0) {
-                            angular.forEach(result, function(x) {
+                        var data = result.data;
+
+                        if(data.length > 0) {
+                            angular.forEach(data, function(x) {
                                 $scope.recentMeasurements.push({
                                     deviceid: x[0].value,
                                     timestamp:  x[1].value,
@@ -154,10 +156,12 @@
 
                 //Get just the very latest measurements from the node.js server back end
                 $scope.getDevices = function(){
-                    $http.get('/api/devices').success(function(result) {
+                    $http.get('/api/devices').then(function(result) {
+
+                        var data = result.data;
                         
-                        if(result.length > 0) {
-                            angular.forEach(result, function(x) {
+                        if(data.length > 0) {
+                            angular.forEach(data, function(x) {
                                 $scope.devices.push({
                                     deviceid: x[0].value,
                                     timestamp:  x[1].value,
@@ -170,7 +174,7 @@
 
                 $scope.embedReport = function () {
                     //Get just the very latest measurements from the node.js server back end
-                    $http.get('/api/powerbiembedconfig').success(function(config) {
+                    $http.get('/api/powerbiembedconfig').then(function(config) {
                         
                         if(config) {
                             var powerbiReport = angular.element( document.querySelector( '#powerbiReport' ) )[0];
