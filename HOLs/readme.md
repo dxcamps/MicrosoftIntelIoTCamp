@@ -1381,7 +1381,7 @@ The last step is to get this web application running in Azure, not locally.  Ear
 1. Refer to the Azure Web App Resources information you recently save in the **[myresources.txt](./myresources.txt)** file. Copy the "**Git Clone URL** value to your clipboard.  Next, open a command prompt or terminal window,  navigate to the "**HOLs\WebApp**" directory. and issue the following command at the prompt:
 
     ```text
-    git remote add origin <<your git clone url>>
+    git remote add origin <your git clone ul>>
     ```
 
     for example:
