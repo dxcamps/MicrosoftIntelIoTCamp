@@ -987,7 +987,7 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     ![HOLs Folder Open in VS Code](images/10090-HOLsFolderInCode.png)
 
-1. Then click the icon to open the "**Extensions**" panel, and in the search box at the top type "**mssql**", and in the search results, click the "**Install**" button for the "**mssql** extension.
+1. Then click the icon to open the "**Extensions**" panel, and in the search box at the top type "**mssql**", and in the search results, click the "**Install**" button for the "**mssql**" extension.
 
     > **Note**: Extensions provide a powerful way to expand the capabilities of Visual Studio Code.  There is a rich ecosystem of extensions developed by Microsoft as well as a worldwide community of developers that you can use in "**Visual Studio Code**".  The "**mssql**" extension we are installing here allows you to connect to your "**Azure SQL Database**" from with "**Visual Studio Code**" and execute SQL statements.
 
