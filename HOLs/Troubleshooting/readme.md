@@ -1,31 +1,67 @@
 # Reset Instructions 
 
-## Fixing the WiFi / Ethernet IP Address conflict on the NUC:
+## Fixing the WiFi / Ethernet IP Address conflict on the NUC - The Easy Way:
 
-1. From your laptop, connect to the WiFi network on the NUC: `IDPDK-XXXX` where `XXXX` is the last four digits of the NUCs WiFi MAC Address (no idea how you would find that out ahead of time):
+### The problem
 
-    - SSID:  IDPDK-XXXX
-    - PWD:   windriveripc
+If you have a NUC with an internal WiFi card installed, the image on the NUC likely has that WiFi adapter's IP Address statically set as:
 
-2. From your laptop, do an `ipconfig` (Windows) or an `ifconfig` (linux/mac) to determine the IP Address of the NUC. The `gateway` ip address on your laptops wireless NIC should be the IP address of the NUC's wireless network interface.
 
-    > **Note**: Out of the box, the IP Address should be 192.168.1.1, but it's possible that it has been changed, so this step makes sure you find the actual IP Address used. 
+| IP Address    | Subnet Mask     |
+| ------------- | --------------- |
+| `192.168.1.1` | `255.255.255.0` |
 
-3. From your laptop, ssh to the NUC's wireless IP address as `root`, password `root`
+The above IP Address / Subnet Mask implies tht the WiFi network the NUC hosts is:
+
+`192.168.1.0/24`
+
+That isn't a problem unless the Venue that you are at is also using the `192.168.1.0/24` network (a very common network for consumer routers to default to).  If the venue is using that network, and you connect the NUC's ethernet port to it, the NUC gets confused because it sees two separate `192.168.1.0/24` networks.  One on it's WiFi adapter and another on it's Ethernet adapter.
+
+![IP Network Conflict Problem](images/IPNetworkConflictProblem.png)
+
+The easiest way to fix the problem is to simply re-assign the Static IP Address on the NUC's WiFi adapter so that it is on a different network:
+
+![IP Network Conflict Solution](images/IPNetworkConflictSolution.png)
+
+
+The easiest way to resolve the problem is:
+
+1. Connect an HDMI Monitor, Keyboard and Mouse directly to the NUC, and power the NUC up:
+
+    ![Monitor and Keyboard on NUC](images/NUCWithMonitorAndKeyboard.png)
+
+1. Using the keyboard, login to the NUC as the user `root` with the password `root`:
 
     ```bash
-    ssh root@<your.nuc.wireless.ip>
-    root
-    ````
+    WR-IDP-5188 login: root
+    Password: root
+    ```
 
 4. From the command line, list the /etc/config/file:
 
     ```bash
     cat /etc/config/network
     ```
-5. Ensure the IP of the wireless network. 
 
-6. Modify the IP to one that doesn't conflict with your local network:
+    Find the `lan` interface's `ipaddr` (IP Address) in the output (`192.168.1.1` below):
+
+    ```bash
+    ...
+
+    config interface 'lan'
+            option ifname 'wlan0'
+            option type 'bridge'
+            option proto 'static'
+            option ipaddr '192.168.1.1'
+            option netmask '255.255.255.0'
+
+    ...
+    ```
+5. Decide on the new IP Address you wish to use.  We recommend using `192.168.101.1` and keeping the subnet mask at `255.255.255.0`.  This will put the NUC's WiFi adapter on the `192.168.101.0/24` network.  You can use whatever you wish, we'll assume the `192.168.101.1` network address.
+
+6. If you are only changing the WiFi adapter's IP Address, and not it's subnet mask, you can do it easily using the `sed` (stream editor) utility.  Following is an example of changing the `192.168.1.1` ip address to `192.168.101.1`.
+
+    > **Note**: If you have multiple changes to make, or prefer to use an editor, you can use the `vi` editor installed on the NUC or use `apt-get` to install another editor.  We won't document those steps here though.
 
     ```bash
     sudo sed -i 's/192.168.1.1/192.168.101.1/g' /etc/config/network
@@ -37,10 +73,25 @@
     cat /etc/config/network
     ```
 
+    With the output now showing the `192.168.101.1` as the `ipaddr`:
+
+    ```bash
+    ...
+
+    config interface 'lan'
+            option ifname 'wlan0'
+            option type 'bridge'
+            option proto 'static'
+            option ipaddr '192.168.101.1'
+            option netmask '255.255.255.0'
+
+    ...
+    ```
+
 8. If everything looks good, reboot the NUC:
 
     ```bash
-    sudo shutdown -r 
+    sudo shutdown -r 0
     ```
 
 9. Wait until it reboots, and verify that you can now connect to it over ethernet as expected. 
