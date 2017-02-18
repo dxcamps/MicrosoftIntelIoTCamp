@@ -114,6 +114,7 @@ ssh into the NUC and run the following commands:
 
 ```text
 rpm --import http://iotdk.intel.com/misc/iot_pub.key
+rpm --import http://iotdk.intel.com/misc/iot_pub2.key
 npm install node-red-contrib-os -g
 smart channel --add 'IoT_Cloud' type=rpm-md baseurl=http://iotdk.intel.com/repos/iot-cloud/wrlinux7/rcpl13 -y
 smart update 'IoT_Cloud'

@@ -754,16 +754,17 @@ Publishing Temperature Sensor Data to the Azure IoT Hub
 
 In this task, we'll update the Intel NUC with some packages to help it talk to our Azure IoT Hub, then we'll modify the "**Flow 3**" flow we created earlier to publish the temperature sensor data to our Azure IoT Hub.
 
-1. Open an ssh connection to your Intel NUC using the method desribed previously.  From the prompt, run the following command:
+1. Open an ssh connection to your Intel NUC using the method desribed previously.  From the prompt, run the following commands:
 
     > **Note**: ***MAKE SURE YOU ARE RUNNING THESE COMMANDS ON THE INTEL NUC VIA AN SSH SESSION.***
 
     > **Note**: If you are using PuTTY, you can copy the command below to your computer's clipboard, then right-click on the PuTTY window to paste it into the remote ssh command prompt.  Other ssh clients should offer a similar paste option.
 
-    The command will not return any result unless there was a problem.
+    The commands will not return any result unless there was a problem.
 
     ```text
     rpm --import http://iotdk.intel.com/misc/iot_pub.key
+    rpm --import http://iotdk.intel.com/misc/iot_pub2.key
     ```
 
 1. Next, install the `node-red-contrib-os` npm package globally on the NUC using the following statement:
