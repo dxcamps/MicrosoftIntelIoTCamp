@@ -1,4 +1,13 @@
-# Reset Instructions 
+# Troubleshooting Steps and Fixes
+
+- [Fixing the WiFi / Ethernet IP Address conflict on the NUC - The Easy Way](#networkconflict)
+- [Re-imaging the NUC](#reimaging)
+- [Fixing Node-Red Flows](fixingflows)
+- [Manual IoT_Cloud Repository And packagegroup-cloud-azure installs with RPM](#manualinstalls)
+- [Manual Node-Red AzureIoTHub node installation using NPM instead of RPM](#manualnodered)
+---
+
+<a name="networkconflict"></a>
 
 ## Fixing the WiFi / Ethernet IP Address conflict on the NUC - The Easy Way:
 
@@ -96,6 +105,10 @@ The easiest way to resolve the problem is:
 
 9. Wait until it reboots, and verify that you can now connect to it over ethernet as expected. 
 
+---
+
+<a name="reimaging"></a>
+
 ## Re-imaging the NUC
 
 The "**Intel IoT Gateway**" ships with a linux image already running on it.  There should also be a restorable factory image that can be used if you feel that your "**NUC**" is behaving poorly.  To do so, you'll need to have an HDMI Monitor and Keyboard attached to the NUC.  Here's how to do it:
@@ -104,9 +117,17 @@ Video: "**<a target="_blank" href="https://www.youtube.com/embed/nS6xNMGRRvg">Re
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/nS6xNMGRRvg" frameborder="0" allowfullscreen></iframe> 
 
-## Manual Reset
+---
+
+<a name="fixingflows"></a>
+
+## Fixing Node-Red Flows
 
 If you've messed up the "**Flow 1**", "**Blinky**" for "**Flow 3**" (Azure) flows you can import versions of the flows from the **"/Node-RED Flows**" files.  
+
+---
+
+<a name="manualinstalls"></a>
 
 ## Manual IoT_Cloud Repository And packagegroup-cloud-azure installs with RPM
 
@@ -122,6 +143,10 @@ smart update
 smart install -y packagegroup-cloud-azure
 systemctl restart node-red-experience
 ```
+
+---
+
+<a name="manualnodered"></a>
 
 ## Manual Node-Red AzureIoTHub node installation using NPM instead of RPM
 
