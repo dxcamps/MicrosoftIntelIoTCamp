@@ -1663,6 +1663,8 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
     > **Note**: The `powerbi config` command creates a `.powerbirc` file in the directory where the command was executed.  It contains sensitive connection information about how to connect to to your Power BI Embedded Workspace Collection so be careful who you expose that file to.
 
+    > **Note**: If you receive an error similar to `powerbi-config(1) does not exist, try --help` you may want to refer to <a target="_blank" href="https://github.com/Microsoft/PowerBI-Cli/issues/5#issuecomment-251419579">Microsoft/PowerBI-Cli#5 (comment)</a> for a possible workaround.  Or, as an alternative you can simply supply the key, collection name, and workspace id for each powerbi command you execute.  You do not NEED to do the powerbi config commands, it just helps make future statements easier.
+
     ```text
     powerbi config -c <collectioName> -k "<accessKey>"
     ```
