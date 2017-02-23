@@ -1656,6 +1656,8 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
 
 1. A "**Workspace Collection**" is just what it sounds like, it is a collection of one or more "**Workspace**" instances. To upload a report, it must go into a Workspace, but at the time of this writing you can't create new Workspaces in the Azure portal.  The rest of our interaction with the Power BI Embedded service will be via the "**powerbi-cli** npm package (<a target="_blank" href="https://www.npmjs.com/package/powerbi-cli">link</a>).  Open a command prompt or terminal window and issue the following npm command to install the "**powerbi-cli**" package globally:
 
+    > **Note**: Some users on non-Windows OSs are having issues with the powerbi-cli at least as recently as v1.0.6.  If you are having issues using the powerbi-cli commands you may want to try it from a Windows machine if you have access to one.  If you are at an event, find a fellow participant with Windows that will let you run the powerbi-cli commands from their computer.  You can create your own folder on their machine store store the powerbi config created for your collection, and they can easily delete that folder when you are done.
+
     ```text
     npm install -g powerbi-cli
     ```
