@@ -26,11 +26,11 @@ The above IP Address / Subnet Mask implies tht the WiFi network the NUC hosts is
 
 That isn't a problem unless the Venue that you are at is also using the `192.168.1.0/24` network (a very common network for consumer routers to default to).  If the venue is using that network, and you connect the NUC's ethernet port to it, the NUC gets confused because it sees two separate `192.168.1.0/24` networks.  One on it's WiFi adapter and another on it's Ethernet adapter.
 
-![IP Network Conflict Problem](images/IPNetworkConflictProblem.png)
+![IP Network Conflict Problem](images/IpNetworkConflictProblem.png)
 
 The easiest way to fix the problem is to simply re-assign the Static IP Address on the NUC's WiFi adapter so that it is on a different network:
 
-![IP Network Conflict Solution](images/IPNetworkConflictSolution.png)
+![IP Network Conflict Solution](images/IpNetworkConflictProblem.png)
 
 
 The easiest way to resolve the problem is:
