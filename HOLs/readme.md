@@ -760,14 +760,14 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
     > **Note**: If you are using PuTTY, you can copy the command below to your computer's clipboard, then right-click on the PuTTY window to paste it into the remote ssh command prompt.  Other ssh clients should offer a similar paste option.
 
-    The commands will not return any result unless there was a problem.
+    The commands will not return any result unless there was a problem.  They are simply adding some public key values used by the apt-get package repositories we will be installing from in the coming steps:
 
     ```text
     rpm --import http://iotdk.intel.com/misc/iot_pub.key
     rpm --import http://iotdk.intel.com/misc/iot_pub2.key
     ```
 
-1. Next, install the `node-red-contrib-os` npm package globally on the NUC using the following statement:
+1. Next, install the `node-red-contrib-os` npm package globally on the NUC.  This package (<a target="_blank" href="https://www.npmjs.com/package/node-red-contrib-os">link</a>) adds some special Node-Red nodes that allow you to get information from the local Operating System (OS) where the Node-Red flow is running.  Things like OS Info, Drive Info, Memory Info, etc.  Install it on the NUC using the following statement:
 
     You will see a number of "***WARN unmet dependency***" messages appear.  ***You can safely ignore these***.
 
@@ -777,11 +777,13 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
     ***Keep your ssh connection open, you'll need it later.***
 
-1. Next, we need to add an rpm package repository to the system.  In your browser, navigate to your NUC's IP Address and login as root.  Then navigate to the "**Packages"** page, and click the "**Add Repo +**" button.
+1. Next, we need to add an rpm package repository to the system. In your browser, navigate to your NUC's IP Address and login as root.  Then navigate to the "**Packages"** page, and click the "**Add Repo +**" button.
 
     ![Add Repo](images/09010-AddRepo.png)
 
 1. In the "**Manage Repositories**" window, in the fields under "**Add New Repository**" enter the following, and click the "**Add Repository**" button:
+
+    > **Note**: The `IoT_Cloud` repo is provided by Intel and includes some packages for working with Azure's IoT services.  Once we add a reference to the repo (which is what we are doing here), we can later install packages from it using apt-get.
 
     - Name - **IoT_Cloud**
     - URL - **`http://iotdk.intel.com/repos/iot-cloud/wrlinux7/rcpl13`**
@@ -809,7 +811,7 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 1. In the "**Add New Packages**" window, in the search box, type "**cloud-azure**", then click the "**Install**" button next to the "**packagegroup-cloud-azure**" package.  Again, this takes a few minutes so be patient:
 
     <blockquote>
-      <strong>Note</strong>: You can see what all is installed with the packagegroup-cloud-azure package here: <a target="_blank" href="https://github.com/intel-iot-devkit/meta-iot-cloud/blob/master/recipes-core/packagegroups/packagegroup-cloud-azure_0.9.bb">link</a>
+      <strong>Note</strong>: You can see what all is installed with the packagegroup-cloud-azure package here: <a target="_blank" href="https://github.com/intel-iot-devkit/meta-iot-cloud/tree/master/recipes-core/packagegroups">link</a>
        <br/>
       Basically it is all of the npm packages for the various Azure IoT Hub sdks.  It also includes a Node-RED node for working with Azure IoT Hubs (<a target="_blank" href="https://www.npmjs.com/package/node-red-contrib-azureiothubnode">link</a>).
     </blockquote>
@@ -1675,6 +1677,20 @@ In this task, we'll walk through publishing a pre-created Power BI report into a
     ```text
     npm install -g powerbi-cli
     ```
+
+1. Make sure the powerbi-cli version is at LEAST v1.0.8 or later.  If you installed the powerbi-cli previously, the version might be lower. Go ahead and run the `npm install -g powerbi-cli` command from above to ensure you are running the latest version:
+
+    ```bash
+    powerbi --version
+    ```
+
+    Example output:
+
+    ```bash
+    1.0.8
+    ```
+
+
 1. Once it is installed, in the command prompt or terminal window, change into the "**HOLs\PowerBI**" folder, and run the following command and use the collection name and key you just pasted into the "**[myresources.txt](./myresources.txt)**" file to tell the powerbi how to connect to our workspace collection:
 
     > **Note**: The `powerbi config` command creates a `.powerbirc` file in the directory where the command was executed.  It contains sensitive connection information about how to connect to to your Power BI Embedded Workspace Collection so be careful who you expose that file to.
