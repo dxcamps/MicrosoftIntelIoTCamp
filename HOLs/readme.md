@@ -1387,7 +1387,7 @@ The last step is to get this web application running in Azure, not locally.  Ear
 
     ![Initialize git repository](images/11200-InitLocalGitRepo.png)
 
-1. Type in a message (like "**Initial commit**) in the box at the top, and click the "**checkmark**" commit icon to commit the changes to the new repo.
+1. Type in a message (like "**Initial commit**) in the box at the top, and click the "**checkmark**" commit icon to commit the changes to the new repo.  Make sure to click the "**checkmark**" commit icon to commit or you will receive errors when you try to push to remote repo in Azure in the next step.
 
     ![Initial Commit](images/11210-InitialCommit.png)
 
@@ -1406,6 +1406,8 @@ The last step is to get this web application running in Azure, not locally.  Ear
     ```
 
 1. Then, back in Visual Studio Code,  on the "**git**" panel, click the "**...**" ellipsis menu at the top, then select "**Publish**", and confirm the publish when prompted.
+
+    > **Note**: If you receive an `error: src refspec master does not match any.` in the Visual Studio Code "Output" window it is likely because you forgot to commit two steps ago.  Make sure to click the "**checkmark**" commit icon on the VS Code "Git" panel to commit as documented above.
 
     ![Publish](images/11220-Publish.png)
 
@@ -1541,6 +1543,16 @@ In this task, we'll create the **TempAlert** function and have it receive those 
     ![Create the Function](images/12100-CreateTheFunction.png)
 
 1. Once the "**TempAlert**" function is created, click on the "**Integrate**" link to configure its triggers, inputs and outputs.  Our function comes pre-provisioned with an "**Azure Event Hub Trigger**" that will invoke this function whenever a message is available on the ***&lt;name&gt;alerts*** event hub.  When the function is invoked the Event Hub message that caused the function to be triggered will be passed in as the **myEventHubMessage** parameter.  The functions code can then inspect that parameter's value and act on it.
+
+    > **Note**: There isn't a **SAVE** button or anything.  These changes are being written into the functions configuration files as you enter them.
+
+    - Event parameter name: **`myEventHubMessage`**
+    - Event Hub consumer group: **$Default**
+    - Event Hub name: ***`<name>alerts`***
+    - Event Hub connection: Click the ***new*** link and choose your ***`<name>ns`*** Service Bus Namespace.
+        - If you don't see a connection string item for your event service bus name space, click the **+ Add a connection string** button, then enter:
+            - Connection name: ***`<name>ns`***
+            - Connection String: Copy the "**Root Manage Shared Access Key SAS Policy Primary Connection String**" from your "**[myresources.txt](./myresources.txt)**" file.
 
     ![Function Integration](images/12110-FunctionIntegration.png)
 

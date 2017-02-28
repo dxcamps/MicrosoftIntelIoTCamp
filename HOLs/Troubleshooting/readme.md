@@ -5,6 +5,9 @@
 - [Fixing Node-Red Flows](fixingflows)
 - [Manual IoT_Cloud Repository And packagegroup-cloud-azure installs with RPM](#manualinstalls)
 - [Manual Node-Red AzureIoTHub node installation using NPM instead of RPM](#manualnodered)
+- [powerbi-cli Issues](#powerbicli)
+- [IP Address not Displaying on the Grove LCD](#noiponlcd)
+
 ---
 
 <a name="networkconflict"></a>
@@ -160,3 +163,96 @@ npm install node-red-contrib-os -g
 npm install -g node-red-contrib-azureiothubnode@0.0.1
 systemctl restart node-red-experience
 ```
+
+---
+
+<a name="powerbicli"></a>
+
+## powerbi-cli Issues
+
+The powerbi-cli command line tool has had some issues lately.
+
+### Issues on Linux, OSX, and Bash on Ubuntu on Windows
+
+The cli has some installation issues it seems in linux environments.  The powerbi-cli team is aware of them, but they does not appear to have been resolved yet.
+
+For example, when you run:
+
+`powerbi config`
+
+You may receive an error like:
+
+`powerbi-config(1) does not exist, try --help`
+
+The problem appears to be related to how the client finds it's submodules.  As a workaround, you can attempt the steps documented on the powerbi-cli's github Issues page: [Microsoft/PowerBI-Cli#5 (comment)](https://github.com/Microsoft/PowerBI-Cli/issues/5#issuecomment-251419579)
+
+### Issues Updating the Database Connection String
+
+The `powerbi update-connection` command was broken in some recent versions of the powerbi-cli.
+
+The command would return results like the following:
+
+```
+[ powerbi ] Found dataset!
+[ powerbi ] Id: 1667a811-f8bb-4792-a719-07adc5d244e2
+[ powerbi ] Name: TempChart
+[ powerbi ] Updating connection string...
+[ powerbi ] parameters[valueElement] must be of type object.
+[ powerbi ] Connection string successfully updated
+
+...
+
+[ powerbi ] Successfully updated datasource credentials!
+[ powerbi ] Datasource ID:  9dc4fe4d-d620-4910-a069-6c20e0b8837a
+[ powerbi ] Gateway ID:  627fa205-99de-4f50-aaf8-484838be30f6
+```
+
+Even though it LOOKS like it updated there is one line in the output that reads:
+
+```bash
+[ powerbi ] parameters[valueElement] must be of type object.
+```
+
+That is actually an error, and you will find that the connection string didn't actually update.  To fix the problem, make sure you are running powerbi-cli version 1.0.8 or later.
+
+***Even if you already have v1.0.8 installed you should RE-INSTALL to make sure you have the latest bits.  The team make some fixes, but they were re-released on the same version number***
+
+1. To check the version of the powerbi-cli you can run the following command:
+
+    ```bash
+    powerbi --version
+    ```
+
+    Make sure you get v1.0.8 or later as a result:
+
+    ```bash
+    1.0.8
+    ```
+
+1. To re-install to the latest version of the powerbi-cli:
+
+    ```bash
+    npm insatll -g powerbi-cli
+    ```
+
+---
+
+<a name="noiponlcd"></a>
+
+## IP Address not Displaying on the Grove LCD
+
+When you boot, the NUC with the Arduino 101, Grove Shield, Rotary Sesor, LCD and Ethernet attached you should see your NUC's IP Address display on the LCD. This is because the default Node-Red Flow on the NUC is reading the IP Address off of the `eth0` (Ethernet) interface, and displaying it on the LCD for you.  However, if you are NOT seeing the IP Address display check the following:
+
+1. First, ensure that the Arduino 101, Grove Shield, Rotary Sensor and LCD were assembled correctly as documented in the lab in int [Getting Started with Grove IoT Commercial Developer Kit](../readme.md#GettingStartedWithGrove) section.
+
+1. Ensure that you set the voltage switch on the Grove Shield as documented in the lab:
+
+    ![Base Sheild set to 5V](../images/01040-BaseShield5V.png)
+
+1. Make sure that the Arduino 101 is connected to the NUC's USB port ***BEFORE*** you power the NUC on to boot it.  
+
+    > **Note**: Why?  The NUC communicates with the Arduino 101 using a serial communication framework called "Firmata".  When the NUC boots, it checks to see if it has an Arduino 101 installed and if it does, it flashes the Arduino 101 with the Firmata firmware.  If you attache the Arduino 101 AFTER the NUC has booted, it may not have received the Firmata firmware.
+
+1. One way to test that the Firmata is working, etc. is to twist the rotary sensor.  You should see that the background color of the RGB LCD attached to the Grove Shield changes.  This is implemented in the default Node-Red flow on the NUC and it wouldn't work if the NUC couldn't communicate with the Arduino 101.  So if that works, at least you know the NUC / Node-Red / Arduino 101 / Grove Shield stack is working.  
+
+1. You should also be able to see the current values of the rotary sensor in the Intel Dev Hub on the NUC at `http://<your.nucs.ip.address>`.  Again, this is just to help you confirm that the communication between your NUC and the Arduino 101 is working so you can continue to diagnose the issue of the IP Address not displaying.
