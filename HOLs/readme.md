@@ -213,7 +213,7 @@ In this exercise, you will use the Node-RED development environment pre-installe
 
 1. The Node-RED environment will show the default "**Flow 1**" workflow that is responsible for retrieving your gateway's IP Address and displaying it on the LCD panel as well as reading the value from the rotary angle sensor, changing the background color of the RGB LCD based on the sensor value, and displaying it in the charts on the IoT Gateway web portal.  Leave this flow as is for now.
 
-    ![Node-RED Environment](images/04020-NodeREDEnvironment.png)
+    ![Node-RED Environment](images/04020-NodeRedEnvironment.png)
 
 1. The Node-RED Environment can be used to create IoT workflows.
 
