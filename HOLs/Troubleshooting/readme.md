@@ -70,7 +70,7 @@ The easiest way to resolve the problem is:
 
 6. If you are only changing the WiFi adapter's IP Address, and not it's subnet mask, you can do it easily using the `sed` (stream editor) utility.  Following is an example of changing the `192.168.1.1` ip address to `192.168.101.1`.
 
-    > **Note**: If you have multiple changes to make, or prefer to use an editor, you can use the `vi` editor installed on the NUC or use `apt-get` to install another editor.  We won't document those steps here though.
+    > **Note**: We are using the Linux `sed` (Stream Editor) to make quick work of the editing, however if you have multiple changes to make, or prefer to use an editor, you can use the `vi` editor installed on the NUC or use `apt-get` to install another editor.  We won't document those steps here though.
 
     ```bash
     sudo sed -i 's/192.168.1.1/192.168.101.1/g' /etc/config/network
