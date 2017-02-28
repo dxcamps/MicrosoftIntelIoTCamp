@@ -1549,10 +1549,7 @@ In this task, we'll create the **TempAlert** function and have it receive those 
     - Event parameter name: **`myEventHubMessage`**
     - Event Hub consumer group: **$Default**
     - Event Hub name: ***`<name>alerts`***
-    - Event Hub connection: Click the ***new*** link and choose your ***`<name>ns`*** Service Bus Namespace.
-        - If you don't see a connection string item for your event service bus name space, click the **+ Add a connection string** button, then enter:
-            - Connection name: ***`<name>ns`***
-            - Connection String: Copy the "**Root Manage Shared Access Key SAS Policy Primary Connection String**" from your "**[myresources.txt](./myresources.txt)**" file.
+    - Event Hub connection: ***`<name>ns`***
 
     ![Function Integration](images/12110-FunctionIntegration.png)
 
