@@ -30,7 +30,7 @@ That isn't a problem unless the Venue that you are at is also using the `192.168
 
 The easiest way to fix the problem is to simply re-assign the Static IP Address on the NUC's WiFi adapter so that it is on a different network:
 
-![IP Network Conflict Solution](images/IpNetworkConflictProblem.png)
+![IP Network Conflict Solution](images/IpNetworkConflictSolution.png)
 
 
 The easiest way to resolve the problem is:
