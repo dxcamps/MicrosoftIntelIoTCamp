@@ -94,7 +94,7 @@ Getting Started with Grove IoT Commercial Developer Kit
 
 1. Once the IP Address has been displayed, wait another two minutes and then open your browser and go to the IP Address from the previous step (`http://your.nucs.ip.address` where `your.nucs.ip.address is` the IP Address from above).  If you are presented with a **"Privacy Statement"** click **"Continue"**.
 
-    > **Note:** Why are we waiting?  The "IoT Gateway Developer Hub" is a web application that is delivered by an nginx web server instance that takes a little bit of time to spin up.  Just because the IP Address is showing on the LCD, that doesn't mean that the web application is ready yet.  **Give it a few of minutes, it may even take up to five minutes or so**, and you'll likely be less frustrated!  ***Have some fun while you wait, try turning the knob on the Rotary Angle Sensor to see the background colors on the RGB LCD change.  That happens because the default Node-Red flow (we'll see that soon) is reading that sensor value and changing the background color based on the value it reads.  Enjoy.***
+    > **Note:** Why are we waiting?  The "IoT Gateway Developer Hub" is a web application that is delivered by an nginx web server instance that takes a little bit of time to spin up.  Just because the IP Address is showing on the LCD, that doesn't mean that the web application is ready yet.  **Give it a few of minutes, it may even take up to five minutes or so**, and you'll likely be less frustrated!  ***Have some fun while you wait, try turning the knob on the Rotary Angle Sensor to see the background colors on the RGB LCD change.  That happens because the default Node-RED flow (we'll see that soon) is reading that sensor value and changing the background color based on the value it reads.  Enjoy.***
 
     ![Privacy Statement](images/01100-PrivacyStatement.png)
 
@@ -767,7 +767,7 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
     rpm --import http://iotdk.intel.com/misc/iot_pub2.key
     ```
 
-1. Next, install the `node-red-contrib-os` npm package globally on the NUC.  This package (<a target="_blank" href="https://www.npmjs.com/package/node-red-contrib-os">link</a>) adds some special Node-Red nodes that allow you to get information from the local Operating System (OS) where the Node-Red flow is running.  Things like OS Info, Drive Info, Memory Info, etc.  Install it on the NUC using the following statement:
+1. Next, install the `node-red-contrib-os` npm package globally on the NUC.  This package (<a target="_blank" href="https://www.npmjs.com/package/node-red-contrib-os">link</a>) adds some special Node-RED nodes that allow you to get information from the local Operating System (OS) where the Node-RED flow is running.  Things like OS Info, Drive Info, Memory Info, etc.  Install it on the NUC using the following statement:
 
     You will see a number of "***WARN unmet dependency***" messages appear.  ***You can safely ignore these***.
 
@@ -858,11 +858,11 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
     ![Edit DeviceId in Create Payload](images/09110-EditDeviceIdInCreatePayload.png)
 
-1. Click the "**Deploy**" button to deploy the changes.  At this point, the Node-Red flow on the NUC should begin publishing Temperature data to your Azure IoT Hub as your `<name>IntelIotGateway` device.
+1. Click the "**Deploy**" button to deploy the changes.  At this point, the Node-RED flow on the NUC should begin publishing Temperature data to your Azure IoT Hub as your `<name>IntelIotGateway` device.
 
     ![Deploy the Changes](images/09120-DeployChanges.png)
 
-1. Now the that device is publishing messages to the IoT Hub, we want to verify that by reading the messages back.  From the command prompt or terminal window ***on your system***, run the following command to monitor the messages being sent into your Azure IoT Hub the Node-Red flow running on the NUC:
+1. Now the that device is publishing messages to the IoT Hub, we want to verify that by reading the messages back.  From the command prompt or terminal window ***on your system***, run the following command to monitor the messages being sent into your Azure IoT Hub the Node-RED flow running on the NUC:
 
     - You will need to copy the '**IoT Hub "iothubowner" SAS Policy Primary Connection String**' from the "**[myresources.txt](./myresources.txt)**" file.
 
