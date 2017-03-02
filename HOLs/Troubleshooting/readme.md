@@ -7,6 +7,8 @@
 - [Manual Node-Red AzureIoTHub node installation using NPM instead of RPM](#manualnodered)
 - [powerbi-cli Issues](#powerbicli)
 - [IP Address not Displaying on the Grove LCD](#noiponlcd)
+- [Showing All Repositories](#showrepos)
+- [Re-adding Intel's Repo](#addintelrepo)
 
 ---
 
@@ -256,3 +258,21 @@ When you boot, the NUC with the Arduino 101, Grove Shield, Rotary Sesor, LCD and
 1. One way to test that the Firmata is working, etc. is to twist the rotary sensor.  You should see that the background color of the RGB LCD attached to the Grove Shield changes.  This is implemented in the default Node-Red flow on the NUC and it wouldn't work if the NUC couldn't communicate with the Arduino 101.  So if that works, at least you know the NUC / Node-Red / Arduino 101 / Grove Shield stack is working.  
 
 1. You should also be able to see the current values of the rotary sensor in the Intel Dev Hub on the NUC at `http://<your.nucs.ip.address>`.  Again, this is just to help you confirm that the communication between your NUC and the Arduino 101 is working so you can continue to diagnose the issue of the IP Address not displaying.
+
+<a name="showrepos"></a>
+
+## Show All Repositories
+
+In case you need to look at the repos that have been added to the IoT Gateway, execute the following:
+```bash
+smart channel --show
+```
+
+<a name="addintelrepo"></a>
+
+## Re-adding Intel's Repo
+In case you accidentally delete the Intel package repository, the information is the following:
+```
+Name: Intel_Repository
+Url: https://download.01.org/iotgateway/rcpl13/x86_64
+```
