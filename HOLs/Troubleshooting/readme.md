@@ -132,9 +132,16 @@ Video: "**<a target="_blank" href="https://www.youtube.com/embed/nS6xNMGRRvg">Re
 
 These steps explain how to re-image a NUC from a remote machine.  This is handy in a lab environment where you need to reset a number of NUCs withouth having to connect a keyboard or screen to each one to reimage them locally.
 
+There are two methods described.  They both do the same thing, but the Shell Script tries to simplify the process and help prevent future ssh errors due to the re-imaged NUC's ssh key changing.  Finally, if you want to know more about it, read the "How Remote Re-Imaging Works" section.
+
+- [The Shell Script Method (Recommended)](#remotereimagescript)
+- [The Basic Method](#remotereimagebasic)
+- [How Remote Re-Imaging Works](#howremotereimagingworks)
+
+
 <a name="remotereimagescript"></a>
 
-### The Shell Script Method
+### The Shell Script Method (Recommended)
 
 This method requires that you have a bash prompt.  It should work on Linux or Mac, or if you are on Windows 10, you can install "[Bash on Ubuntu on Windows](https://msdn.microsoft.com/en-us/commandline/wsl/about)".  The shell script also helps clean up old ssh keys for the remote NUC given it's IP Address to prevent errors about the ssh key not being valid when you attempt to ssh back in after it is reimage.  It's just a much easier command to use when you have bunch of NUCs to reimage in a lab environment.
 
@@ -176,7 +183,7 @@ So what's different about the script as opposed to the "Basic" method described 
 - ssh's into the NUC and get's it to avoid prompting you to save the new key to known_hosts
 - Makes it easier to reimage a bunch of machines by simplifying the command line for each one.
 
-Here's the contents of the script:
+Here's the contents of the script.  This is just FYI so you can see what it is doing:
 
 ```bash
 #!/bin/bash
@@ -205,7 +212,6 @@ popd
 # "shutdown -P 0" runs on the NUC and powers it down immediately
 ssh -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" root@$1 "echo 2 > /media/mmcblk0p1/EFI/boot/BOOTX64.default && shutdown -P 0"
 ```
-
 
 <a name="remotereimagebasic"></a>
 
@@ -285,9 +291,11 @@ If you don't have a bash prompt (for example you want to run it from PowerShell 
     root@WR-IDP-5188:~#
     ```
 
-<a name="HowRemoteReimagingWorks"></a>
+<a name="howremotereimagingworks"></a>
 
 ### How Remote Re-Imaging Works
+
+You don't need to read this.  It is just being documented here to help persist the knowledge gained when the remote re-image process we being developed.  If you want to know more about how the NUC boots though, this is good info.
 
 The NUC uses GRUB 09.7 [link](https://www.gnu.org/software/grub/manual/legacy/grub.html) as it's bootloader.  The configuration file for the GRUB bootloaer for the NUC is at:
 
@@ -389,7 +397,10 @@ It passes two different commands to the remote NUC.  The first command is:
 echo 2 > /media/mmcblk0p1/EFI/boot/BOOTX64.default
 ```
 
+
 That command replaces the contents of the `/media/mmcblk0p1/EFI/boot/BOOTX64.default` file on the NUC with the value `2` which means the third boot option, `Wind River Intelligent Device Platform (Restore Factory Image) - HAC`, will be used by default on the next boot.
+
+![Setting Default Boot Option](images/SetDefaultBootOptionToReimage.png)
 
 A second command is then run to shutdown the NUC:
 
@@ -406,12 +417,6 @@ Now when you power the NUC back up:
 1. The NUC will wait for the 5 second timeout
 1. When the timeout expires, the value 0 will be read from freshly re-imaged  `/media/mmcblk0p1/EFI/boot/BOOTX64.default` and the  `Wind River Intelligent Device Platform` option will be selected
 1. The NUC will boot normally to a newly refreshed image.  You can now login with the `root` user name and the `root` password.
-
-
-
-![Setting Default Boot Option](images/SetDefaultBootOptionToReimage.png)
-
-
 
 ---
 
