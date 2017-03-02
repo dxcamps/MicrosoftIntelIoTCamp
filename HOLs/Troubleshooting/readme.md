@@ -329,16 +329,16 @@ title Wind River Intelligent Device Platform (Restore Factory Image) - HAC
     savedefault 0
 ```
 
-The first two lines
+The first two lines are:
 
 ```bash
 default saved
 timeout 5
 ```
 
-That means that GRUB will wait 5 seconds (`timeout 5`) for the user to select an option before it looks in a previously saved default boot option number (`default saved`)  from a .default file (`/media/mmcblk0p1/EFI/boot/BOOTX64.default` in our case) and then automatically boot to that file.
+That means that GRUB will wait 5 seconds (`timeout 5`) for the user to select an option before it looks for a previously saved default boot option number (`default saved`)  from a .default file (`/media/mmcblk0p1/EFI/boot/BOOTX64.default` in our case) and then automatically boot to that option with that number.
 
-There are three boot options (numbered sequentially starting with 0):
+There are three boot options defined in the NUC's `bootx64.conf` file:
 
 ```bash
 ...
@@ -356,7 +356,7 @@ The options are numbered starting with 0:
 - 1 = `Wind River Intelligent Device Platform (Boot Once) - HAC`
 - 2 = `Wind River Intelligent Device Platform (Restore Factory Image) - HAC`
 
-You can see three different boot options when the NUC boots if you have a monitor attached to the NUC. If you had a keyboard, you could then manually select the third option (Option 2), "Wind River Intelligent Device Platform (Restore Factory Image) - HAC" to re-image the NUC on reboot.
+You can see the three boot options when the NUC boots if you have a monitor attached to the NUC. If you had a keyboard, you could then manually select the third option (Option 2), "Wind River Intelligent Device Platform (Restore Factory Image) - HAC" to re-image the NUC on reboot.
 
 ![Default GRUB Boot Menu](images/GRUB097BootMenu.png)
 
@@ -417,6 +417,7 @@ Now when you power the NUC back up:
 1. The NUC will wait for the 5 second timeout
 1. When the timeout expires, the value 0 will be read from freshly re-imaged  `/media/mmcblk0p1/EFI/boot/BOOTX64.default` and the  `Wind River Intelligent Device Platform` option will be selected
 1. The NUC will boot normally to a newly refreshed image.  You can now login with the `root` user name and the `root` password.
+1. You may get an error from your ssh key about the ssh certificate or key on the remote NUC having changed.  This is what the reimage.sh script tries to solve for you.  If you do it manually, you will need to fix your ssh keys yourself.
 
 ---
 
@@ -579,4 +580,3 @@ When you boot, the NUC with the Arduino 101, Grove Shield, Rotary Sesor, LCD and
 1. One way to test that the Firmata is working, etc. is to twist the rotary sensor.  You should see that the background color of the RGB LCD attached to the Grove Shield changes.  This is implemented in the default Node-Red flow on the NUC and it wouldn't work if the NUC couldn't communicate with the Arduino 101.  So if that works, at least you know the NUC / Node-Red / Arduino 101 / Grove Shield stack is working.  
 
 1. You should also be able to see the current values of the rotary sensor in the Intel Dev Hub on the NUC at `http://<your.nucs.ip.address>`.  Again, this is just to help you confirm that the communication between your NUC and the Arduino 101 is working so you can continue to diagnose the issue of the IP Address not displaying.
-
