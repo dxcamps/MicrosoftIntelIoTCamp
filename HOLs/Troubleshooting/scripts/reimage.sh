@@ -10,4 +10,4 @@ fi
 pushd ~/.ssh
 ssh-keygen -f 'known_hosts' -R $1
 popd
-ssh -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" root@$1 "echo 2 > media/mmcblk0p1/EFI/boot/BOOTX64.default && shutdown -P 0"
+ssh -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" root@$1 "echo 2 > /media/mmcblk0p1/EFI/boot/BOOTX64.default && shutdown -P 0"
