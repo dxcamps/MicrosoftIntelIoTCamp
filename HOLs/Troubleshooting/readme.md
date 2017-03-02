@@ -297,7 +297,7 @@ If you don't have a bash prompt (for example you want to run it from PowerShell 
 
 You don't need to read this.  It is just being documented here to help persist the knowledge gained when the remote re-image process we being developed.  If you want to know more about how the NUC boots though, this is good info.
 
-The NUC uses GRUB 09.7 [link](https://www.gnu.org/software/grub/manual/legacy/grub.html) as it's bootloader.  The configuration file for the GRUB bootloaer for the NUC is at:
+The NUC uses GRUB 0.97 [link](https://www.gnu.org/software/grub/manual/legacy/grub.html) as it's bootloader.  The configuration file for the GRUB bootloaer for the NUC is at:
 
 ```bash
 /media/mmcblk0p1/EFI/boot/bootx64.conf
