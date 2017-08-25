@@ -603,155 +603,35 @@ Creating an Azure IoT Hub Device Identity
 
 Now that we have our Azure IoT Hub created, we want to create an entry in the hub's device identity registry.  A "device identity" in the IoT Hub's device identity registry is basically a unique id and access key that can be used by the actual device in the field (The Intel NUC and with Arduino 101 in our case) to connect to the IoT Hub.  The connection string for the device entry in the registry will be used by the actual device to securely connect to the IoT Hub and send and receive messages as that device.  You can learn more about Azure IoT Hub devices in the "**<a target="_blank" href="https://azure.microsoft.com/en-us/documentation/articles/iot-hub-devguide-identity-registry/">Identity registry</a>**" article online.
 
-At the time this is being written, the Azure Portal does not allow you to provision device identities in the registry, although you can view existing ones.  In order to create our device identity, we will use a node.js command line interface for working with your Azure IoT Hubs called "**<a target="_blank" href="https://www.npmjs.com/package/iothub-explorer">iothub-explorer</a>**"
+In this lab, we will create our device identities using the portal, however you can also create them using a variety of other tools:
 
-There is a graphical tool for Windows called "**Device Explorer**".  We won't document its use here in this lab, but if you are on Windows and wish to try it can you can download it from here <a target="_blank" href="https://github.com/Azure/azure-iot-sdks/releases/latest">github.com/Azure/azure-iot-sdks/releases/latest</a> (look for the first "**SetupDeviceExplorer.msi**" link) and learn more about it here: <a target="_blank" href="https://github.com/Azure/azure-iot-sdk-csharp/blob/master/tools/DeviceExplorer/readme.md">How to use Device Explorer for IoT Hub devices</a>.
+- **Azure CLI 2.0**: A python based command line interface for - manaing all of your Azure resources including IoT Hubs and Devices. - **<a target="_blank" href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli">link</a>**
+- **iothub-explorer**: A node.js command line interface for working with your Azure IoT Hubs - **<a target="_blank" href="https://www.npmjs.com/package/iothub-explorer">link</a>**
+- **Device Explorer**A windows tool for managing your iot hubs - **<a target="_blank" href="https://github.com/Azure/azure-iot-sdks/releases/latest">link</a>** <br/> (look for the first "**SetupDeviceExplorer.msi**" link) and read more about it here: <a target="_blank" href="https://github.com/Azure/azure-iot-sdk-csharp/blob/master/tools/DeviceExplorer/readme.md">How to use Device Explorer for IoT Hub devices</a>.
 
-1. This task requires that you have Node.js 4.x or later installed.  If you don't have it installed already, you can install it from **<a target="_blank" href="https://nodejs.org/en/">nodejs.org</a>**.  Make sure that Node is added to the path so you can access it from anywhere on the command line.
+1. With the blade for your new IoT Hub still open in the portal, click the "**Device Explorer**" link along the left, click "**+ Add**" along the top of the "**Device Explorer**" blade and then complete the "**Add Device**" blade as follows, then click **Save** to create the device identity:
 
-1. Open a command prompt, or terminal window, **on your development PC** (not on the NUC) and install the "iothub-explorer" npm package globally as follows:
+    - Device ID: **_&lt;name&gt;IntelIoTGateway_**
+    - Authentication Type: **Symmetric Key**
+    - Primary Key: Leave at **default**
+    - Secondary Key: Leave at **default**
+    - Auto Generate Keys: **Checked**
+    - Connect device to IoT Hub: **Enabled**
 
-    > **Note**: **MAKE SURE TO USE THE -g OPTION TO INSTALL THE PACKAGE GLOBALLY**
+    ![Add New Device](images/08010-CreateNewDeviceInPortal.png)
 
-    ```text
-    npm install -g iothub-explorer
-    ```
+1. Once the new Device ID has been created, click on it's name in the portal:
 
-    > **Note**: **IF YOU'RE ON A MAC OR LINUX PC, YOU NEED TO USE 'SUDO' TO GAIN ADMIN PRIVILEGES FOR THE COMMAND ABOVE**
+    ![Open New Device ID](images/08020-OpenNewDeviceIdentity.png)
 
-1. You should see output similar to the following:
+1. In the "**Device Details**" blade, click the icon next to the "**Connection string-primary key**" value to copy it to the clip board, then close the details blade:
 
-    > **Note**: Your output may look different if you are running a newer version of node, or as the iothub-explorer packages is versioned.
+    ![Copy Connection String](images/08025-CopyPimaryConnectionString.png)
 
-    ```text
-    C:\Users\iotde\AppData\Roaming\npm\iothub-explorer -> C:\Users\iotde\AppData\Roaming\npm\node_modules\iothub-explorer\iothub-explorer.js
-    iothub-explorer@1.0.14 C:\Users\iotde\AppData\Roaming\npm\node_modules\iothub-explorer
-    ├── uuid@2.0.3
-    ├── nopt@3.0.6 (abbrev@1.0.9)
-    ├── colors-tmpl@1.0.0 (colors@1.0.3)
-    ├── prettyjson@1.1.3 (minimist@1.2.0, colors@1.1.2)
-    ├── bluebird@3.4.6
-    ├── azure-iot-common@1.0.15 (crypto@0.0.3)
-    ├── azure-event-hubs@0.0.3 (amqp10@3.2.2)
-    ├── azure-iothub@1.0.17 (azure-iot-http-base@1.0.16, azure-iot-amqp-base@1.0.16)
-    └── azure-iot-device@1.0.15 (azure-iot-http-base@1.0.16, debug@2.2.0, azure-storage@1.3.1)
-    ```
-
-1. Now that we have iothub-explorer installed, we can use it to interact with our Azure IoT Hub.  At your command window or terminal prompt, enter:
-
-    ```text
-    iothub-explorer
-    ```
-    It will display its usage details:
-
-    ```text
-    Usage: iothub-explorer [options] <command> [command-options] [command-args]
-
-
-    Commands:
-
-        login                                                                          start a session on your IoT hub
-        logout                                                                         terminate the current session on your IoT hub
-        list                                                                           list the device identities currently in your IoT hub device registry
-        create <device-id|device-json>                                                 create a device identity in your IoT hub device registry
-        delete <device-id>                                                             delete a device identity from your IoT hub device registry
-        get <device-id>                                                                get a device identity from your IoT hub device registry
-        import-devices                                                                 import device identities in bulk: local file -> Azure blob storage -> IoT hub
-        export-devices                                                                 export device identities in bulk: IoT hub -> Azure blob storage -> local file
-        send <device-id> <message>                                                     send a message to the device (cloud-to-device/C2D)
-        monitor-feedback                                                               monitor feedback sent by devices to acknowledge cloud-to-device (C2D) messages
-        monitor-events [device-id]                                                     listen to events coming from devices (or one in particular)
-        monitor-uploads                                                                monitor the file upload notifications endpoint
-        monitor-ops                                                                    listen to the operations monitoring endpoint of your IoT hub instance
-        sas-token <device-id>                                                          generate a SAS Token for the given device
-        simulate-device <device-id>                                                    simulate a device with the specified id
-        get-twin <device-id>                                                           get the twin of a device
-        update-twin <device-id> <twin-json>                                            update the twin of a device and return it.
-        query-twin <sql-query>                                                         Gets the twin of a device
-        query-job [job-type] [job-status]                                              Gets the twin of a device
-        device-method <device-id> <method-name> [method-payload] [timeout-in-seconds]  Gets the twin of a device
-        help [cmd]                                                                     display help for [cmd]
-
-    Options:
-
-        -h, --help     output usage information
-        -V, --version  output the version number
-    ```
-1. Note the `iothub-explorer login` option.  This allows you to enter your IoT Hub connection string once, and not have to re-supply the connection string for every command during the "session".  The "session" lasts for one hour by default. To login, we'll need the "iothubowner" SAS policy connection string we copied int the "**[myresources.txt](./myresources.txt)**" file previously.  Retrieve that string from the file, and use it to login to your Azure IoT Hub with iothub-explorer as follows:
-
-    ```text
-    iothub-explorer login "<paste your IoT Hub 'iothubowner' SAS Policy Primary Connection String here>"
-    ```
-    In the example below, note the "**`SharedAccessKeyName=iothubowner`**" portion of the connection string.  That's how you know it's the "**`iothubowner`**" connection string:
-
-    ```text
-    iothub-explorer login "HostName=mic16iot.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=MuIeI2Bpp4lm6knbNiXX4J1V+UivTov/ebfIfykWD+g="
-    ```
-
-    You should see details about your login session returned.  Something similar to this:
-
-    ```text
-    Session started, expires on Wed Dec 14 2016 10:40:28 GMT-0800 (Pacific Standard Time)
-    Session file: C:\Users\IoTDev\AppData\Local\iothub-explorer\config
-    ```
-
-1. Next, we need to determine the id we will use for the device identity.  We will use the same naming convention for the other resources to create a device identity with the following id:
-
-    ***&lt;name&gt;IntelIoTGateway***
-
-    > **Note**: In a real-world production scenario this id would more likely be a guid, or some kind of value that supported uniqueness across a large number of devices.  But to help the id be understandable in the lab, we are using a more human readable string for the id.
-
-1. Create the new device identity using the "**iothub-explorer create**" command.  The "**--connection-string**" option at the end asks the utility to return the primary connection string for the device to use to connect to the Azure IoT Hub:
-
-    ```text
-    iothub-explorer create <name>IntelIoTGateway --connection-string
-    ```
-    For example:
-
-    ```text
-    iothub-explorer create mic16IntelIoTGateway --connection-string
-    ```
-    With this result:
-
-    ```text
-    Created device mic16IntelIoTGateway
-
-    -
-    deviceId:                   mic16IntelIoTGateway
-    generationId:               636116504595463314
-    etag:                       MA==
-    connectionState:            Disconnected
-    status:                     enabled
-    statusReason:               null
-    connectionStateUpdatedTime: 0001-01-01T00:00:00
-    statusUpdatedTime:          0001-01-01T00:00:00
-    lastActivityTime:           0001-01-01T00:00:00
-    cloudToDeviceMessageCount:  0
-    authentication:
-        SymmetricKey:
-        secondaryKey: qb3RG2SjfQ+tz8jZOK/xBPqP9F0K+riha0i5KJNcWdg=
-        primaryKey:   q9D0X2vXNsQ5LET3TlXx+FpHZ1SP6pQ9+69+hudCIZk=
-        x509Thumbprint:
-        primaryThumbprint:   null
-        secondaryThumbprint: null
-    -
-    connectionString: HostName=mic16iot.azure-devices.net;DeviceId=mic16IntelIoTGateway;SharedAccessKey=q9D0X2vXNsQ5LET3TlXx+FpHZ1SP6pQ9+69+hudCIZk=
-    ```
 1. Copy the connection string for the new device from the command output, and document it along with your device id in the "**[myresources.txt](./myresources.txt)**" file:
 
     ![Document Device Identity](images/08030-DocumentDeviceIdentity.png)
 
-1. If needed, you can use the iothub-explorer to list the existing device identities along with their connection strings as follows:
-
-    ```text
-    iothub-explorer list --connection-string
-    ```
-
-1. Or, you can retrieve the details (including the connection string) of a specific device with:
-
-    ```text
-    iothub-explorer get <deviceid> --connection-string
-    ```
 ___
 
 <a name="PublishToIoTHub"></a>
