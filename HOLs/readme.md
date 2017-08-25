@@ -661,66 +661,26 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
     npm install node-red-contrib-os -g
     ```
 
-    ***Keep your ssh connection open, you'll need it later.***
+1. Next, we need to update some packages on the NUC to include the Azure IoT SDK and utilities. Still in your ssh session on the NUC, run the following commands:
 
-1. Next, we need to add an rpm package repository to the system. In your browser, navigate to your NUC's IP Address and login as root.  Then navigate to the "**Packages"** page, and click the "**Add Repo +**" button.
+    > **Note**: The final command in this step, `smart install -y packagegroup-cloud-azure`, downloads a number of packages from the internet and installs them on the NUC.  This will likely take a couple of minutes, perhaps longer depending on your network speed. 
 
-    ![Add Repo](images/09010-AddRepo.png)
-
-1. In the "**Manage Repositories**" window, in the fields under "**Add New Repository**" enter the following, and click the "**Add Repository**" button:
-
-    > **Note**: The `IoT_Cloud` repo is provided by Intel and includes some packages for working with Azure's IoT services.  Once we add a reference to the repo (which is what we are doing here), we can later install packages from it using apt-get.
-
-    - Name - **IoT_Cloud**
-    - URL - **`http://iotdk.intel.com/repos/iot-cloud/wrlinux7/rcpl13`**
-    - Username - **leave blank**
-    - Password - **leave blank**
-
-    ![Add IoT_Coud Repository](images/09020-AddIoTCloudRepo.png)
-
-1. You will see the following message, indicating that this update may take a few minutes.  And it does, so be patient:
-
-    "***Adding repository IoT_Cloud.  Package list will be updated.  This may take a few minutes...***"
-
-1. Once the update is complete, you should see the following message.  Click on the "Update Repositories" button.  Again, this will take a few mintues to complete:
-
-    ![Update Repositories](images/09030-UpdateRepositories.png)
-
-1. When the button states that the repositories have been updated (this will also take a minute or so to update), you can click on the "X" in the top right corner of the "**Manage Repositories**" window to close it:
-
-    ![Close Manage Repositories Window](images/09040-CloseManageRepositoriesWindow.png)
-
-1. Next, click the "**Add Packages +**" button:
-
-    ![Add Packages](images/09050-AddPackagesButton.png)
-
-1. In the "**Add New Packages**" window, in the search box, type "**cloud-azure**", then click the "**Install**" button next to the "**packagegroup-cloud-azure**" package.  Again, this takes a few minutes so be patient:
-
-    <blockquote>
-      <strong>Note</strong>: You can see what all is installed with the packagegroup-cloud-azure package here: <a target="_blank" href="https://github.com/intel-iot-devkit/meta-iot-cloud/tree/master/recipes-core/packagegroups">link</a>
-       <br/>
-      Basically it is all of the npm packages for the various Azure IoT Hub sdks.  It also includes a Node-RED node for working with Azure IoT Hubs (<a target="_blank" href="https://www.npmjs.com/package/node-red-contrib-azureiothubnode">link</a>).
-    </blockquote>
-
-    ![Install packagegroup-cloud-azure](images/09060-InstallPackageGroupCloudAzure.png)
-
-1. Once the package disappears from the list, you can click on the "X" icon to close the "**Add New Packages**" window.
-
-    ![Close the Add New Packages Window](images/09070-CloseAddNewPackagesWindow.png)
-
-1. ***Back in your ssh connection to the NUC***, run the following command to restart the Node-RED environment on the NUC.  This is necessary because the package that we just installed updated the resources available to Node-RED so it needs to be re-initialized:
-
-    ```text
-    systemctl restart node-red-experience
+    ```bash
+    smart channel --add 'IoT_Cloud' type=rpm-md baseurl=http://iotdk.intel.com/repos/iot-cloud/wrlinux7/rcpl13 -y
+    smart update 'IoT_Cloud'
+    smart update
+    smart install -y packagegroup-cloud-azure
     ```
 
-1. Now, ***from your computer*** open the Node-RED development environment in the browser (Remember you can just point your browser to port 1880 on your NUC, eg: `http://your.nucs.ip.address:1880` where `your.nucs.ip.address is` your NUC's IP Address).  If you already had it open, make sure to refresh it.  In the list of nodes on the left, you should see a new "**cloud**" category, and within it the "**azureiothub**" node:
+1. Finally, we'll restart the Node-Red service on the NUC so it can refresh the list of available modules.  In the ssh session on the NUC, run this final command:
 
-    <blockquote>
-      <strong>Note</strong>: if the "<strong>cloud</strong>" category and "<strong>azureiothubnode</strong>" node don't appear, you may need to manually install the "<strong>node-red-control-azureiothubnode</strong>" package on the NUC.  If that is necessary, ssh into the NUC, and from the prompt run the following two commands:<br/>
-      <pre><code class="lank-bash">npm install -g node-red-contrib-azureiothubnode</code></pre>
-      <pre><code class="lank-bash">systemctl restart node-red-experience</code></pre>
-    </blockquote>
+    ```bash
+    systemctl restart node-red-experience    
+    ```
+
+    ***Keep your ssh connection open, you'll need it later.***
+
+1. Now, ***from your computer*** open the Node-RED development environment in the browser (Remember you can just point your browser to port 1880 on your NUC, eg: `http://your.nucs.ip.address:1880` where `your.nucs.ip.address is` your NUC's IP Address).  If you already had it open, make sure to refresh it.  In the list of nodes on the left, you should see a new "**cloud**" category, and within it the "**azureiothub**" node:
 
     ![New azureiothubnode](images/09080-AzureIoTHubNode.png)
 
@@ -748,7 +708,19 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
     ![Deploy the Changes](images/09120-DeployChanges.png)
 
-1. Now the that device is publishing messages to the IoT Hub, we want to verify that by reading the messages back.  From the command prompt or terminal window ***on your system***, run the following command to monitor the messages being sent into your Azure IoT Hub the Node-RED flow running on the NUC:
+1. Now the that device is publishing messages to the IoT Hub, we want to verify that by reading the messages back.  You can monitor the number of messages sent from the device, but not the actual content of the messages from the "**Overview**" page in your IoT Hubs blade in the portal.
+
+    ![Message Count in Portal](images/09125-MessageCountInPortal.png)
+
+1. If you want to see the messages themselves, you can use a Node.js command line tool called "**iothub-explorer**" to monitor your devices messages from your machine.  To use "**iothub-explorer**" do the following:
+    - From the command prompt or terminal window ***on your system***, install the "**iothub-explorer**" npm packages:
+
+        > **Note**: On mac or linux, you may have to use "**sudo**" to run the "**npm install**" command.  In addition, your computer will need to have Node.js 4.x or later installed.  If you don't have Node.js installed you can get it from <a target="_blank" href="https://nodejs.org/en/">nodejs.org</a> 
+    
+        ```bash
+        npm install -g iothub-explorer
+        ```
+    - Next the following command to monitor the messages being sent into your Azure IoT Hub the Node-RED flow running on the NUC:
 
     - You will need to copy the '**IoT Hub "iothubowner" SAS Policy Primary Connection String**' from the "**[myresources.txt](./myresources.txt)**" file.
 
@@ -756,54 +728,54 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
     - Use the device id you generated in place of the ***&lt;name&gt;IntelIoTGateway*** device id
 
-    ```text
-    iothub-explorer monitor-events <name>IntelIoTGateway --login "<IoT Hub 'iothubowner' SAS Policy Primary Connection String>"
-    ```
+        ```text
+        iothub-explorer monitor-events <name>IntelIoTGateway --login "<IoT Hub 'iothubowner' SAS Policy Primary Connection String>"
+        ```
 
-    For example:
+        For example:
 
-    ```text
-    iothub-explorer monitor-events mic16IntelIoTGateway --login "HostName=mic16iot.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=MuIeI2Bpp4lm6knbNiXX4J1V+UivTov/ebfIfykWD+g="
-    ```
+        ```text
+        iothub-explorer monitor-events mic16IntelIoTGateway --login "HostName=mic16iot.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=MuIeI2Bpp4lm6knbNiXX4J1V+UivTov/ebfIfykWD+g="
+        ```
 
-    And you should see output similar to this:
+        And you should see output similar to this:
 
-    ```text
-    Monitoring events from device mic16IntelIoTGateway
-    ==== From: mic16IntelIoTGateway ====
-    {
-    "deviceID": "mic16IntelIoTGateway",
-    "timestamp": "2016-10-10T03:49:48.966Z",
-    "temperature": 36.959999999999994
-    }
-    ====================
-    ==== From: mic16IntelIoTGateway ====
-    {
-    "deviceID": "mic16IntelIoTGateway",
-    "timestamp": "2016-10-10T03:49:59.006Z",
-    "temperature": 37.62
-    }
-    ====================
-    ==== From: mic16IntelIoTGateway ====
-    {
-    "deviceID": "mic16IntelIoTGateway",
-    "timestamp": "2016-10-10T03:50:09.085Z",
-    "temperature": 36.959999999999994
-    }
-    ====================
-    ```
+        ```text
+        Monitoring events from device mic16IntelIoTGateway
+        ==== From: mic16IntelIoTGateway ====
+        {
+        "deviceID": "mic16IntelIoTGateway",
+        "timestamp": "2016-10-10T03:49:48.966Z",
+        "temperature": 36.959999999999994
+        }
+        ====================
+        ==== From: mic16IntelIoTGateway ====
+        {
+        "deviceID": "mic16IntelIoTGateway",
+        "timestamp": "2016-10-10T03:49:59.006Z",
+        "temperature": 37.62
+        }
+        ====================
+        ==== From: mic16IntelIoTGateway ====
+        {
+        "deviceID": "mic16IntelIoTGateway",
+        "timestamp": "2016-10-10T03:50:09.085Z",
+        "temperature": 36.959999999999994
+        }
+        ====================
+        ```
 
-1. Remember that we had the Node-RED flow only getting temperatue values once every 10 seconds (10000ms).  It is recommended that you don't publish too much more frequently during this event.  It just helps to reduce the amount of traffic on the network.
+    - Remember that we had the Node-RED flow only getting temperatue values once every 10 seconds (10000ms).  It is recommended that you don't publish too much more frequently during this event.  It just helps to reduce the amount of traffic on the network.
 
-1. If you are feeling adventurous, trade iothubowner connection strings and device IDs with a neighbor in the lab and verify that you can monitor each other's devices.  For example:
+    - If you are feeling adventurous, trade iothubowner connection strings and device IDs with a neighbor in the lab and verify that you can monitor each other's devices.  For example:
 
     ```bash
     iothub-explorer monitor-events <your neighbors device id> --login "<Your neighbors 'iothubowner' SAS Policy Primary Connection String>"
     ```
 
-1. One last comment, we are using the "**iothubowner**" connection string to monitor the events.  You could actually use a less privileged policy, like the "**service**" sas policy  we copied the connection string for earlier.  Go ahead and try monitoring events with the **IoT Hub "service" SAS Policy Primary Connection String** policy connection string (the one with "**`SharedAccessKeyName=service`**" in it) you pasted into the [myresources.txt](./myresources.txt) file.  It should work just fine because that SAS policy has permissions to read messages from the IoT Hub and that is all the permissions that `iothub-explorer monitor-events` needs.
+    - One last comment, we are using the "**iothubowner**" connection string to monitor the events.  You could actually use a less privileged policy, like the "**service**" sas policy  we copied the connection string for earlier.  Go ahead and try monitoring events with the **IoT Hub "service" SAS Policy Primary Connection String** policy connection string (the one with "**`SharedAccessKeyName=service`**" in it) you pasted into the [myresources.txt](./myresources.txt) file.  It should work just fine because that SAS policy has permissions to read messages from the IoT Hub and that is all the permissions that `iothub-explorer monitor-events` needs.
 
-1. To stop monitoring events, press **Ctrl-C** at the command prompt and confirm exiting the script.
+    - To stop monitoring events, press **Ctrl-C** at the command prompt and confirm exiting the script.
 
 ___
 
