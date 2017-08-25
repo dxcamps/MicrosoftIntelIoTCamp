@@ -527,7 +527,7 @@ In this task, we'll create the ***&lt;name&gt;iot*** Azure IoT Hub and since it'
 
 1. Open the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>) and login to your subscription.  If you don't have a current Azure Subscription you can create a <a target="_blank" href="https://azure.microsoft.com/en-us/free/">free trial</a>.
 
-1. Click the "**+ New**" button, then select "**Internet of Things**", and select "**Iot Hub**"
+1. Click the "**+ New**" button, then select "**Internet of Things**", select "**Iot Hub**" and click the "**Create**" link to create a new hub.
 
     ![New IoT Hub](images/07010-NewIoTHub.png)
 
