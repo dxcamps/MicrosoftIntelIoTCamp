@@ -14,7 +14,6 @@
   ],
   "dependencies": {
     "angular": "^1.5.2",
-    "bootstrap": "^3.3.6",
-    "powerbi-client": "^2.1.1"
+    "bootstrap": "^3.3.6"
   }
 }

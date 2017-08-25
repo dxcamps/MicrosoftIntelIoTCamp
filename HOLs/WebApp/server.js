@@ -103,17 +103,6 @@ function runQuery(res, query) {
     });
 }
 
-// ==================== Power BI API Prep ====================
-
-// power bi requires
-var powerbi = require('powerbi-api');
-
-// Read the power bi configuration values
-var powerbiCollectionName = nconf.get('powerbiCollectionName');
-var powerbiWorkspaceId = nconf.get('powerbiWorkspaceId');
-var powerbiReportId = nconf.get('powerbiReportId');
-var powerbiAccessKey = nconf.get('powerbiAccessKey');
-
 // =================== Express Web App Prep ===================
 
 // General express related requires...
@@ -176,48 +165,9 @@ app.post('/api/testBuzzer', function(req, res) {
     res.end();
 });
 
-app.get('/api/powerbiembedconfig',
-    function(req,res){
-        //FYI, http://calebb.net and http://jwt.io have token decoders you can use to inspect the generated token.
-
-        // Set the expiration to 24 hours from now:
-        var username = null;  //Not creating a user specific token
-        var roles = null;     //Not creating a role specific token
-        var expiration =  new Date();
-        expiration.setHours(expiration.getHours() + 24);
-
-        // Get the other parameters from the variables we initialized
-        // previously with values from the config.json file.
-        // Then generate a valid Power BI Report Embed token with the values.  
-        var token = powerbi.PowerBIToken.createReportEmbedToken(
-            powerbiCollectionName, 
-            powerbiWorkspaceId, 
-            powerbiReportId, 
-            username, 
-            roles, 
-            expiration);
-        // And sign it with the provided Power Bi Access key
-        // Again, this value comes from the config.json file 
-        var jwt = token.generate(powerbiAccessKey);
-
-        // Create the required embed configuration for the 
-        // web client front end to use
-        var embedConfig = {
-            type: 'report',
-            accessToken: jwt,
-            id: powerbiReportId,
-            embedUrl: 'https://embedded.powerbi.com/appTokenReportEmbed'
-        };
-
-        // And pass that config back to the user as the response.
-        res.json(embedConfig);
-    }
-);
-
 app.listen(port, function() {
     console.log('app running on http://localhost:' + port);
 });
-
 
 function normalizePort(val) {
   var port = parseInt(val, 10);

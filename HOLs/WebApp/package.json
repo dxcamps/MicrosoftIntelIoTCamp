@@ -18,7 +18,6 @@
     "body-parser": "1.17.1",
     "express": "4.15.2",
     "nconf": "0.8.4",
-    "powerbi-api": "1.2.3",
     "tedious": "1.14.0",
     "tedious-connection-pool": "1.0.5"
   }

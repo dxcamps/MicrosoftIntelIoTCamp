@@ -5,9 +5,9 @@ Intel IoT Gateway, Arduino 101 and Microsoft Azure Hands-On-Lab
 Overview
 ---
 
-In this lab, we will unbox and set up an Intel IoT Gateway and the Arduino 101 board (with a Seeed Grove Starter kit) along with several services available in Microsoft Azure to monitor the temperature and alert maintenance of a high temperature. Using Node-RED, running on the Intel NUC Gateway, the application will read the temperature value from a Grove temperature sensor and publish that data to an Azure IoT Hub.  From there a collection of Azure services including Stream Analytics, Event Hubs, SQL Database, Web Applications and Power BI Embedded will be used to both display the temperature data as well as alert the user to temperature readings over a certain threshold.
+In this lab, we will unbox and set up an Intel IoT Gateway and the Arduino 101 board (with a Seeed Grove Starter kit) along with several services available in Microsoft Azure to monitor the temperature and alert maintenance of a high temperature. Using Node-RED, running on the Intel NUC Gateway, the application will read the temperature value from a Grove temperature sensor and publish that data to an Azure IoT Hub.  From there a collection of Azure services including Stream Analytics, Event Hubs, SQL Database, Web Applications and Azure Functions will be used to both display the temperature data as well as alert the user to temperature readings over a certain threshold.
 
-![Lab Architecture](images/00000-LabArchitecture.jpg)
+![Lab Architecture](images/00000-LabArchitecture-NoPowerBi.jpg)
 
 <a name="PrePrerequisites"></a>
 Prerequisites
@@ -45,7 +45,6 @@ Tasks
 1. [Processing Temperature Data with Stream Analytics](#ProcessingWithStreamAnalytics)
 1. [Displaying Temperature Data with Azure Web Apps](#AzureWebApp)
 1. [Sending Messages from the Azure IoT Hub to the Intel Gateway](#CloudToDeviceMessages)
-1. [TIME PERMITTING - Display Temperature Data with Power BI Embedded](#PowerBIEmbedded)
 1. [Cleaning Up](#CleaningUp)
 
 ___
@@ -413,7 +412,7 @@ Planning your Azure Resources
 
 The following diagram provides an overview of the architecture we will be implementing:
 
-![Lab Architecture](images/00000-LabArchitecture.jpg)
+![Lab Architecture](images/00000-LabArchitecture-NoPowerBi.jpg)
 
 ### Common Resource Group ###
 
@@ -432,16 +431,25 @@ That means that we need to select a region that supports all of the services we 
 - Azure SQL Database
 - Azure Web Apps
 - Azure Function Apps
-- Azure PowerBI Embedded
 
 <a name="locations"></a>
-At the time this is being written (October 2016), the following regions have all of the required services. **THIS LIST WILL GROW OVER TIME**. You are welcome to review the <a target="_blank" href="https://azure.microsoft.com/en-us/regions/services/">Products available by region</a> to see if any additional regions provide the resources needed.  Otherwise, simply pick the region from the list below that is closest to you, and ensure that you choose that region for each resource you deploy.
+At the time this is being written (August 2017), the following regions have all of the required services. **THIS LIST WILL GROW OVER TIME**. You are welcome to review the <a target="_blank" href="https://azure.microsoft.com/en-us/regions/services/">Products available by region</a> to see if any additional regions provide the resources needed.  Otherwise, simply pick the region from the list below that is closest to you, and ensure that you choose that region for each resource you deploy.
 
+- East US
+- East US 2
+- Central US
 - West US
+- West US 2
 - North Europe
 - West Europe
+- UK South
 - Southeast Asia
-- Australia Southeast
+- East Asia
+- Australia East
+- Australia South
+- Central India
+- Japan East
+- Japan West
 
 ### Common Naming Convention ###
 
@@ -467,7 +475,7 @@ The following table is a summary of the Azure services you will create in the la
 | IoT Hub Device Identity | ***&lt;name&gt;IntelIoTGateway*** | This is the id we will use for our device's identity in the Azure IoT Hub Device Identiy Registry.  Normally you would use a system generated globally unique value like a GUID for your device identities, but for the lab it will be much easier if we use a friendlier human readable name.   |
 |  Stream Analytics Job | ***&lt;name&gt;job*** | The Azure Stream Analytics Job provides a way to watch messages coming into the Azure IoT Hub from our devices and act on them.  In our case it will forward all messages off to a SQL Database so we can report on them, but it will also watch the temperature sensor values in those messages, and forward them to an Event Hub if they exceed a pre-defined threshold temperature.
 | SQL Server |  ***&lt;name&gt;sql*** | The Azure SQL Server instance will host our Azure SQL Database. Other than creating it to host our database.  This is also where the administrative login for our SQL Server is defined, as well as the server level firewall rules that we will configure to allow connections from the Internet. |
-| SQL Database |  ***&lt;name&gt;db*** | This will store the **dbo.Measurement** table and a couple of views.  The Stream Analytics Job above will forward all temperature messages sent to the IoT Hub into this table, and the Web Application and Power BI Embedded Reports will then query that data to provide reports on the temperature data. |
+| SQL Database |  ***&lt;name&gt;db*** | This will store the **dbo.Measurement** table and a couple of views.  The Stream Analytics Job above will forward all temperature messages sent to the IoT Hub into this table, and the Web Applicationwill then query that data to provide reports on the temperature data. |
 | Event Hub Namespace |  ***&lt;name&gt;ns*** | This is the Service Bus Namespace that hosts our Event Hub.  We really won't do much with this directly, we just need one to host our Event Hub for us.   |
 | Event Hub | ***&lt;name&gt;alerts*** | The Event Hub is an internal messaging queue that we will use to pass along temperature alert messages.  The Stream Analytics Job will watch for temperature messages with sensor values that exceed a predefined temperature threshold and forward them off to this event hub.  We'll then create an Azure Function to read the messages out of this event hub and send alerts back to the device.  |
 | Storage Account |  ***&lt;name&gt;storage*** | A few of the services require a storage account for their own purposes.  This account exists purely as a resource for those services.  We won't use it directly for our own purposes. |
@@ -475,9 +483,7 @@ The following table is a summary of the Azure services you will create in the la
 | Web App |  ***&lt;name&gt;web*** | The Azure Web App is where we will deploy our Node.js application that provides the web site for our solution.  We can then go to this site to view temperatures from our devices queried from the SQL Database |
 | Function App |  ***&lt;name&gt;functions*** | The Azure Function App contains the ***TempAlert*** function.  A single Function App can contain many functions.  We'll just have one. |
 | Function |  ***TempAlert*** | The ***TempAlert*** function will be triggered automatically whenever a new message is sent to our ***&lt;name&gt;alerts*** event hub. It will then read those messages, retrieve the id of the device it was sent from, and then send a message through the IoT Hub back to that device to let it know that its temperature has exceeded acceptible levels.  The device can then sound an alarm by turning on its buzzer. |
-| Power BI Embedded Workspace Collection |  ***&lt;name&gt;collection*** | Power BI Embedded Collections are what you configure in Azure to host one or more Power BI Embedded Workspaces. |
-| Power BI Embedded Workspace |  ***system generated guid*** | The Power BI Embedded Workspace is where we can upload one or more reports. |
-| Power BI Embedded Report |  ***TemperatureChart*** | The ***TemperatureChart*** report is a pre-built report that displays device and temperature data from the ***&lt;name&gt;db*** Azure SQL Database.  It is provided as the ***TemperatureChart.pbix*** Power BI Desktop file in the lab files.  We'll upload this report into our Power BI Embedded Workspace and then embed it in the UI of our Web Application.  Users viewing the web application in their browser can then see that report. |
+
 
 ### Documenting Your Choices ###
 
@@ -1323,7 +1329,7 @@ The reason for this is that we are going to be using the Node.js Debugging and G
 
     ![config.json](images/11110-ConfigJson.png)
 
-1. Use the values you've saved to the "**[myresources.txt](./myresources.txt)**" (the **myresources.txt** file should still be accessible in the original instance of visual studio code) to paste the required values into the config.json file. You can close the config.json when you are done.  **IGNORE THE POWERBI... SETTINGS. WE'LL GET TO THOSE LATER**
+1. Use the values you've saved to the "**[myresources.txt](./myresources.txt)**" (the **myresources.txt** file should still be accessible in the original instance of visual studio code) to paste the required values into the config.json file. You can close the config.json when you are done.
 
     > **Note**: The "**iotHubConnString** should be the one for your "**service**" SAS policy, that's the one with "**`SharedAccessKeyName=service`**" in it.  This web app doesn't "manage" your iot devices, it just communicates with them as a back end service and the "service" Shared Access Policy on our IoT Hub gives the web app all the permissions it needs. Additonally, the **sqlLogin** is just the Azure SQL Server Login, *NOT* the Qualified SQL Login (e.g. use **sqladmin**, not **sqladmin@mic16sql**).
 
@@ -1371,7 +1377,7 @@ The reason for this is that we are going to be using the Node.js Debugging and G
 
     - The "**Devices**" area displays a row for each device along with their latest sensor values.  That data comes from the Azure SQL Databases' "**dbo.Devices** view.
 
-    - The "**Chart**" section currently has a placeholder image promising that a chart is coming soon.  If you complete the [TIME PERMITTING - Display Temperature Data with Power BI Embedded](#PowerBIEmbedded) portion of the lab, you will make good on that promise.
+    - The "**Chart**" section currently has a placeholder image promising that a chart is coming soon.  
 
     ![Web App Running Locally](images/11180-WebAppRunningLocally.png)
 
@@ -1638,364 +1644,6 @@ In this task, we'll create the **TempAlert** function and have it receive those 
     - Click "**Application settings**" then turn the "**Always On**" setting to "**On**" and click the "**Save**" button along the top.
 
         ![Always On](images/12240-AlwaysOn.png)
-___
-
-<a name="PowerBIEmbedded"></a>
-TIME PERMITTING - Display Temperature Data with Power BI Embedded
----
-
-***AS OF FEBRUARY 2017, THERE ARE SOME ISSUES WITH THE POWERBI-CLI THAT MAY PREVENT YOU FROM SUCCESSFULLY COMPLETING THIS SECTION.  FEEL FREE TO PROCEED, BUT BE AWARE YOU MAY ENCOUNTER ISSUES. AS THE ISSUES WITH POWERBI-CLI ARE RESOLVED, THIS SECTION WILL BE UPDATED TO REFLECT THOSE CHANGES.***
-
-In this task, we'll walk through publishing a pre-created Power BI report into a Power BI collection and Workspace in your Azure Subscription.  You can learn more about Power BI Embedded here: <a target="_blank" href="https://azure.microsoft.com/en-us/services/power-bi-embedded/">azure.microsoft.com/en-us/services/power-bi-embedded/</a>
-
-1. You **DO NOT NEED** to edit the report provided, however, if you would like to see how it was authored, and your are on a Windows system, you can download "**Power BI Desktop**" from <a target="_blank" target="_blank" href="https://powerbi.microsoft.com/en-us/desktop/">powerbi.microsoft.com/en-us/desktop/</a>.  Once you have downloaded it, you can open the "**HOLs\PowerBI\TemperatureChart.pbix**" file to view how it was designed.  **REGARDLESS, DO NOT MAKE CHANGES TO THE REPORT AT THIS TIME!**
-
-    ![Report in Power BI Desktop](images/13010-TemperatureChartReportInDesktop.png)
-
-1. To publish the report to Power BI Embedded, we need to first create a "**Power BI Embedded Workspace Collection**".  Open the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>) and close any blades left open from previous steps. Then click "**+ New**" | "**Intelligence + analytics**" | "**Power BI Embedded**"
-
-    ![New Power BI Embedded Workspace Collection](images/13020-NewPowerBiEmbeddedCollection.png)
-
-1. Complete the properties for the new collection as follows, then click "**Create**" to create it:
-
-    - Workspace Collection Name - ***&lt;name&gt;collection***
-    - Subscription - **Chose the same subscription used for the previous resources**
-    - Resource group - Choose "**Use existing**" and select the ***&lt;name&gt;group*** resource group created previously
-    - Location - **Use the same location as the previous resources**
-    - Pricing - Leave as "**Standard**"
-    - Pin to dashboard - **Checked**
-
-    ![Collection Properties](images/13030-PowerBiCollectionProperties.png)
-
-1. Once the new Power BI Embedded Workspace Collection is created, click the "**Access keys**" button along the right of its blade:
-
-    ![Access Keys](images/13040-CollectionAccessKeys.png)
-
-1. Then click the icon to the right of the "**KEY 1**" value to copy it to the clipboard:
-
-    ![Key 1](images/13050-AccessKey1.png)
-
-1. And document your collection name and key in the "**[myresources.txt](./myresources.txt)**" file.
-
-    ![Document Collection](images/13060-DocumentCollectionNameAndKey.png)
-
-1. A "**Workspace Collection**" is just what it sounds like, it is a collection of one or more "**Workspace**" instances. To upload a report, it must go into a Workspace, but at the time of this writing you can't create new Workspaces in the Azure portal.  The rest of our interaction with the Power BI Embedded service will be via the "**powerbi-cli** npm package (<a target="_blank" href="https://www.npmjs.com/package/powerbi-cli">link</a>).  Open a command prompt or terminal window and issue the following npm command to install the "**powerbi-cli**" package globally:
-
-    > **Note**: Some users on non-Windows OSs are having issues with the powerbi-cli at least as recently as v1.0.6.  If you are having issues using the powerbi-cli commands you may want to try it from a Windows machine if you have access to one.  If you are at an event, find a fellow participant with Windows that will let you run the powerbi-cli commands from their computer.  You can create your own folder on their machine store store the powerbi config created for your collection, and they can easily delete that folder when you are done.
-
-    ```text
-    npm install -g powerbi-cli
-    ```
-
-1. Make sure the powerbi-cli version is at LEAST v1.0.8 or later.  If you installed the powerbi-cli previously, the version might be lower. Go ahead and run the `npm install -g powerbi-cli` command from above to ensure you are running the latest version:
-
-    ```bash
-    powerbi --version
-    ```
-
-    Example output:
-
-    ```bash
-    1.0.8
-    ```
-
-
-1. Once it is installed, in the command prompt or terminal window, change into the "**HOLs\PowerBI**" folder, and run the following command and use the collection name and key you just pasted into the "**[myresources.txt](./myresources.txt)**" file to tell the powerbi how to connect to our workspace collection:
-
-    > **Note**: The `powerbi config` command creates a `.powerbirc` file in the directory where the command was executed.  It contains sensitive connection information about how to connect to to your Power BI Embedded Workspace Collection so be careful who you expose that file to.
-
-    > **Note**: If you receive an error similar to `powerbi-config(1) does not exist, try --help` you may want to refer to <a target="_blank" href="https://github.com/Microsoft/PowerBI-Cli/issues/5#issuecomment-251419579">Microsoft/PowerBI-Cli#5 (comment)</a> for a possible workaround.  Or, as an alternative you can simply supply the key, collection name, and workspace id for each powerbi command you execute.  You do not NEED to do the powerbi config commands, it just helps make future statements easier.
-
-    ```text
-    powerbi config -c <collectioName> -k "<accessKey>"
-    ```
-    For example:
-
-    ```text
-    powerbi config -c mic16collection -k "BoeKHkxkB/JuHsXTRsgUSegrvNnMC97YgycKJYXKDY7q9v5nbSxpoJkfvMmvMr68CrAi1iQVv0KgCpjlVtLIxw=="
-    ```
-
-    Which returns this output as shown below.  The values shown here are stored in the ".powerbirc" file in the current directory:
-
-    ```text
-    [ powerbi ] collection: mic16collection
-    [ powerbi ] accessKey: BoeKHkxkB/JuHsXTRsgUSegrvNnMC97YgycKJYXKDY7q9v5nbSxpoJkfvMmvMr68CrAi1iQVv0KgCpjlVtLIxw==
-    ```
-
-1. Now, we can create a new "**Workspace**". Workspaces are the containers that we upload reports into.  Use the following command:
-
-    ```text
-    powerbi create-workspace
-    ```
-    Which returns output similar to the following, showing the Id of the workspace that was created:
-
-    > **Note**: When a PowerBI Embedded Collection has just been created, you may get intermittent errors when attempting to connect to it.  If you get an error, first verify that you are using the proper values as arguments, and then continue to repeat the statement until it succeeds.
-
-    ```text
-    [ powerbi ] Workspace created: 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
-    ```
-
-    Then save the new Workspace Id to the config so you don't have to enter it each time:
-
-    ```text
-    powerbi config -w <workspaceId>
-    ```
-
-    For example:
-
-    ```text
-    powerbi config -w 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
-    ```
-
-    Which returns:
-
-    ```text
-    [ powerbi ] collection: mic16collection
-    [ powerbi ] accessKey: BoeKHkxkB/JuHsXTRsgUSegrvNnMC97YgycKJYXKDY7q9v5nbSxpoJkfvMmvMr68CrAi1iQVv0KgCpjlVtLIxw==
-    [ powerbi ] workspace: 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
-    ```
-
-    Finally, copy the new Workspace ID returned from the statement above and past it into the "**[myresources.txt](./myresources.txt)**" file.
-
-    ![Workspace ID Documented](images/13070-WorkspaceIdDocumented.png)
-
-1. Now we can upload our report (the TemperatureChart.pbix file) into our new workspace:
-
-    > **Note**: These commands assume you are in the "**HOLs\PowerBI**" folder.
-
-    ```text
-    powerbi import -n <what to call the report> -f <local path the to your .pbix file>
-    ```
-
-    For example:
-
-    ```text
-    powerbi import -n "TemperatureChart" -f "TemperatureChart.pbix"
-    ```
-
-    Which returns something like:
-
-    ```text
-    [ powerbi ] Importing TemperatureChart.pbix to workspace: 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
-    [ powerbi ] File uploaded successfully
-    [ powerbi ] Import ID: b3cd9de9-11e5-473c-9b55-0e569c89a756
-    [ powerbi ] Checking import state: Publishing
-    [ powerbi ] Checking import state: Succeeded
-    [ powerbi ] Import succeeded
-    ```
-
-1. Next, we'll retrieve the unique IDs for the report, and the dataset in it:
-
-    ```text
-    powerbi get-reports
-    ```
-
-    Returns:
-
-    ```text
-    [ powerbi ] =========================================
-    [ powerbi ] Gettings reports for Collection: 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
-    [ powerbi ] =========================================
-    [ powerbi ] ID: 9cc7d690-2d22-4d8c-be13-66b8d9349167 | Name: TemperatureChart
-    ```
-
-    And
-
-    ```text
-    powerbi get-datasets
-    ```
-
-    Returns
-
-    ```text
-    =========================================
-    Gettings datasets for Collection: 9c3b7e34-4a86-4c9b-9534-f9f3953e7f92
-    =========================================
-    ID: ed212c12-0335-414d-b0f1-d4e1be1268da | Name: TemperatureChart
-    ```
-
-1. Copy the report and Data set IDs returned from the last two statements and past them into the "**[myresources.txt](./myresources.txt)**" file.
-
-    ![Document Report and Dataset IDs](images/13073-DocumentReportAndDataset.png)
-
-1. The last step on the report side is to update the connection information for the Dataset in the report to point to our Azure SQL Database, on our Azure SQL Server with our login credentials.
-
-    We need to create a connection string in the right format.  Here is the template for the connection string:
-
-    ```text
-    "data source=<name>sql.database.windows.net;initial catalog=<name>db;persist security info=True;encrypt=True;trustservercertificate=False"
-    ```
-
-    Replace the ***&lt;name&gt;sql*** and ***&lt;name&gt;db*** values above with your own.  For example:
-
-    ```text
-    "data source=mic16sql.database.windows.net;initial catalog=mic16db;persist security info=True;encrypt=True;trustservercertificate=False"
-    ```
-1. Copy the connection string and paste it into the "**[myresources.txt](./myresources.txt)**" file:
-
-    ![Document Connection String](images/13075-DocumentConnectionString.png)
-
-1. Next, use the values for our Dataset ID, SQL Login Name and Password, and the Connection String from above to complete the following statement:
-
-    ```text
-    powerbi update-connection --dataset "<Dataset ID>" --username <your sql login> --password "<your sql password>" --connectionString "<your connection string>"
-    ```
-
-    For example:
-
-    ```text
-    powerbi update-connection --dataset "ed212c12-0335-414d-b0f1-d4e1be1268da" --username sqladmin --password "P@ssw0rd" --connectionString "data source=mic16sql.database.windows.net;initial catalog=mic16db;persist security info=True;encrypt=True;trustservercertificate=False"
-    ```
-    Which returns something similar to:
-
-    > **Note**: Sometimes this fails.  If you get an error, double check your parameters, **but even if they are correct, simply running the command a second or third time may work**.
-
-    ```text
-    [ powerbi ] Found dataset!
-    [ powerbi ] Id: ed212c12-0335-414d-b0f1-d4e1be1268da
-    [ powerbi ] Name: TemperatureChart
-    [ powerbi ] Updating connection string...
-    [ powerbi ] Getting gateway datasources...
-    [ powerbi ] Connection string successfully updated
-    [ powerbi ] Dataset:  ed212c12-0335-414d-b0f1-d4e1be1268da
-    [ powerbi ] ConnectionString:  data source=mic16sql.database.windows.net;initial catalog=mic16db;persist security info=T
-    rue;encrypt=True;trustservercertificate=False
-    [ powerbi ] Found 1 Datasources for Dataset ed212c12-0335-414d-b0f1-d4e1be1268da
-    [ powerbi ] --------------------------------------------------------------------
-    [ powerbi ] Datesource ID:  dbb612f8-06c8-481c-984d-3b3e28391cf3
-    [ powerbi ] Gateway ID:  8b37fcc6-be5a-47e3-a48d-9d9390b29338
-    [ powerbi ] Credential Type:  undefined
-    [ powerbi ] Datasource Type:  Sql
-    [ powerbi ] Updating datasource credentials...
-    [ powerbi ] Successfully updated datasource credentials!
-    [ powerbi ] Datasource ID:  dbb612f8-06c8-481c-984d-3b3e28391cf3
-    [ powerbi ] Gateway ID:  8b37fcc6-be5a-47e3-a48d-9d9390b29338
-    ```
-
-1. Ok, the last step is to actually embed the report into our web app.  Most of the code has already been written for us, we just need to make a few quick changes. To get started, open the "**HOLs\WebApp"** folder directly in ***A SEPARATE INSTANCE*** of "**Visual Studio Code**" just as you did when you were working with the web app previously.  Use the values you've saved in the "**[myresources.txt](./myresources.txt)**" file to complete the "powerbi*" config settings in the config.json file, and **Save** your changes:
-
-    ![Power BI Config Settings](images/13080-PowerBIConfigValues.png)
-
-    For Example:
-
-    ![Power BI Config Completed](images/13085-PowerBIConfigCompleted.png)
-
-1. Next, open the "**public/index.html**" file and locate the code as shown below. The div that will contain our embedded report has been commented out, and a placeholder `<img/>` is being displayed instead.  We need to switch that around so the `<img/>` is commented out, and the `<div..></div>` is availabe.
-
-    ```html
-    <img src="images/chartplaceholder.png" style="width:455px;height:380px;border:none;" />
-    <!--
-    <div id="powerbiReport" powerbi-type="report" style="height:380px;"></div>
-    -->
-    ```
-    and switch them around so the `<img.../>` tag is commented out, and the `<div...></div>` tag isn't
-
-    ```html
-    <!--
-    <img src="images/chartplaceholder.png" style="width:455px;height:380px;border:none;" />
-    -->
-    <div id="powerbiReport" powerbi-type="report" style="height:380px;"></div>
-    ```
-
-    ![Commented Out Image](images/13095-CommentedOutImg.png)
-
-1. Next, near the bottom of the "**public\index.html**" file locate the following code:
-
-    ```javascript
-    //Uncomment the following line of code to embed the Power BI report.
-    //$scope.embedReport();
-    ```
-
-    And uncomment the `$scope.embedReport();` statement:
-
-    ```javascript
-    //Uncomment the following line of code to embed the Power BI report.
-    $scope.embedReport();
-    ```
-
-    ![Uncomment embedReport() call](images/13110-EmbedReportCallUncommented.png)
-
-    This will cause some code to run when the page is loaded to embed the report into the `<div />` container we uncommented above. **Save** your changes.
-
-1. The following information is just FYI, you don't need to do anything with this code:
-
-    The embedReport() function we are calling above calls into the backend node.js application hosted in server.js to retrieve a valid "**embed token**" for the report.
-
-    ```javascript
-    $scope.embedReport = function () {
-        //Get just the very latest measurements from the node.js server back end
-        $http.get('/api/powerbiembedconfig').success(function(config) {
-
-            if(config) {
-                var powerbiReport = angular.element( document.querySelector( '#powerbiReport' ) )[0];
-                powerbi.embed(powerbiReport,config);
-            }
-        });
-    }
-    ```
-
-    The `/api/powerbiembedconfig` route on the backend server in server.js uses the **<a target="_blank" href="https://www.npmjs.com/package/powerbi-api">powerbi-api</a>** node.js library to create a "**JSON Web Token**" or "**JWT**" token that the embedded request uses to authenticate with the Power BI Embedded service.  The "**JWT**" token is signed by your Workspace Collection's Access Key which is known by the backend server, but not the front end web application:
-
-    ```javascript
-    app.get('/api/powerbiembedconfig',
-        function(req,res){
-            //FYI, http://calebb.net and http://jwt.io have token decoders you can use to inspect the generated token.
-
-            // Set the expiration to 24 hours from now:
-            var username = null;  //Not creating a user specific token
-            var roles = null;     //Not creating a role specific token
-            var expiration =  new Date();
-            expiration.setHours(expiration.getHours() + 24);
-
-            // Get the other parameters from the variables we initialized
-            // previously with values from the config.json file.
-            // Then generate a valid Power BI Report Embed token with the values.
-            var token = powerbi.PowerBIToken.createReportEmbedToken(
-                powerbiCollectionName,
-                powerbiWorkspaceId,
-                powerbiReportId,
-                username,
-                roles,
-                expiration);
-            // And sign it with the provided Power Bi Access key
-            // Again, this value comes from the config.json file
-            var jwt = token.generate(powerbiAccessKey);
-
-            // Create the required embed configuration for the
-            // web client front end to use
-            var embedConfig = {
-                type: 'report',
-                accessToken: jwt,
-                id: powerbiReportId,
-                embedUrl: 'https://embedded.powerbi.com/appTokenReportEmbed'
-            };
-
-            // And pass that config back to the user as the response.
-            res.json(embedConfig);
-        }
-    );
-    ```
-
-1. Regardless, we should be done.  Let's commit our changes into the git repo, and sync with the Azure Web App repo in Azure..
-
-    In Visual Studio Code, click the "**git**" icon on the left, add a comment to the commit message box at the top, and click the "**checkmark**" icon to commit your changes:
-
-    ![Commit Changes](images/13120-CommitChanges.png)
-
-1. Then still on the "**git**" panel, click the "**...**" ellipsis button at the top, and select "**Sync**" to push our changes up to the Azure Web Apps.
-
-    ![Sync Changes](images/13130-SyncWithAzure.png)
-
-1. Then, in the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>), on the "**Deployment options**" for your ***&lt;name&gt;web*** Web App, verify that the deployment succeeds:
-
-    ![Verify Deployment](images/13140-VerifyTheDeploymentSucceeded.png)
-
-1. Then in your browser open the web site in azure (`***http://<name>web.azurewebsites.net`***) and check out the new report!
-
-    ![Embedded Report Visible](images/13150-EmbeddedReportVisibleInAzure.png)
-
-1. The page is set to refresh automatically every 30 seconds.  You should see that the report updates the data it displays as well!
-
 ___
 
 <a name="CleaningUp"></a>

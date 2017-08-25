@@ -89,39 +89,3 @@ Git Clone URL (You can copy this from the overview page of your Azure Web App):
 Deployment Credentials:
 User Name:	<paste your deployment credentials user name here>
 Password:	<paste your deployment credentials password here>
-
-
-========================================
-Power BI Embedded Resources
-========================================
-
-Power BI Embedded Workspace Collection Name:
-<paste your Power BI Embedded Workspace Collection Name here>
-
-Power BI Embedded Workspace Collection Access Key:
-<paste your Power BI Embedded Workspace Collection Access Key 1 here>
-
-Power BI Embedded Workspace ID:
-<paste your Power BI Embedded Workspace ID here>
-
-Power BI Embedded Report Name (TemperatureChart):
-<paste your Power BI Embedded Report Name here>
-
-Power BI Embedded Report ID:
-<paste your Power BI Embedded Report ID here>
-
-Power BI Embedded Dataset ID:
-<paste your Power BI Embedded Dataset ID here>
-
-Power BI Embedded Dataset Connection String:
-<paste your Power BI Embedded datasets Azure SQL Database database connection string here>
-
-Sample:
-"data source=mic16sql.database.windows.net;initial catalog=mic16db;persist security info=True;encrypt=True;trustservercertificate=False"
-
-
-
-
-
- 
-

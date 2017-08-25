@@ -85,9 +85,6 @@
                     <h2>Chart</h2>
 
                     <img src="images/chartplaceholder.png" style="width:455px;height:380px;border:none;" />
-                    <!--
-                    <div id="powerbiReport" powerbi-type="report" style="height:380px;"></div>
-                    -->
 
                 </div>
 
@@ -172,24 +169,8 @@
                     });
                 }
 
-                $scope.embedReport = function () {
-                    //Get just the very latest measurements from the node.js server back end
-                    $http.get('/api/powerbiembedconfig').then(function(result) {
-                        
-                        var config = result.data;
-
-                        if(config) {
-                            var powerbiReport = angular.element( document.querySelector( '#powerbiReport' ) )[0];
-                            powerbi.embed(powerbiReport,config);
-                        } 
-                    });
-                }
-                
                 $scope.getRecentMeasurements();
                 $scope.getDevices();
-
-                //Uncomment the following line of code to embed the Power BI report.
-                //$scope.embedReport();
             });
         })();
     </script>
