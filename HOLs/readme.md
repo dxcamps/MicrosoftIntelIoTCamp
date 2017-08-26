@@ -795,7 +795,7 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
 1. If you have any blades open from before, you can close them by clicking the "X" icon in their top right corner.
 
-1. Click "**+ New**" | "**Databases**" | "**SQL Database**"
+1. Click "**+ New**" | "**Databases**" | "**SQL Database - Create**"
 
     ![New SQL Database](images/10010-NewSQLDatabase.png)
 
@@ -819,14 +819,15 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
     - Password - **`P@ssw0rd`** (Captial "`P`", an "`@`" instead of an "a" and a zero, "`0`", instead of an "o")
     - Confirm Password - **`P@ssw0rd`**
     - Location - **Select the same region you provisioned the Azure IoT Hub into**
-    - Create V12 server - **Yes** (if it is present.  If the option doesn't appear, V12 is assumed)
     - Allow azure services to access server: **Checked**
 
     ![New SQL Server Properties](images/10030-NewSQLServerProperites.png)
 
-1. Click "**Pricing tier**", then find and select the "**B Basic**" pricing tier, and click the "**Select**" button to select it.
+1. Click "**Pricing tier**", then find and select the "**Basic**" pricing tier, and click the "**Apply**" button to select it.
 
-    ![Basic Pricing Tier](images/10040-SQLDBPricingTier.png)
+    ![Pricing Tier](images/10040-SQLDBPricingTier.png)
+
+    ![Basic Pricing Tier](images/10045-BasicPricingTier.png)
 
 1. Finally, we can create the new Azure SQL Database and Server.  Ensure that the "**Pin to dashboard**" checkbox is **checked**, and click the "**Create**" button to create them.
 
@@ -874,7 +875,7 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     ![Open Workspace Settings](images/10130-OpenWorkspaceSettings.png)
 
-1. Then, in the **settings.json** file, click the "**Workspace Settings**" header.  Locate the connection properties for the SQL Server connection in the file:
+1. Then, in the settings file, select "**Workspace Settings**" from the drop down on the right.  Locate the connection properties for the SQL Server connection in the file:
 
     ![Connection Properties](images/10140-SQLConnectionProperties.png)
 
@@ -882,13 +883,13 @@ We'll start out creating the ***&lt;name&gt;sql*** Azure SQL Server, and the ***
 
     ![Completed SQL Connection Properties](images/10145-CompletedSQLConnectionProperties.png)
 
-    Save and close the **settings.json** file when you are done.
+    Save and close the **Workspace Settings** file when you are done.
 
 1. Click on the icon for the "**Explorer**" panel, select the "**SQL Database Scripts\Create SQL Database Objects.sql**" file.  If this is the first "**.sql**" file you have opened since installing the "**mssql**" extension, you may see some the "**OUTPUT**" panel appear to show the output of the sql tools initialization.  You may also be prompted to view the release notes, if so you can just click "**Close**":
 
     ![SQL Tools Initialization](images/10147-SQLToolsInitialization.png)
 
-1. On Windows, you may geta  firewall prompt.  Make sure to confirm the firewall prompt, and to enable it on all network types:
+1. On Windows, you may get a firewall prompt.  Make sure to confirm the firewall prompt, and to enable it on all network types:
 
     ![Windows Firewall Prompt](images/10148-FirewallPrompt.png)
 
@@ -930,7 +931,7 @@ Next up is the ***&lt;name&gt;alerts*** Event Hub that the ***&lt;name&gt;job***
 
 1. With your browser open to the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>), close any blades that may be left open from previous steps.
 
-1. Click "**+ New**" | "**Internet of Things**" | "**Event Hubs**"
+1. Click "**+ New**" | "**Internet of Things**" | "**Event Hubs - Create**"
 
     > **Note**: the name is a bit misleading.  Before we can create an Event Hub, we need to create the "**Service bus namespace**" that will host it.  We are actually choosing to create an Event Hubs compatible Service Bus Namespace.
 
@@ -943,6 +944,8 @@ Next up is the ***&lt;name&gt;alerts*** Event Hub that the ***&lt;name&gt;job***
     - Subscription - **Chose the same subscription used for the previous resources**
     - Resource group - Choose "**Use existing**" and select the ***&lt;name&gt;group*** resource group created previously
     - Location - **Use the same location as the previous resources**
+    - Throughput Units: **1 (default)**
+    - Enable auto-inflate: **Un-checked**
     - Pin to dashboard - **Checked**
 
     ![Create Namespace](images/10230-CreateNamespace.png)
@@ -961,6 +964,8 @@ Next up is the ***&lt;name&gt;alerts*** Event Hub that the ***&lt;name&gt;job***
     ![Create New Event Hub](images/10250-NewEventHubProperties.png)
 
 1. Wait until the new event hub is created successfully before continuing:
+
+    > **Note**: You may need to scroll down to see the list of event hubs in the namespace.
 
     ![Event Hub Created](images/10260-EventHubCreated.png)
 
@@ -982,7 +987,7 @@ Next up is the ***&lt;name&gt;alerts*** Event Hub that the ***&lt;name&gt;job***
 
 Great, now we have all the pieces that the ***&lt;name&gt;job*** Stream Analytics job needs.  We have the ***&lt;name&gt;iot*** Azure IoT Hub as the **input**, and the ***&lt;name&gt;db*** SQL Database and ***&lt;name&gt;alerts*** Event Hub as the **outputs**.  Now we just need to create our Stream Analtyics Job and wire it up!
 
-1. In the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>), click "**+ New**" | "**Internet of Things**" | "**Stream Analytics job**"
+1. In the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>), click "**+ New**" | "**Internet of Things**" | "**Stream Analytics job - Create**"
 
     ![Create Stream Analytics Job](images/10270-CreateStreamAnalyticsJob.png)
 
@@ -1037,6 +1042,8 @@ Great, now we have all the pieces that the ***&lt;name&gt;job*** Stream Analytic
     ![Successful Connection](images/10330-SuccessfulConnectionTest.png)
 
 1. Again, press the "**+ Add**" button at the top of the "**Outputs**" blade, then complete the "**New output**" blade properties as follows and click "**Create**":
+
+    > **Note**: In some cases people have reported the "**New output**" blade isn't seeing the newly created "**_&lt;name&gt;alerts_**" event hub.  If the blade isn't auto populating, you can try changing the "**Import option**" from "**Use event hub from current subscription**" to "**Provide event hub settings manually**" and completing the dialog to match the values shown below.  For the "**Event Hub policy key**" copy the "**Root Manage Shared Access Key SAS Policy Primary Connection String**" from your "**[myresources.txt](./myresources.txt)**" file.
 
     - Name - **alerts** (Again, you really should just use this name and not change it)
     - Sink - **Event hub**
