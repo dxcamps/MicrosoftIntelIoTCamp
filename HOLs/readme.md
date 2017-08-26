@@ -1307,6 +1307,8 @@ The last step is to get this web application running in Azure, not locally.  Ear
 
     ![Site Running in Azure](images/11260-SiteRunningInAzure.png)
 
+1. You can close the Visual Studio Code window that has the web app open in it. We won't use it any more.  You should however keep the original Visual Studio Code window open that is pointing to the "**HOLs**" folder. 
+
 ___
 
 <a name="CloudToDeviceMessages"></a>
