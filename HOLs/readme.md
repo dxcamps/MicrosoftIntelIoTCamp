@@ -769,9 +769,9 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
     - If you are feeling adventurous, trade iothubowner connection strings and device IDs with a neighbor in the lab and verify that you can monitor each other's devices.  For example:
 
-    ```bash
-    iothub-explorer monitor-events <your neighbors device id> --login "<Your neighbors 'iothubowner' SAS Policy Primary Connection String>"
-    ```
+        ```bash
+        iothub-explorer monitor-events <your neighbors device id> --login "<Your neighbors 'iothubowner' SAS Policy Primary Connection String>"
+        ```
 
     - One last comment, we are using the "**iothubowner**" connection string to monitor the events.  You could actually use a less privileged policy, like the "**service**" sas policy  we copied the connection string for earlier.  Go ahead and try monitoring events with the **IoT Hub "service" SAS Policy Primary Connection String** policy connection string (the one with "**`SharedAccessKeyName=service`**" in it) you pasted into the [myresources.txt](./myresources.txt) file.  It should work just fine because that SAS policy has permissions to read messages from the IoT Hub and that is all the permissions that `iothub-explorer monitor-events` needs.
 
