@@ -72,7 +72,7 @@
                                 <tr ng-repeat="m in devices">
                                     <td style="text-align:center"><button type="button" class="btn btn-xs btn-success" style="padding: 0px 2px;" ng-click="testBuzzer(m.deviceid)"><span class="glyphicon glyphicon-flash"></span></button></td>
                                     <td style="text-align:left">{{ m.deviceid }}</td>
-                                    <td style="text-align:right">{{ m.timestamp | date : 'short' }}</td>
+                                    <td style="text-align:right">{{ m.timestamp | date : 'M/d/yy h:mm:ss a' }}</td>
                                     <td style="text-align:right">{{ m.temperature | number }}&deg;C</td>
                                 </tr>
                             </tbody>
@@ -108,7 +108,7 @@
                     <tbody>
                         <tr ng-repeat="m in recentMeasurements">
                             <td style="text-align:left">{{ m.deviceid }}</td>
-                            <td style="text-align:right">{{ m.timestamp | date : 'short' }}</td>
+                            <td style="text-align:right">{{ m.timestamp | date : 'M/d/yy h:mm:ss a' }}</td>
                             <td style="text-align:right">{{ m.temperature | number }}&deg;C</td>
                         </tr>
                     </tbody>

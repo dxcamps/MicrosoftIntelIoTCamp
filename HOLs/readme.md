@@ -1178,7 +1178,7 @@ We'll start by creating the Azure App Service Plan and Web App in the portal.
 
 ### Debug the Node.js Web Application Locally ###
 
-**YOU NEED TO OPEN A SEPARATE COPY OF VISUAL STUDIO CODE FOR THIS SECTION.  YOU SHOULD LEAVE THE EXISTING INSTANCE OF VISUAL STUDIO CODE OPEN SO YOU CAN EASILY GET TO THE MYRESOURCES.TXT FILE, BUT MAKE SURE THAT THE FOLLOWING STEPS DONE USING A SEPARATE INSTANCE OF VISUAL STUDIO CODE THAT IS POINTING AT THE "_HOLs/WebApp_" FOLDER DIRECTLY.**
+**YOU NEED TO OPEN A SEPARATE COPY OF VISUAL STUDIO CODE FOR THIS SECTION.  YOU SHOULD LEAVE THE EXISTING INSTANCE OF VISUAL STUDIO CODE OPEN SO YOU CAN EASILY GET TO THE MYRESOURCES.TXT FILE, BUT MAKE SURE THAT THE FOLLOWING STEPS ARE DONE USING A SEPARATE INSTANCE OF VISUAL STUDIO CODE THAT IS POINTING AT THE "_HOLs/WebApp_" FOLDER DIRECTLY.**
 
 The reason for this is that we are going to be using the Node.js Debugging and Git Integration capabilities of Visual Studio Code in this task to help us debug and deploy our Node.js Web Application.  These are awesome features built-in to Visual Studio Code, but they require that the "root" folder code is pointing at is both the root the application you wish to debug as well as the root of the git repository you want to manage.  For that reason, we need to open the **"HOLs/WebApp** folder directly in Visual Studio Code for these steps to work.
 
@@ -1204,7 +1204,7 @@ The reason for this is that we are going to be using the Node.js Debugging and G
 
     ![Node.js debug environment](images/11140-NodeJsEnvironment.png)
 
-1. In the "**launch.json**" file that appears, modify the "**program** path to point to the "**server.js**" file.  Then save and close the "**launch.json**" file.
+1. In the "**launch.json**" file that appears, modify the **`program`** path to point to the **`${workspaceRoot}/server.js`** file.  Then save and close the "**launch.json**" file.
 
     > **Note**: This tells the debugger to start with the **server.js** file in the root of our web application's folder.
 
@@ -1236,7 +1236,7 @@ The reason for this is that we are going to be using the Node.js Debugging and G
 
     - The "**Devices**" area displays a row for each device along with their latest sensor values.  That data comes from the Azure SQL Databases' "**dbo.Devices** view.
 
-    - The "**Chart**" section currently has a placeholder image promising that a chart is coming soon.  
+    - The "**Chart**" section currently has a placeholder image promising that a chart is coming soon.
 
     ![Web App Running Locally](images/11180-WebAppRunningLocally.png)
 
@@ -1256,6 +1256,12 @@ The last step is to get this web application running in Azure, not locally.  Ear
 
     ![Initial Commit](images/11210-InitialCommit.png)
 
+1. We didn't specifically tell VS Code to stage all of our changes to be part of the commit so it prompts us to see if we want to stage all current changes.  Click "**Yes**" to include all changes in the commit:
+
+    > **Note**: If you click "**Always**" VS Code won't prompt you to include changes in the future, it will just do it automatically.
+
+    ![Stage Changes](images/11215-StageChanges.png)
+
 1. Refer to the Azure Web App Resources information you recently save in the "**[myresources.txt](./myresources.txt)**" file. Copy the "**Git Clone URL** value to your clipboard.  Next, open a command prompt or terminal window,  navigate to the "**HOLs\WebApp**" directory. and issue the following command at the prompt:
 
     > **Note**: MAKE SURE YOUR COMMAND PROMPT IS POINTING AT THE "**HOLs\WebApp**" PATH.
@@ -1270,13 +1276,15 @@ The last step is to get this web application running in Azure, not locally.  Ear
     git remote add origin https://mic16user@mic16web.scm.azurewebsites.net:443/mic16web.git
     ```
 
-1. Then, back in Visual Studio Code,  on the "**git**" panel, click the "**...**" ellipsis menu at the top, then select "**Publish**", and confirm the publish when prompted.
+1. Then, back in Visual Studio Code,  on the "**git**" panel, click the "**...**" ellipsis menu at the top, then select "**Publish Branch**", and confirm the publish when prompted.
 
     > **Note**: If you receive an `error: src refspec master does not match any.` in the Visual Studio Code "Output" window it is likely because you forgot to commit two steps ago.  Make sure to click the "**checkmark**" commit icon on the VS Code "Git" panel to commit as documented above.
 
     ![Publish](images/11220-Publish.png)
 
-    ![Confirm Publish](images/11230-ConfirmPublish.png)
+1. Next, select the "**origin**" remote we added from the command line previously:
+
+    ![Publish to origin](images/11223-Origin.png)
 
 1. When prompted, enter the deployment credentials you configured previously (these should also be copied down in your "**[myresources](./myresources.txt)**" file) and click "**OK**" to authenticate:
 
