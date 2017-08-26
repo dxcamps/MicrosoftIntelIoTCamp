@@ -1515,10 +1515,11 @@ In this task, we'll create the **TempAlert** function and have it receive those 
         ![Function Log](images/12200-FunctionLoggingMessage.png)
 
     - And on the LCD panel, you should see the "**Temp Alert**" message displayed along with a brief flash of red:
+        > **Note**: occasionally the Node-RED flow on the NUC will stop receiving messages from the IoT Hub and your alert won't show.  If this happens you can first try ssh-ing into your NUC as documented previously and running "`systemctl restart node-red-experience`" to restart the Node-RED service.  If that still doesn't resolve the problem you can reboot the NUC.  Once it does start processing messages you should see all outstanding alerts come through on the Arduino's LCD panel and buzzer, so it may be noisy for a bit. 
 
         ![Temp Alert on LCD](images/12210-TempAlertOnLcd.png)
 
-    - And lastly, if you have the Buzzer plugged in, you should hear it buzz for one second each time an alert comes in!
+    - And lastly, if you have the Buzzer plugged in, you should hear it buzz for one second each time an alert comes in!  If you are getting tired of hearing the buzzer you can un-plug it. 
 
 1. That's it.  Your function works.  However by default the app can be shutdown if it isn't being regularly accessed.  To make sure its stays active:
 
