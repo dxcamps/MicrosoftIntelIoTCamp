@@ -5,7 +5,7 @@ Intel IoT Gateway, Arduino 101 and Microsoft Azure Hands-On-Lab
 Overview
 ---
 
-In this lab, we will unbox and set up an Intel IoT Gateway and the Arduino 101 board (with a Seeed Grove Starter kit) along with several services available in Microsoft Azure to monitor the temperature and alert maintenance of a high temperature. Using Node-RED, running on the Intel NUC Gateway, the application will read the temperature value from a Grove temperature sensor and publish that data to an Azure IoT Hub.  From there a collection of Azure services including Stream Analytics, Event Hubs, SQL Database, Web Applications and Azure Functions will be used to both display the temperature data as well as alert the user to temperature readings over a certain threshold.
+In this lab, we will unbox and set up an Intel IoT Gateway and the Arduino 101 board (with a Seeed Grove Starter kit) along with several services available in Microsoft Azure. Using Node-RED running on the Intel NUC Gateway the application will read the temperature value from a Grove temperature sensor and publish that data to an Azure IoT Hub.  From there a collection of Azure services including Stream Analytics, Event Hubs, SQL Database, Web Applications and Azure Functions will be used to both display the temperature data as well as alert the user to temperature readings over a certain threshold.
 
 ![Lab Architecture](images/00000-LabArchitecture-NoPowerBi.jpg)
 
@@ -573,7 +573,7 @@ In this task, we'll create the ***&lt;name&gt;iot*** Azure IoT Hub and since it'
 
 1. Repeate the last two steps to copy and document the "**service**" SAS policy primary connection string:
 
-    > **Note**: Make sure to save the changes to the **[myresources.txt](./myresources.txt)**" file each time.
+    > **Note**: Make sure to save the changes to the "**[myresources.txt](./myresources.txt)**" file each time.
 
     ![service SAS policy](images/07080-ServiceSASPolicy.png)
 
@@ -644,7 +644,7 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
 
     > **Note**: ***MAKE SURE YOU ARE RUNNING THESE COMMANDS ON THE INTEL NUC VIA AN SSH SESSION.***
 
-    > **Note**: If you are using PuTTY, you can copy the command below to your computer's clipboard, then right-click on the PuTTY window to paste it into the remote ssh command prompt.  Other ssh clients should offer a similar paste option.
+    > **Note**: If you are using PuTTY, you can copy the command below to your computer's clipboard, then right-click on the PuTTY window to paste it into the remote ssh command prompt.  Other ssh clients should offer a similar paste option.  You can do the same for the commands in the following steps.  You will need to press enter in your ssh session after the last commmand pasted to make it run as the carriage return is not included in the text pasted from the clipboard.
 
     The commands will not return any result unless there was a problem.  They are simply adding some public key values used by the apt-get package repositories we will be installing from in the coming steps:
 
@@ -709,6 +709,8 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
     ![Deploy the Changes](images/09120-DeployChanges.png)
 
 1. Now the that device is publishing messages to the IoT Hub, we want to verify that by reading the messages back.  You can monitor the number of messages sent from the device, but not the actual content of the messages from the "**Overview**" page in your IoT Hubs blade in the portal.
+
+    > **Note**: The usage data in the portal only updates about once a minute.  You will need to refresh once every minute to see updated values.
 
     ![Message Count in Portal](images/09125-MessageCountInPortal.png)
 
@@ -959,7 +961,7 @@ Next up is the ***&lt;name&gt;alerts*** Event Hub that the ***&lt;name&gt;job***
     - Name - ***&lt;name&gt;alerts***
     - Partition Count - **2**
     - Message Retention - **1**
-    - Archive - **Off**
+    - Capture - **Off**
 
     ![Create New Event Hub](images/10250-NewEventHubProperties.png)
 
@@ -1020,6 +1022,10 @@ Great, now we have all the pieces that the ***&lt;name&gt;job*** Stream Analytic
 
     ![iothub Input Properties](images/10300-IoTHubInput.png)
 
+1. Wait until you receive a notification that the iothub input connection test succeeded:
+
+    ![Test Successful](images/10305-IoTHubSuccessfulTest.png)
+
 1. Close the "**Inputs**" blade, then back on the job blade, click "**Outputs**"
 
     ![Outputs](images/10310-Outputs.png)
@@ -1031,7 +1037,7 @@ Great, now we have all the pieces that the ***&lt;name&gt;job*** Stream Analytic
     - Subscription - **Use SQL database from current subscription**
     - Database - ***&lt;name&gt;db***
     - Server name - **_&lt;name&gt;sql_.database.windows.net** (although you can't change it here, more just FYI)
-    - Username - ***sqladmin@&lt;name&gt;sql***
+    - Username - **sqladmin**
     - Password - **P@ssw0rd**
     - Table - **dbo.Measurement**
 
@@ -1130,6 +1136,7 @@ We'll start by creating the Azure App Service Plan and Web App in the portal.
     - App name - ***&lt;name&gt;web***
     - Subscription - **Chose the same subscription used for the previous resources**
     - Resource group - Choose "**Use existing**" and select the ***&lt;name&gt;group*** resource group created previously
+    - OS: **Windows**
     - App Insights - **Off**
 
     ![New Web App Properties](images/11020-WebAppProperties.png)
