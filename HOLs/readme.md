@@ -1375,9 +1375,7 @@ Previously, we setup our ***&lt;name&gt;job*** Stream Analytics Job to forward m
 
 In this task, we'll create the **TempAlert** function and have it receive those alert messages from the event hub, and send a temp alert message back down to the device.
 
-1. Open the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>) in the browser, and close any blades open from previous steps.  Then click "**+ New**" | "**Compute**" | "**Function App**":
-
-    > **Note**: Function apps may appear in your portal under the **Virtual Machines** category instead of **Compute**.
+1. Open the **<a target="_blank" href="https://portal.azure.com/">Azure Portal</a>** (<a target="_blank" href="https://portal.azure.com/">https://portal.azure.com</a>) in the browser, and close any blades open from previous steps.  Then click "**+ New**" | "**Compute**" | "**Function App - Create**":
 
     ![New Function App](images/12065-NewFunctionApp.png)
 
@@ -1389,11 +1387,16 @@ In this task, we'll create the **TempAlert** function and have it receive those 
     - Hosting Plan - Choose "**App Service Plan**"
     - App Service Plan - Select the ***&lt;name&gt;plan*** plan we created previously.
     - Storage Account - Select "**Create New**" and name it ***&lt;name&gt;storage***
+    - Application Insights - **Off**
     - Pin to dashboard - **Checked**
 
     ![New Function App](images/12070-NewFunctionApp.png)
 
-1. When the new Function App is deployed, and its blade open's in the portal, click the "**+New Function**" button, and select "**EventHubTrigger - C#**"
+1. When the new Function App is deployed, and its blade open's in the portal, under the "**mic16functions**" header, click the "**+**" button next to "**Functions**", then click the "**create your own custom function**" link.
+
+    ![Create a custom function](images/12075-NewCustomFunction.png)
+
+1. Scroll through the list of custom function templates and select the  "**EventHubTrigger - C#**" template.
 
     ![Event Hub Trigger C# Function](images/12080-NewCSharpEventHubTriggerFunction.png)
 
@@ -1404,14 +1407,18 @@ In this task, we'll create the **TempAlert** function and have it receive those 
 
     ![New Function Properties](images/12090-NewFunctionProperties.png)
 
-1. On the "**Service Bus connection**" blade, click "**Add a connection string**" the configure the properties on the "**Add Service Bus connection**" blade as follows and click "**OK**":
+1. In the "**Connection**" dialog, complete the options as follows, and click "**Select** to create the connection:
 
-    - Connection name - ***&lt;name&gt;ns***
-    - Connection string - Copy the value from your Event Hub for the "**Root Manage Shared Access Key SAS Policy Primary Connection String:**" from the "**[myresources.txt](./myresources.txt)**" (The connection string should start with "**`Endpoint=sb://`**" and contain "**`SharedAccessKeyName=RootManageSharedAccessKey`**") file and paste it in here.  This connection string gives your Azure Function app permissions to connect to your Service Bus Namespace, and Event Hub with all the permissions it needs.
+    - Type - **Event Hub**
+    - Namespace - ***&lt;name&gt;ns***
+    - Event Hub - ***&lt;name&gt;alerts***
+    - Policy - **RootManageSharedAccessKey**
 
     ![Event Hub Connection String](images/12100-EventHubConnection.png)
 
 1. Finally, click the "**Create**" button to create the function:
+
+    > **Note**: It named the connection you defined above "***&lt;name&gt;name*_RootManageSharedAccessKey_EVENTHUB**" not a pretty name, but it works.  This connection definition is actually saved as an "Application Setting" in the function app.  If you ever need to edit it, you can do so in your function app's "Application Settings".
 
     ![Create the Function](images/12100-CreateTheFunction.png)
 
@@ -1422,11 +1429,12 @@ In this task, we'll create the **TempAlert** function and have it receive those 
     - Event parameter name: **`myEventHubMessage`**
     - Event Hub consumer group: **$Default**
     - Event Hub name: ***`<name>alerts`***
-    - Event Hub connection: ***`<name>ns`***
+    - Event Hub connection: ***`<name>ns_RootManageSharedAccessKey_EVENTHUB`***
+    - Event hub cardinality: **Many** - This means that the function may receive multiple events when it runs.  If you need to process a single message at a time you could change that to "One".  In this case, we'll leave it at **Many**.
 
     ![Function Integration](images/12110-FunctionIntegration.png)
 
-1. Switch back to the "**Develop**" page for the function.  The code for our C# function is stored in the "**run.csx**"" file.  The default code simply logs the contents of the "myEventHubMessage" parameter value to the console.
+1. Switch back to the "**TempAlert**" page.  The code for our C# function is stored in the "**run.csx**"" file.  The default code simply logs the contents of the `myEventHubMessage` parameter value to the console.
 
     ![Default Code](images/12120-DefaultCode.png)
 
@@ -1440,6 +1448,8 @@ In this task, we'll create the **TempAlert** function and have it receive those 
 
 1. The code we pasted into "**run.csx**" depends on some libraries (like `Microsoft.Azure.Devices` and `Newtonsoft.Json` as well as others.  To make sure the the libraries are installed on the server, we need to specify them in a "**project.json**" file. To add a "**project.json**" file to our our function, click the "**View Files**"" button, then click the "**+ Add**" button, and name the new file "**project.json**" (all lower case):
 
+    ![View Files](images/12129-ViewFiles.png)
+
     ![Add project.json](images/12130-AddProjectJson.png)
 
 1. Back in Visual Studio Code, copy the contents of the "**[HOLs\FunctionApp\TempAlert\project.json](./FunctionApp/TempAlert/project.json)**" file to the clipboard:
@@ -1451,6 +1461,8 @@ In this task, we'll create the **TempAlert** function and have it receive those 
     ![Paste project.json contents](images/12134-PasteProjectJson.png)
 
 1. Next, click on each file ("**function.json**","**project.json**", and "**run.csx**") to review its contents.
+
+    > **Note**: The "**project.lock.json**" is a system generated file.  It is created when the "**project.json**" file we provided was processed by the backend deployment mechanism. You can review it if you like, but don't make any changes in it.
 
     ![Review function.json](images/12150-ReviewFunctionJson.png)
 
@@ -1472,9 +1484,15 @@ In this task, we'll create the **TempAlert** function and have it receive those 
 
     Then click the "**Save**" button to save the changes.
 
+    ![Service place holder](images/12155-ServiceStringPlaceHolder.png)
+
     ![Paste 'service' policy connection string](images/12160-PasteServiceConnectionString.png)
 
-1. In the "**Logs**" section, verify that the function compiled successfully.
+1. Click the "Up" icon in the "**Logs**" section at the bottom of the function's code window to expand the log viewer:
+
+    ![Expand Logs Viewer](images/12170-ExpandLogs.png)
+
+1. In the "**Logs**" section, scroll to the bottom and verify that the function compiled successfully.
 
     ![Successful Compilation](images/12180-CompilationSucceeded.png)
 
@@ -1502,13 +1520,13 @@ In this task, we'll create the **TempAlert** function and have it receive those 
 
     - And lastly, if you have the Buzzer plugged in, you should hear it buzz for one second each time an alert comes in!
 
-1. That's it.  Your function works.  However by default the app can be shutdown if it isn't being regularly accessed.  To keep it active:
+1. That's it.  Your function works.  However by default the app can be shutdown if it isn't being regularly accessed.  To make sure its stays active:
 
-    - Click the "**Function app settings**" link, then pick **"Go to App Service Settings**"
+    - Click the "**_&lt;name&gt;functions_**" link, and on the "**Overview**" tab, click the **"Application Settings**" link
 
         ![Function App Settings](images/12230-FunctionAppSettings.png)
 
-    - Click "**Application settings**" then turn the "**Always On**" setting to "**On**" and click the "**Save**" button along the top.
+    - Ensure that the "**Always On**" setting is set to "**On**".  If it isn't make it so, and click the "**Save**" button along the top, then close the "**Application Settings**" tab.
 
         ![Always On](images/12240-AlwaysOn.png)
 ___
