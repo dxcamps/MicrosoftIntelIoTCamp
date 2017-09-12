@@ -453,7 +453,7 @@ At the time this is being written (August 2017), the following regions have all 
 
 ### Common Naming Convention ###
 
-We will be provisioning a number of resources in this lab.  Some of these resources require globally unique names.  In addition, we need to be able to refer to those resources in the lab documentation.  To facilitate that, it is ***strongly recommended*** that you juse the naming convention outlined here.  In the architecture diagram above, you will see that resources have been named with a ***`<name>`*** prefix, and then some resource specific name.
+We will be provisioning a number of resources in this lab.  Some of these resources require globally unique names.  In addition, we need to be able to refer to those resources in the lab documentation.  To facilitate that, it is ***strongly recommended*** that you use the naming convention outlined here.  In the architecture diagram above, you will see that resources have been named with a ***`<name>`*** prefix, and then some resource specific name.
 
 Choose a ***`<name>`*** prefix that is unique to you.  It is recommended that you use something like your initials.  For example if your name where "**Jane Q. Doe"** you might select "**jqd**" as your name prefix. To add a little more uniqueness you could add in your two digit birth month.  For example, if Jane was born in "**October**" she might use "**jqd10**".  **Some resource names must be at least six characters or longer.  Having a prefix that is 4-6 characters long will help ensure our names meet the minimum length.**
 
