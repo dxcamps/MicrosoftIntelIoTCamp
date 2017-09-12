@@ -669,6 +669,8 @@ In this task, we'll update the Intel NUC with some packages to help it talk to o
     smart channel --add 'IoT_Cloud' type=rpm-md baseurl=http://iotdk.intel.com/repos/iot-cloud/wrlinux7/rcpl13 -y
     smart update 'IoT_Cloud'
     smart update
+    smart upgrade python-core
+    smart upgrade python-misc
     smart install -y packagegroup-cloud-azure
     ```
 
